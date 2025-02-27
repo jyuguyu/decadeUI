@@ -12232,9 +12232,8 @@ export default async function() {
 				let log = [
 					`魔改十周年UI ${pack.version}`,
 					"最低适配：v1.10.18",
-					"修复移动端技能列表排序问题",
 					"修复手杀UI自动整理，UI显示问题",
-					"添加私货meihua.js，交互音效等其他",
+					"添加私货meihua.js，神选势力交互音效等",
 					"添加全选按钮 by咪咪狗奇妙工具",
 					"注释指示线美化，需要自行解除",
 				];

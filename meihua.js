@@ -1,8 +1,5 @@
 'use strict';
 decadeModule.import(function(lib, game, ui, get, ai, _status) {
-	//装备名字简化
-	lib.translate.zhangba_skill = '丈八';
-
 	//神势力选择
 	lib.skill._group = {
 		charlotte: true,
@@ -25,21 +22,13 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			if (!['doudizhu', 'versus'].includes(get.mode())) return false;
 			// 检查角色类型
 			if (lib.character[player.name1][1] === 'shen') return true;
-			// 检查是否为双势力角色
-			return lib.character[player.name1][4].some(group => group.includes('doublegroup'));
 		},
 		content() {
 			'step 0'
 			const name = player.name1;
 			let options;
-			// 根据角色类型选择势力
-			if (get.is.double(name)) {
-				options = get.is.double(name, true);
-				player.chooseControl(options).set('prompt', '请选择你的势力');
-			} else if (lib.character[name][1] === 'shen') {
-				options = lib.group.filter(group => group !== 'shen');
-				player.chooseControl(options).set('prompt', '请选择神武将的势力');
-			}
+			options = lib.group.filter(group => group !== 'shen');
+			player.chooseControl(options).set('prompt', '请选择神武将的势力');
 			'step 1'
 			if (result.control) {
 				player.changeGroup(result.control);
@@ -148,19 +137,6 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 		if (!_status.connectMode) {
 			game.addGlobalSkill('_useCardAudio');
 		}
-		lib.skill._phaseStartAudio = {
-			trigger: {
-				player: 'phaseBegin'
-			},
-			forced: true,
-			popup: false,
-			priority: -10,
-			content() {
-				if (player === game.me) {
-					game.playAudio('..', 'extension', '十周年UI', 'audio/seatRoundState_start');
-				}
-			}
-		};
 		if (!_status.connectMode) {
 			game.addGlobalSkill('_phaseStartAudio');
 		}
