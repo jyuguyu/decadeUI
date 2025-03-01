@@ -859,15 +859,22 @@ export default async function() {
 									this.node.dieidentity.classList.add("died-identity");
 
 									var that = this,
-										image = new Image(),
-										identity = decadeUI.getPlayerIdentity(this);
-									const goon = decadeUI.config.newDecadeStyle === "on" || decadeUI.config
-										.newDecadeStyle === "othersOff";
-									var url = decadeUIPath + "image/decoration" + (goon ? "/dead" :
-										"s/dead2") + "_" + identity + ".png";
+									    image = new Image(),
+									    identity = decadeUI.getPlayerIdentity(this);
+									
+									const goon = decadeUI.config.newDecadeStyle === "on" || 
+									    decadeUI.config.newDecadeStyle === "othersOff";
+									
+									// 为onlineUI样式设置单独的路径判断
+									var url;
+									if (decadeUI.config.newDecadeStyle === "onlineUI") {
+									    url = decadeUIPath + "image/decorations/dead2_" + identity + ".png";
+									} else {
+									    url = decadeUIPath + "image/decoration" + (goon ? "/dead" : "s/dead2") + "_" + identity + ".png";
+									}
+									
 									image.onerror = function() {
-										that.node.dieidentity.innerHTML = decadeUI.getPlayerIdentity(
-											that, that.identity, true) + "<br>阵亡";
+									    that.node.dieidentity.innerHTML = decadeUI.getPlayerIdentity(that, that.identity, true) + "<br>阵亡";
 									};
 
 									// 随机离开效果
@@ -1978,11 +1985,6 @@ export default async function() {
 												ui.arena.classList.add("thrownhighlight");
 												event.node.classList.add("thrownhighlight");
 											}
-											/*
-					event.dialog = ui.create.dialog(str);
-					event.dialog.classList.add('center');
-					event.dialog.videoId = id;
-					*/
 										},
 										player,
 										player.judging[0] /*, judgestr*/ ,
@@ -3962,22 +3964,18 @@ export default async function() {
 
 										/*-----------------分割线-----------------*/
 										// 不同样式身份标记
-										if (lib.config.extension_十周年UI_newDecadeStyle == "on" ||
-											lib.config.extension_十周年UI_newDecadeStyle ==
-											"othersOff") {
-											image.src = decadeUIPath +
-												"image/decoration/identity_" + filename +
-												".png";
+										if (lib.config.extension_十周年UI_newDecadeStyle == "onlineUI") {
+										    image.src = decadeUIPath + "image/decorations/identity2_" + filename + ".png";
+										} else if (lib.config.extension_十周年UI_newDecadeStyle == "on" || 
+										    lib.config.extension_十周年UI_newDecadeStyle == "othersOff") {
+										    image.src = decadeUIPath + "image/decoration/identity_" + filename + ".png";
 										} else {
-											image.src = decadeUIPath +
-												"image/decorations/identity2_" + filename +
-												".png";
+										    image.src = decadeUIPath + "image/decorations/identity2_" + filename + ".png";
 										}
-										this.parentNode.style.backgroundImage = 'url("' + image
-											.src + '")';
-									} else {
-										this.style.visibility = "";
-									}
+										this.parentNode.style.backgroundImage = 'url("' + image.src + '")';
+										} else {
+										    this.style.visibility = "";
+										}
 								},
 							},
 						});
@@ -9791,13 +9789,16 @@ export default async function() {
 					// 所以加载了不存在的css: player0.css
 					if (lib.config.extension_十周年UI_newDecadeStyle != void 0) {
 						this.css(decadeUIPath + "player" + parseFloat(["on", "off", "othersOn",
-							"othersOff"
+							"othersOff","onlineUI"
 						].indexOf(lib.config.extension_十周年UI_newDecadeStyle) + 1) + ".css");
 					} else {
 						this.css(decadeUIPath + "player2.css");
 					}
 					if (lib.config.extension_十周年UI_newDecadeStyle == "othersOff") {
 						this.css(decadeUIPath + "equip_new_new.css");
+						this.css(decadeUIPath + "layout_new.css");
+					} if (lib.config.extension_十周年UI_newDecadeStyle == "onlineUI") {
+						this.css(decadeUIPath + "equipOL.css");
 						this.css(decadeUIPath + "layout_new.css");
 					} else {
 						this.css(decadeUIPath + (lib.config.extension_十周年UI_newDecadeStyle == "on" ?
@@ -9832,6 +9833,7 @@ export default async function() {
 						off: 1,
 						othersOn: 1,
 						othersOff: 3,
+						onlineUI: 4,
 					} [lib.config.extension_十周年UI_newDecadeStyle] || 2;
 					if (!(get.mode() == "chess" || get.mode() == "tafang" || get.mode ==
 							"hs_hearthstone")) {
@@ -10346,6 +10348,7 @@ export default async function() {
 						off: 1,
 						othersOn: 1,
 						othersOff: 3,
+						onlineUI: 4,
 					} [lib.config.extension_十周年UI_newDecadeStyle] || 2;
 					lib.init.js(
 						layoutPath + pack + "/main" + listmap + ".js",
@@ -11860,29 +11863,31 @@ export default async function() {
 				},
 			},
 			newDecadeStyle: {
-				name: '<b><font color="#FF0000">边框样式/界面布局',
-				intro: '<b><font color="#FF0000">切换武将边框样式和界面布局，初始为十周年样式，根据个人喜好自行切换，选择不同的设置后游戏会自动重启以生效新的设置',
-				init: "off",
-				item: {
-					on: "十周年",
-					off: "新手杀",
-					othersOn: "旧手杀",
-					othersOff: "一将成名",
-				},
-				onclick(control) {
-					const origin = lib.config.extension_十周年UI_newDecadeStyle;
-					game.saveConfig("extension_十周年UI_newDecadeStyle", control);
-					if (origin != control) {
-						setTimeout(() => game.reload(), 100);
-					}
-				},
-				update() {
-					if (window.decadeUI) {
-						ui.arena.dataset.newDecadeStyle = lib.config.extension_十周年UI_newDecadeStyle;
-						ui.arena.dataset.decadeLayout = lib.config.extension_十周年UI_newDecadeStyle == "on" || lib
-							.config.extension_十周年UI_newDecadeStyle == "othersOff" ? "on" : "off";
-					}
-				},
+			    name: '<b><font color="#FF0000">边框样式/界面布局',
+			    intro: '<b><font color="#FF0000">切换武将边框样式和界面布局，初始为十周年样式，根据个人喜好自行切换，选择不同的设置后游戏会自动重启以生效新的设置',
+			    init: "off",
+			    item: {
+			        on: "十周年",
+			        off: "新手杀",
+			        othersOn: "旧手杀",
+			        othersOff: "一将成名",
+			        onlineUI: "online",
+			    },
+			    onclick(control) {
+			        const origin = lib.config.extension_十周年UI_newDecadeStyle;
+			        game.saveConfig("extension_十周年UI_newDecadeStyle", control);
+			        if (origin != control) {
+			            setTimeout(() => game.reload(), 100);
+			        }
+			    },
+			    update() {
+			        if (window.decadeUI) {
+			            ui.arena.dataset.newDecadeStyle = lib.config.extension_十周年UI_newDecadeStyle;
+			            ui.arena.dataset.decadeLayout = lib.config.extension_十周年UI_newDecadeStyle == "on" || 
+			                lib.config.extension_十周年UI_newDecadeStyle == "othersOff" || 
+			                lib.config.extension_十周年UI_newDecadeStyle == "onlineUI" ? "on" : "off";
+			        }
+			    },
 			},
 			shadowStyle: {
 				name: '<b><font color="#FF9000">特效切换(新手杀有效)',
@@ -12234,6 +12239,7 @@ export default async function() {
 					"最低适配：v1.10.18",
 					"修复手杀UI自动整理，UI显示问题",
 					"添加私货meihua.js，神选势力交互音效等",
+					"新增OLUI移动端，因为素材问题半成品",
 					"添加全选按钮 by咪咪狗奇妙工具",
 					"注释指示线美化，需要自行解除",
 				];
