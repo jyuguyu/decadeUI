@@ -868,7 +868,7 @@ export default async function() {
 									// 为onlineUI样式设置单独的路径判断
 									var url;
 									if (decadeUI.config.newDecadeStyle === "onlineUI") {
-									    url = decadeUIPath + "image/decorations/dead2_" + identity + ".png";
+									    url = decadeUIPath + "image/decoration/dead_" + identity + ".png";
 									} else {
 									    url = decadeUIPath + "image/decoration" + (goon ? "/dead" : "s/dead2") + "_" + identity + ".png";
 									}
@@ -878,21 +878,23 @@ export default async function() {
 									};
 
 									// 随机离开效果
-									if ((that._trueMe || that) != game.me && that != game.me && Math
-										.random() < 0.5) {
-										if (goon) {
-											that.node.dieidentity.innerHTML =
-												'<div style="width:40.2px; height:20px; left:0px; top:-32px; position:absolute; background-image: url(' +
-												lib.assetURL +
-												'extension/十周年UI/assets/image/likai_1.png);background-size: 100% 100%;"></div>';
-										} else {
-											that.node.dieidentity.innerHTML =
-												'<div style="width:21px; height:81px; left:18px; top:-12px; position:absolute; background-image: url(' +
-												lib.assetURL +
-												'extension/十周年UI/assets/image/likai_2.png);background-size: 100% 100%;"></div>';
-										}
+									if ((that._trueMe || that) != game.me && that != game.me && Math.random() < 0.5) {
+									    if (lib.config.extension_十周年UI_newDecadeStyle == "onlineUI") {
+									        // onlineUI样式固定使用第一个路径
+									        that.node.dieidentity.innerHTML = '<div style="width:40.2px; height:20px; left:0px; top:-32px; position:absolute; background-image: url(' + 
+									            lib.assetURL + 'extension/十周年UI/assets/image/likai_1.png);background-size: 100% 100%;"></div>';
+									    } else {
+									        // 其他样式保持随机
+									        if (goon) {
+									            that.node.dieidentity.innerHTML = '<div style="width:40.2px; height:20px; left:0px; top:-32px; position:absolute; background-image: url(' + 
+									                lib.assetURL + 'extension/十周年UI/assets/image/likai_1.png);background-size: 100% 100%;"></div>';
+									        } else {
+									            that.node.dieidentity.innerHTML = '<div style="width:21px; height:81px; left:18px; top:-12px; position:absolute; background-image: url(' + 
+									                lib.assetURL + 'extension/十周年UI/assets/image/likai_2.png);background-size: 100% 100%;"></div>';
+									        }
+									    }
 									} else {
-										that.node.dieidentity.innerHTML = "";
+									    that.node.dieidentity.innerHTML = "";
 									}
 
 									that.node.dieidentity.style.backgroundImage = 'url("' + url + '")';

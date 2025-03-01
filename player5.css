@@ -140,7 +140,7 @@
 	right: 25px;
 }
 
-/*玩家姓名阵营图片背景*/
+/*玩家姓名阵营*/
 .player>.camp-wrap {
 	display: block;
 	left: -34px;
@@ -250,141 +250,6 @@
 
 .player>.camp-wrap[data-camp='xin']>.camp-back {
 	background: linear-gradient(to bottom, rgb(112, 52, 126), rgb(52, 18, 55));
-}
-
-/*底框*/
-.player>.camp-wrap>.camp-border_d {
-	/*默认无框素材*/
-	display: block;
-	left: 29px;
-	top: 54.9px;
-	width: 200%;
-	height: 75.3%;
-	position: absolute;
-	background-image: url('image/decoration/border_kuang.png');
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-	z-index: -1;
-
-}
-
-/*边框*/
-#arena.decadeUI[data-border-level='kill'] .player>.camp-wrap>.camp-border {
-	/*默认无框*/
-	background-image: url('image/decoration/border_camp1.png');
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.hp-wrap {
-	border-image-source: url('image/decoration/border_hp1.png');
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.camp-wrap[data-border-level='one']>.camp-border {
-	background-image: url('image/decoration/border_camp1.png') !important;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.hp-wrap[data-border-level='one'] {
-	border-image-source: url('image/decoration/border_hp1.png') !important;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.card-count[data-border-level='one'] {
-	background-image: url("image/decoration/card_count.png");
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.camp-wrap[data-border-level='two']>.camp-border {
-	/*银框*/
-	display: block;
-	left: 10.5px;
-	top: 37px;
-	width: 233%;
-	height: 85.6%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp2.png') !important;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.hp-wrap[data-border-level='two'] {
-	border-image-source: url('image/decoration/border_hp2.png') !important;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.card-count[data-border-level='two'] {
-	background-image: url("image/decoration/card_countX.png");
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.camp-wrap[data-border-level='three']>.camp-border {
-	/*铜框*/
-	display: block;
-	left: 8.9px;
-	top: 35.2px;
-	width: 234.5%;
-	height: 86.3%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp3.png') !important;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.hp-wrap[data-border-level='three'] {
-	border-image-source: url('image/decoration/border_hp3.png') !important;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.card-count[data-border-level='three'] {
-	background-image: url("image/decoration/card_count.png");
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.camp-wrap[data-border-level='four']>.camp-border {
-	/*水晶框*/
-	display: block;
-	left: 8.5px;
-	top: 35.2px;
-	width: 233.9%;
-	height: 86.3%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp4.png') !important;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.hp-wrap[data-border-level='four'] {
-	border-image-source: url('image/decoration/border_hp4.png') !important;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.card-count[data-border-level='four'] {
-	background-image: url("image/decoration/card_countX.png");
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.camp-wrap[data-border-level='five']>.camp-border {
-	/*龙框*/
-	display: block;
-	left: 6.5px;
-	top: 34.5px;
-	width: 243%;
-	height: 86.3%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp_long.png') !important;
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.hp-wrap[data-border-level='five'] {
-	border-image-source: url('image/decoration/border_hp_long.png') !important;
-
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.card-count[data-border-level='five'] {
-	background-image: url("image/decoration/card_countX.png");
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.camp-wrap[data-border-level='five_feng']>.camp-border {
-	background-image: url('image/decoration/border_camp_feng.png') !important;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.hp-wrap[data-border-level='five_feng'] {
-	border-image-source: url('image/decoration/border_hp_feng.png') !important;
-}
-
-#arena.decadeUI[data-border-level='kill'] .player>.card-count[data-border-level='five_feng'] {
-	background-image: url("image/decoration/card_count.png");
 }
 
 /*主将名，根据部分群友需要，添加定位代码*/
@@ -497,7 +362,7 @@
 	justify-content: center;
 	left: 50% !important;
 	right: auto;
-	top: 22px;
+	top: 0px;
 	width: 18px;
 	height: 96px;
 	font-size: 16px;
@@ -547,8 +412,10 @@
 
 /* 为主玩家位置特别设置 */
 .player[data-position='0']>.hp-wrap {
-    right: 115.45px;  /* 左右位置 */
-    bottom: 10px;     /* 上下位置，从5px改为15px */
+	right: 115.45px;
+	/* 左右位置 */
+	bottom: 10px;
+	/* 上下位置，从5px改为15px */
 }
 
 .player[data-max-hp='1']>.hp-wrap {
@@ -1607,16 +1474,38 @@ text-shadow: 0 0 1px black, 0 0 5px blue, 0 0 10px rgb(100, 100, 250), 0 0 20px 
 	background-image: url('../../image/character/hidden_image.jpg') !important;
 }
 
-/* 隐藏武将前缀 */
+/* 隐藏所有武将前缀（包括主将和副将） */
 .player>.camp-wrap>.avatar-name::before,
 .player>.camp-wrap>.avatar-name-default::before,
-.player>.camp-wrap>.avatar2-name-default::before {
-    display: none !important;
+.player>.camp-wrap>.avatar2-name-default::before,
+.player>.name.name2::before,
+.player>.camp-wrap>.avatar2-name::before {
+	display: none !important;
 }
 
-/* 如果还有其他前缀显示方式，也一并隐藏 */
+/* 隐藏所有性质标记和前缀（包括字母、符号等） */
 .player .avatar-name [data-nature],
 .player .avatar-name-default [data-nature],
-.player .avatar2-name-default [data-nature] {
-    display: none !important;
+.player .avatar2-name-default [data-nature],
+.player .name.name2 [data-nature],
+.player .avatar2-name [data-nature],
+/* 特殊前缀 */
+.player [data-nature*="sp"],
+.player [data-nature*="ol"],
+.player [data-nature*="key"],
+.player [data-nature*="xin"],
+.player [data-nature*="jin"],
+.player [data-nature*="re"],
+.player [data-nature*="diy"],
+.player [data-nature*="db"],
+.player [data-nature*="shen"],
+.player [data-nature*="tw"],
+.player [data-nature*="手杀"],
+/* 符号前缀 */
+.player [data-nature*="★"],
+.player [data-nature*="☆"],
+.player [data-nature*="∑"],
+.player [data-nature*="*"],
+.player [data-nature*="+"] {
+	display: none !important;
 }
