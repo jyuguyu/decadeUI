@@ -124,7 +124,7 @@
 }
 
 .control>div {
-	background-image: url("./images/uibutton/btnnnor.png");
+	background-image: url("./images/uibutton/new_btnnOL.png");
 	background-size: 100% 100%;
 	line-height: var(--h);
 	padding: 2.6px 23px !important;
@@ -137,7 +137,7 @@
 	margin-top: 0px !important;
 	margin-bottom: -15px !important;
 	color: #2F4F4F;
-	-webkit-text-stroke: 0.4px #803B02;
+	-webkit-text-stroke: 0.4px #000000;
 	font-family: 'kaiti';
 	font-size: 20px;
 }
@@ -152,7 +152,7 @@
 .control>div.primary2 {
 	/*取消按钮*/
 	bottom: 1.8px;
-	color: #000000;
+	color: #b6b65a;
 	font-family: "yuanli";
 	font-size: 20px;
 	/*字体大小*/
@@ -165,14 +165,14 @@
 	margin-top: 0px !important;
 	margin-bottom: -15px !important;
 	background-size: 100% 100%;
-	background-image: url("./images/uibutton/btnnnor.png");
+	background-image: url("./images/uibutton/new_btnnOL.png");
 	overflow: visible;
 	transition: none;
 }
 
 .control>div.primary {
 	/*确认按钮*/
-	color: #000000;
+	color: #b6b65a;
 	font-family: "yuanli";
 	font-size: 20px;
 	/*字体大小*/
@@ -186,7 +186,7 @@
 	margin-top: 0px !important;
 	margin-bottom: -15px !important;
 	background-size: 100% 100%;
-	background-image: url("./images/uibutton/btnnnor.png");
+	background-image: url("./images/uibutton/new_btnnOL.png");
 }
 
 .control>div.disabled:not([data-type="endButton"]) {

@@ -143,10 +143,10 @@
 /*玩家姓名阵营*/
 .player>.camp-wrap {
 	display: block;
-	left: -34px;
-	top: -62px;
-	width: 65.5px;
-	height: 250px;
+	left: -30px;
+	top: -60px;
+	width: 50px;
+	height: 245px;
 	transition: none;
 	z-index: 83;
 }
@@ -216,6 +216,66 @@
 	background-image: url('image/decoration/border_jin.png');
 	background-size: 100% 100%;
 	visibility: visible;
+}
+
+.player>.camp-wrap>.camp-border {
+	display: block;
+	left: -1px;
+	top: 40px;
+	width: 310%;
+	height: 85%;
+	position: absolute;
+	background-image: url("image/decoration/border_campOL5.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+#arena.decadeUI[data-border-level="one"] .player>.camp-wrap>.camp-border {
+	display: block;
+	left: 5px;
+	top: 52px;
+	width: 300%;
+	height: 80%;
+	position: absolute;
+	background-image: url("image/decoration/border_campOL1.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+#arena.decadeUI[data-border-level="two"] .player>.camp-wrap>.camp-border {
+	display: block;
+	left: 5px;
+	top: 52px;
+	width: 300%;
+	height: 80%;
+	position: absolute;
+	background-image: url("image/decoration/border_campOL2.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+#arena.decadeUI[data-border-level="three"] .player>.camp-wrap>.camp-border {
+	display: block;
+	left: 5px;
+	top: 52px;
+	width: 300%;
+	height: 80%;
+	position: absolute;
+	background-image: url("image/decoration/border_campOL3.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+#arena.decadeUI[data-border-level="four"] .player>.camp-wrap>.camp-border {
+	display: block;
+	left: 5px;
+	top: 52px;
+	width: 300%;
+	height: 80%;
+	position: absolute;
+	background-image: url("image/decoration/border_campOL4.png");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
 }
 
 .player>.camp-wrap[data-camp='key']>.camp-back {
@@ -392,12 +452,20 @@
 	pointer-events: none;
 }
 
+/* 为主玩家位置特别设置 */
+.player[data-position='0']>.hp-wrap {
+	right: 115.45px;
+	/* 左右位置 */
+	bottom: 10px;
+	/* 上下位置，从5px改为15px */
+}
+
 /*玩家血量显示*/
 .player>.hp-wrap {
 	display: block;
 	right: 115.45px;
 	bottom: 5px;
-	width: 15px;
+	width: 12px;
 	height: 50px;
 	border-width: 24px 5px 21px 82px;
 	border-style: solid;
@@ -407,15 +475,7 @@
 	transition-property: transform, opacity, height;
 	transition-duration: 0.1s;
 	transition-timing-function: linear;
-	z-index: 99;
-}
-
-/* 为主玩家位置特别设置 */
-.player[data-position='0']>.hp-wrap {
-	right: 115.45px;
-	/* 左右位置 */
-	bottom: 10px;
-	/* 上下位置，从5px改为15px */
+	z-index: 88;
 }
 
 .player[data-max-hp='1']>.hp-wrap {
