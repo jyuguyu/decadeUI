@@ -387,82 +387,6 @@
 	background-image: url("image/decoration/card_count.png");
 }
 
-/*边框升级*/
-/*按等阶随机给.击杀可升级*/
-.player>.camp-wrap>.camp-border {
-	/*龙框*/
-	display: block;
-	left: 6.5px;
-	top: 34.5px;
-	width: 243%;
-	height: 86.3%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp.png');
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='one'] .player>.camp-wrap>.camp-border {
-	/*默认无框*/
-	background-image: url('image/decoration/border_camp1.png');
-
-}
-
-#arena.decadeUI[data-border-level='two'] .player>.camp-wrap>.camp-border {
-	/*银框*/
-	display: block;
-	left: 10.5px;
-	top: 37px;
-	width: 233%;
-	height: 85.6%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp2.png');
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='three'] .player>.camp-wrap>.camp-border {
-	/*铜框*/
-	display: block;
-	left: 8.9px;
-	top: 35.2px;
-	width: 234.5%;
-	height: 86.3%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp3.png');
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='four'] .player>.camp-wrap>.camp-border {
-	/*水晶框*/
-	display: block;
-	left: 8.5px;
-	top: 35.2px;
-	width: 233.9%;
-	height: 86.3%;
-	position: absolute;
-	background-image: url('image/decoration/border_camp4.png');
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
-}
-
-#arena.decadeUI[data-border-level='five'] .player>.camp-wrap>.camp-border {
-	background-image: url('image/decoration/border_camp_long.png');
-}
-
-#arena.decadeUI[data-border-level='five'] .player>.card-count {
-	background-image: url("image/decoration/card_countX.png");
-}
-
-#arena.decadeUI[data-border-level='five_feng'] .player>.camp-wrap>.camp-border {
-	background-image: url('image/decoration/border_camp_feng.png');
-}
-
-#arena.decadeUI[data-border-level='five_feng'] .player>.card-count {
-	background-image: url("image/decoration/card_count.png");
-}
-
 /*主将名，根据部分群友需要，添加定位代码*/
 .player>.camp-wrap>.avatar-name,
 #arena>.player:not(.minskin)>.name.name {
@@ -613,7 +537,6 @@
 	border-width: 24px 5px 21px 82px;
 	border-style: solid;
 	border-color: transparent;
-	border-image-source: url('image/decoration/border_hp.png');
 	border-image-slice: 32 6 25 113 fill;
 	pointer-events: none;
 	transition-property: transform, opacity, height;
@@ -646,30 +569,6 @@
 
 .player.connect>div:not(.avatar):not(.name):not(.nameol):not(.hp):not(.room):not(.gaming):not(.identity).hp-wrap {
 	display: block !important;
-}
-
-#arena.decadeUI[data-border-level='one'] .player>.hp-wrap {
-	border-image-source: url('image/decoration/border_hp1.png');
-}
-
-#arena.decadeUI[data-border-level='two'] .player>.hp-wrap {
-	border-image-source: url('image/decoration/border_hp2.png');
-}
-
-#arena.decadeUI[data-border-level='three'] .player>.hp-wrap {
-	border-image-source: url('image/decoration/border_hp3.png');
-}
-
-#arena.decadeUI[data-border-level='four'] .player>.hp-wrap {
-	border-image-source: url('image/decoration/border_hp4.png');
-}
-
-#arena.decadeUI[data-border-level='five'] .player>.hp-wrap {
-	border-image-source: url('image/decoration/border_hp_long.png');
-}
-
-#arena.decadeUI[data-border-level='five_feng'] .player>.hp-wrap {
-	border-image-source: url('image/decoration/border_hp_feng.png');
 }
 
 /*血量图标*/
@@ -1293,7 +1192,7 @@
 	bottom: -20px;
 	width: 100%;
 	line-height: 20px;
-	font-family: "kaiti";
+	font-family: "yuanli";
 	font-size: 16px;
 	text-align: center;
 	color: #FFE5B4;
@@ -1706,4 +1605,18 @@ text-shadow: 0 0 1px black, 0 0 5px blue, 0 0 10px rgb(100, 100, 250), 0 0 20px 
 #arena:not(.observe) .player:not([data-position='0']).unseen2_show>.deputy-avatar {
 	opacity: 1 !important;
 	background-image: url('../../image/character/hidden_image.jpg') !important;
+}
+
+/* 隐藏武将前缀 */
+.player>.camp-wrap>.avatar-name::before,
+.player>.camp-wrap>.avatar-name-default::before,
+.player>.camp-wrap>.avatar2-name-default::before {
+    display: none !important;
+}
+
+/* 如果还有其他前缀显示方式，也一并隐藏 */
+.player .avatar-name [data-nature],
+.player .avatar-name-default [data-nature],
+.player .avatar2-name-default [data-nature] {
+    display: none !important;
 }

@@ -64,9 +64,9 @@
 }
 
 .skill-control>.enable>.skillitem {
-	margin: 2px 2px;
-	--w: 82.8px;
-	--h: 44.1px;
+	margin: -2px -5px;
+	--w: 99px;
+	--h: calc(var(--w) * 91 / 200);
 	width: var(--w);
 	height: var(--h);
 	line-height: 42px;
@@ -75,15 +75,18 @@
 	font-weight: 500;
 	font-size: 22px;
 	color: #f7f5e7;
+	text-shadow: 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18,
+		0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18;
 	background-image: url("./images/btnn1.png");
 	background-size: 100% 100%;
+	/*border: 1px solid rgb(3,4,5);/*调试用*/
 }
 
 .skill-control>.enable>.xiandingji {
 	/*限定技按钮*/
-	margin: 2px 2px;
-	--w: 82.8px;
-	--h: 44.1px;
+	margin: -2px -5px;
+	--w: 99px;
+	--h: calc(var(--w) * 91 / 200);
 	width: var(--w);
 	height: var(--h);
 	line-height: 42px;
@@ -91,10 +94,13 @@
 	font-family: "yuanli";
 	font-weight: 500;
 	/*å­—ç²—ç»†*/
+	text-shadow: 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18,
+		0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18;
 	color: #f7f5e7;
 	font-size: 22px;
 	background-image: url("./images/btnn4.png");
 	background-size: 100% 100%;
+	/*border: 1px solid rgb(3,4,5);/*调试用*/
 }
 
 .skill-control>.enable>.skillitem.select {
@@ -126,9 +132,9 @@
 .skillMarks {
 	max-height: 80px;
 	overflow-y: auto;
-	right: -22.5px !important;
-	top: 27px !important;
-	z-index: 66 !important;
+	left: 110px !important;
+	top: 96px !important;
+	z-index: 90 !important;
 	justify-content: center;
 	align-items: center;
 }
@@ -150,7 +156,7 @@
 }
 
 .skillMarkItem.xiandingji {
-	background-image: url("./images/new_xiandingji.png");
+	background-image: url("./images/xiandingji.png");
 	background-size: 100% 100%;
 	text-shadow: none;
 	--w: 30px;
@@ -171,7 +177,7 @@
 }
 
 .skillMarkItem.juexingji {
-	background-image: url("./images/new_juexingji.png");
+	background-image: url("./images/juexingji.png");
 	background-size: 100% 100%;
 	text-shadow: none;
 	--w: 30px;
@@ -196,18 +202,18 @@
 	background-repeat: no-repeat;
 	transform-style: preserve-3d;
 	transform: rotateY(360deg);
-	background-image: url("./images/new_mark_yang.png");
+	background-image: url("./images/mark_yang.png");
 }
 
 .skillMarkItem.zhuanhuanji.yang {
-	background-image: url("./images/new_mark_yang.png");
+	background-image: url("./images/mark_yang.png");
 	/*transform:rotate(1turn);*/
 	/*transform:  rotateY(360deg);*/
 	animation: fanzhuan 1.5s;
 }
 
 .skillMarkItem.zhuanhuanji.yin {
-	background-image: url("./images/new_mark_ying.png");
+	background-image: url("./images/mark_ying.png");
 	/*transform:rotate(1turn);*/
 	/*transform:  rotateY(360deg);*/
 	animation: fanzhuan 1.5s;
