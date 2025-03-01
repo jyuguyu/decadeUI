@@ -717,27 +717,28 @@
 /*护甲*/
 .hujia {
 	top: auto;
-	bottom: 123px;
 	/*上下*/
-	left: 123px;
+	bottom: 22px;
 	/*左右*/
-	/*这些参数可能需要自己调一下*/
+	left: 1px;
+	/*指向护甲图片放的位置*/
 	background-image: url("image/decoration/shield.png");
-	/*这个位置注意，指向你护甲图片放的位置。图案推荐使用鸽子手绘的那个，自己看一下其他的url怎么写的，图片放到对应文件夹就行。*/
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
-	width: 20px;
 	/*图片宽*/
+	width: 21px;
+	/*图片高*/
+	height: 21px;
+	/*字体*/
 	text-align: center;
 	color: white;
+	font-family: "shousha";
+	-webkit-text-stroke: 0.9px black;
 	text-shadow: 0 0 1.5px #ffded4, 0 0 1.5px #ffded4, 0 0 1.5px #ffded4, 0 0 1.5px #ffded4 !important;
-	font-size: 13.3px;
-	font-weight: 500;
-	line-height: 25.5px;
-	height: 22px;
-	pointer-events: none;
-	/*图片高*/
-	position: absolute;
+	font-size: 18px;
+	font-weight: 900;
+	/*其他*/
+	position: relative;
 	z-index: 100;
 }
 

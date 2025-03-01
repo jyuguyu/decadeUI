@@ -7637,8 +7637,7 @@ export default async function() {
 					if (mark) mark.dk = false;
 				}
 				if (mark) {
-					if (lib.config.extension_十周年UI_newDecadeStyle == "on" || lib.config
-						.extension_十周年UI_newDecadeStyle == "othersOff") {
+					if (lib.config.extension_十周年UI_newDecadeStyle == "on" || lib.config.extension_十周年UI_newDecadeStyle == "othersOff"|| lib.config.extension_十周年UI_newDecadeStyle == "onlineUI") {
 						if (mark.classList.contains("yin")) {
 							mark.classList.remove("yin");
 							mark.classList.toggle("yang");
