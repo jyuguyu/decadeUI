@@ -111,7 +111,7 @@
 }
 
 .skill-control>.enable>.xiandingji.select {
-	background-image: url("./images/btnn4.png");
+	background-image: url("./images/btnnOL2.png");
 }
 
 .skill-control>.enable>.xiandingji:not(.usable):not(.select) {
