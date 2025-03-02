@@ -80,12 +80,12 @@
 
 .xiaolianButton_new {
 	display: block;
-	--w: 87px;
+	--w: 77px;
 	--h: 45px;
 	width: var(--w);
 	height: var(--h);
 	position: absolute;
-	bottom: 12%;
+	bottom: 13%;
 	left: 0%;
 	background-image: url("./images/uibutton/jiaoliuOL.png");
 	background-size: 100% 100%;
@@ -95,12 +95,12 @@
 
 .huanfuButton_new {
 	display: block;
-	--w: 90px;
+	--w: 80px;
 	--h: 45px;
 	width: var(--w);
 	height: var(--h);
 	position: absolute;
-	bottom: 21%;
+	bottom: 23%;
 	left: 0%;
 	background-image: url("./images/uibutton/meiguiOL.png");
 	background-size: 100% 100%;

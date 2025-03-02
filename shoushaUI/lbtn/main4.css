@@ -80,7 +80,7 @@
 
 .xiaolianButton_new {
 	display: block;
-	--w: 87px;
+	--w: 77px;
 	--h: 45px;
 	width: var(--w);
 	height: var(--h);
@@ -95,7 +95,7 @@
 
 .huanfuButton_new {
 	display: block;
-	--w: 90px;
+	--w: 80px;
 	--h: 45px;
 	width: var(--w);
 	height: var(--h);

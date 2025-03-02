@@ -1449,6 +1449,36 @@ text-shadow: 0 0 1px black, 0 0 5px blue, 0 0 10px rgb(100, 100, 250), 0 0 20px 
 	z-index: 87;
 }
 
+/* 主玩家判定区位置调整 */
+#arena[data-layout='nova']>.player[data-position='0']:not(.minskin)>.judges {
+	top: -30px;
+	/* 调整到装备栏上方 */
+	left: auto;
+	right: 10%;
+	width: 100%;
+	text-align: center;
+}
+
+/* 判定区卡牌样式 */
+#arena[data-layout='nova']>.player[data-position='0']:not(.minskin)>.judges>.card {
+	position: relative;
+	display: inline-block;
+	margin: 0 2px;
+	transform-origin: center bottom;
+	transition: transform 0.3s;
+}
+
+/* 确保判定区不会被其他元素遮挡 */
+#arena[data-layout='nova']>.player[data-position='0']:not(.minskin)>.judges {
+	z-index: 4;
+}
+
+/* 调整装备区位置以适应判定区 */
+#arena[data-layout='nova']>.player[data-position='0']:not(.minskin)>.equips {
+	top: -120px;
+	/* 稍微下移装备区 */
+}
+
 /* 隐藏所有武将前缀（包括主将和副将） */
 .player>.camp-wrap>.avatar-name::before,
 .player>.camp-wrap>.avatar-name-default::before,

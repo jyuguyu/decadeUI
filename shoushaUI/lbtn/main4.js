@@ -76,7 +76,7 @@ app.import(function(lib, game, ui, get, ai, _status, app) {
 			document.body.appendChild(wenhao);
 		}
 
-		var head = ui.create.node("img");
+		var head = ui.create.node("ismg");
 		head.src = lib.assetURL + "extension/十周年UI/shoushaUI/lbtn/images/uibutton/yinying.png";
 		head.style.cssText =
 			"display: block;width: 100%;height: 30%;position: absolute;bottom: 0px;background-color: transparent;z-index:-1";
@@ -155,7 +155,7 @@ app.import(function(lib, game, ui, get, ai, _status, app) {
 		//左手整理手牌按钮位置
 		if (lib.config["extension_十周年UI_rightLayout"] == "on") {
 			head.style.cssText =
-				"display: block;--w: 88px;--h: calc(var(--w) * 81/140);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 65px);left: 30px;right:auto;background-color: transparent;z-index:2";
+				"display: block;--w: 80px;--h: calc(var(--w) * 81/120);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 65px);left: 30px;right:auto;background-color: transparent;z-index:2";
 		} else {
 			head.style.cssText =
 				"display: block;--w: 88px;--h: calc(var(--w) * 81/247);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 33px);right: calc(100% - 367.2px);background-color: transparent;z-index:2;";
