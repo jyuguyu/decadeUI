@@ -21,9 +21,9 @@
 }
 
 .player::before {
-	left: -25px;
+	left: -30px;
 	top: -13px;
-	width: 140%;
+	width: 145%;
 	height: 205px;
 	background-size: 93% 100%;
 	opacity: 0;
@@ -143,12 +143,12 @@
 /*玩家姓名阵营*/
 .player>.camp-wrap {
 	display: block;
-	left: -30px;
+	left: -35px;
 	top: -60px;
 	width: 50px;
 	height: 245px;
 	transition: none;
-	z-index: 83;
+	z-index: 3;
 }
 
 .player.connect>div:not(.avatar):not(.name):not(.nameol):not(.hp):not(.room):not(.gaming):not(.identity).camp-wrap {
@@ -222,7 +222,7 @@
 	display: block;
 	left: -1px;
 	top: 40px;
-	width: 310%;
+	width: 327%;
 	height: 85%;
 	position: absolute;
 	background-image: url("image/decoration/border_campOL5.png");
@@ -231,23 +231,15 @@
 }
 
 #arena.decadeUI[data-border-level="one"] .player>.camp-wrap>.camp-border {
-	display: block;
-	left: 5px;
-	top: 52px;
-	width: 300%;
-	height: 80%;
-	position: absolute;
 	background-image: url("image/decoration/border_campOL1.png");
-	background-size: 100% 100%;
-	background-repeat: no-repeat;
 }
 
 #arena.decadeUI[data-border-level="two"] .player>.camp-wrap>.camp-border {
 	display: block;
-	left: 5px;
-	top: 52px;
-	width: 300%;
-	height: 80%;
+	left: 15px;
+	top: 55px;
+	width: 295%;
+	height: 79%;
 	position: absolute;
 	background-image: url("image/decoration/border_campOL2.png");
 	background-size: 100% 100%;
@@ -256,10 +248,10 @@
 
 #arena.decadeUI[data-border-level="three"] .player>.camp-wrap>.camp-border {
 	display: block;
-	left: 5px;
-	top: 52px;
-	width: 300%;
-	height: 80%;
+	left: 15px;
+	top: 55px;
+	width: 295%;
+	height: 79%;
 	position: absolute;
 	background-image: url("image/decoration/border_campOL3.png");
 	background-size: 100% 100%;
@@ -270,7 +262,7 @@
 	display: block;
 	left: 5px;
 	top: 52px;
-	width: 300%;
+	width: 327%;
 	height: 80%;
 	position: absolute;
 	background-image: url("image/decoration/border_campOL4.png");
@@ -454,7 +446,7 @@
 
 /* 为主玩家位置特别设置 */
 .player[data-position='0']>.hp-wrap {
-	right: 115.45px;
+	right: 123px;
 	/* 左右位置 */
 	bottom: 10px;
 	/* 上下位置，从5px改为15px */
@@ -463,7 +455,7 @@
 /*玩家血量显示*/
 .player>.hp-wrap {
 	display: block;
-	right: 115.45px;
+	right: 123px;
 	bottom: 5px;
 	width: 12px;
 	height: 50px;
@@ -569,7 +561,6 @@
 }
 
 /*武将牌显示*/
-/*主将*/
 .player>.primary-avatar {
 	left: 2px;
 	top: auto;
@@ -595,12 +586,10 @@
 }
 
 .player>.deputy-avatar {
-	/*武将牌显示*/
-	/*副将*/
-	left: 53%;
+	left: 50%;
 	top: auto;
 	bottom: 0;
-	width: 48%;
+	width: 50%;
 	height: 100%;
 	opacity: 1;
 	background-size: cover;
@@ -834,7 +823,7 @@
 	left: auto;
 	top: 34px;
 	/*下移*/
-	right: 70px;
+	right: 80px;
 	/*左移*/
 	width: auto;
 	max-width: 80px;
@@ -1106,7 +1095,7 @@
 	position: absolute;
 	top: auto;
 	right: auto;
-	left: -15px;
+	left: -20px;
 	bottom: -3px;
 	line-height: 24px;
 	height: 22px;
