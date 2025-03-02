@@ -6,7 +6,7 @@
 	/*整体上移，建议别调*/
 	right: 165px;
 	/*技能显示右移，越小越靠右，建议别调*/
-	z-index: 1;
+	z-index: 0;
 }
 
 .skill-control div {
