@@ -3,7 +3,7 @@
 /*角色基本外观*/
 .player {
 	height: 180px;
-	width: 90px;
+	width: 120px;
 	/*border-radius: 8px;
 	box-shadow: 0px -1px 3px black, 0px 3px 8px black;
 	background-image: linear-gradient(rgb(53, 38, 32), rgb(53, 38, 32));
@@ -76,7 +76,7 @@
 	top: 0;
 	width: 100%;
 	height: 100%;
-	/*border-radius: inherit;*/
+	border-radius: inherit;
 	background: rgba(0, 0, 0, 0.65);
 	opacity: 0;
 	transition: opacity 0.3s ease-in-out;
@@ -129,16 +129,16 @@
 	left: auto;
 	right: 25px;
 }
-
 /*玩家姓名阵营*/
 .player>.camp-wrap {
 	display: block;
 	left: -35px;
 	top: -60px;
-	width: 55px;
+	width: 50px;
 	height: 245px;
 	transition: none;
-	z-index: 3;
+	z-index: 67;
+	pointer-events: none;
 }
 
 .player.connect>div:not(.avatar):not(.name):not(.nameol):not(.hp):not(.room):not(.gaming):not(.identity).camp-wrap {
@@ -211,9 +211,9 @@
 
 .player>.camp-wrap>.camp-border {
 	display: block;
-	left: 0px;
+	left: -3.5px;
 	top: 40px;
-	width: 295%;
+	width: 327%;
 	height: 85%;
 	position: absolute;
 	background-image: url("image/decoration/border_campOL5.png");
@@ -303,7 +303,7 @@
 	align-items: center;
 	align-content: center;
 	justify-content: center;
-	left: 29% !important;
+	left: 33% !important;
 	right: auto;
 	top: 190px;
 	width: 18px;
@@ -1467,40 +1467,4 @@ text-shadow: 0 0 1px black, 0 0 5px blue, 0 0 10px rgb(100, 100, 250), 0 0 20px 
 	margin: 0 2px;
 	transform-origin: center bottom;
 	transition: transform 0.3s;
-}
-
-/* 隐藏所有武将前缀（包括主将和副将） */
-.player>.camp-wrap>.avatar-name::before,
-.player>.camp-wrap>.avatar-name-default::before,
-.player>.camp-wrap>.avatar2-name-default::before,
-.player>.name.name2::before,
-.player>.camp-wrap>.avatar2-name::before {
-	display: none !important;
-}
-
-/* 隐藏所有性质标记和前缀（包括字母、符号等） */
-.player .avatar-name [data-nature],
-.player .avatar-name-default [data-nature],
-.player .avatar2-name-default [data-nature],
-.player .name.name2 [data-nature],
-.player .avatar2-name [data-nature],
-/* 特殊前缀 */
-.player [data-nature*="sp"],
-.player [data-nature*="ol"],
-.player [data-nature*="key"],
-.player [data-nature*="xin"],
-.player [data-nature*="jin"],
-.player [data-nature*="re"],
-.player [data-nature*="diy"],
-.player [data-nature*="db"],
-.player [data-nature*="shen"],
-.player [data-nature*="tw"],
-.player [data-nature*="手杀"],
-/* 符号前缀 */
-.player [data-nature*="★"],
-.player [data-nature*="☆"],
-.player [data-nature*="∑"],
-.player [data-nature*="*"],
-.player [data-nature*="+"] {
-	display: none !important;
 }

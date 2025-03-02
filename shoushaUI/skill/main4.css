@@ -1,8 +1,8 @@
 .skill-control {
     /*技能按钮*/
     max-width: 300px;
-    bottom: 10px;
-    right: 165px;
+    bottom: 0px;
+    right: 175px;
     z-index: 0;
 }
 
@@ -143,7 +143,7 @@
 }
 
 .skillMarkItem.xiandingji {
-	background-image: url("./images/xiandingji.png");
+	background-image: url("./images/xiandingjiOL.png");
 	background-size: 100% 100%;
 	text-shadow: none;
 	--w: 30px;
@@ -164,7 +164,7 @@
 }
 
 .skillMarkItem.juexingji {
-	background-image: url("./images/juexingji.png");
+	background-image: url("./images/juexingjiOL.png");
 	background-size: 100% 100%;
 	text-shadow: none;
 	--w: 30px;
@@ -189,18 +189,18 @@
 	background-repeat: no-repeat;
 	transform-style: preserve-3d;
 	transform: rotateY(360deg);
-	background-image: url("./images/mark_yang.png");
+	background-image: url("./images/mark_yangOL.png");
 }
 
 .skillMarkItem.zhuanhuanji.yang {
-	background-image: url("./images/mark_yang.png");
+	background-image: url("./images/mark_yangOL.png");
 	/*transform:rotate(1turn);*/
 	/*transform:  rotateY(360deg);*/
 	animation: fanzhuan 1.5s;
 }
 
 .skillMarkItem.zhuanhuanji.yin {
-	background-image: url("./images/mark_ying.png");
+	background-image: url("./images/mark_yingOL.png");
 	/*transform:rotate(1turn);*/
 	/*transform:  rotateY(360deg);*/
 	animation: fanzhuan 1.5s;
@@ -221,7 +221,7 @@
 }
 
 .skillMarkItem.duty {
-	background-image: url("./images/mark_duty.png");
+	background-image: url("./images/mark_dutyOL.png");
 	background-size: contain;
 	background-repeat: no-repeat;
 }
