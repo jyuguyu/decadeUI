@@ -3,11 +3,11 @@
 /*角色基本外观*/
 .player {
 	height: 180px;
-	width: 120px;
-	border-radius: 8px;
+	width: 90px;
+	/*border-radius: 8px;
 	box-shadow: 0px -1px 3px black, 0px 3px 8px black;
 	background-image: linear-gradient(rgb(53, 38, 32), rgb(53, 38, 32));
-	transition-property: transform, opacity, left, top, right, bottom;
+	transition-property: transform, opacity, left, top, right, bottom;*/
 }
 
 .dui-mobile.player {
@@ -76,7 +76,7 @@
 	top: 0;
 	width: 100%;
 	height: 100%;
-	border-radius: inherit;
+	/*border-radius: inherit;*/
 	background: rgba(0, 0, 0, 0.65);
 	opacity: 0;
 	transition: opacity 0.3s ease-in-out;
@@ -135,7 +135,7 @@
 	display: block;
 	left: -35px;
 	top: -60px;
-	width: 50px;
+	width: 55px;
 	height: 245px;
 	transition: none;
 	z-index: 3;
@@ -156,8 +156,9 @@
 
 /*势力条*/
 .player>.camp-wrap>.camp-back {
-	background: linear-gradient(to bottom, rgb(155, 129, 108), rgb(73, 71, 58));
-	visibility: hidden;
+	background-image: url('image/decoration/border_shen.png');
+	background-size: 100% 100%;
+	visibility: visible;
 }
 
 .player.unseen>.camp-wrap>.camp-back {
@@ -210,9 +211,9 @@
 
 .player>.camp-wrap>.camp-border {
 	display: block;
-	left: -1px;
+	left: 0px;
 	top: 40px;
-	width: 327%;
+	width: 295%;
 	height: 85%;
 	position: absolute;
 	background-image: url("image/decoration/border_campOL5.png");
@@ -302,7 +303,7 @@
 	align-items: center;
 	align-content: center;
 	justify-content: center;
-	left: 33% !important;
+	left: 29% !important;
 	right: auto;
 	top: 190px;
 	width: 18px;

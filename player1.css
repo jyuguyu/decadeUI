@@ -103,15 +103,16 @@
 	transition: opacity 0.3s linear;
 }
 
-#arena
-/*.dui-mobile>*/
-:not(.fewplayer)>.player:not(.minskin),
-#arena
+.player.un-selectable:not(.selectable)>.mask {
+	opacity: 1;
+	transition: opacity 0.3s linear;
+}
 
-/*.dui-mobile>*/
-:not(.fewplayer):not(*[data-player_height=''])>.player:not(.minskin) {
+#arena:not(.fewplayer)>.player:not(.minskin),
+#arena:not(.fewplayer):not(*[data-player_height=""])>.player:not(.minskin) {
 	height: 180px !important;
 }
+
 
 /*
 #arena:not(.fewplayer)>.player:not(.minskin),

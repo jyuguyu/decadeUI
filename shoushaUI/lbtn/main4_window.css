@@ -224,7 +224,7 @@
 	font-weight: 400;
 	font-family: "yuanli";
 	text-shadow: #b4a993 0.2px 0.2px 0.2px, #b4a993 0.2px -0.2px 0.2px, #b4a993 -0.2px 0.2px 0.2px, #b4a993 -0.2px -0.2px 0.2px;
-	z-index: 123;
+	z-index: 3;
 }
 
 .cardRoundNumber>.cardPileNumber {

@@ -1,33 +1,29 @@
 .skill-control {
     /*技能按钮*/
     max-width: 300px;
-    bottom: 0px;
+    bottom: 10px;
     right: 165px;
     z-index: 0;
 }
 
 .skill-control div {
-    position: relative;
+	position: relative;
 }
-
 .skill-control .skillitem {
-    float: right;
-    white-space: nowrap;
-    color: #f5d78e;
-    text-shadow: #f5d78e 0 0 1px, black 0 0 2px, black 0 0 2px, black 0 0 2px, black 0 0 2px, black 0 0 2px, black 0 0 2px;
-    font-size: 18px;
+	float: right;
+	white-space: nowrap;
+	color: #f5d78e;
+	font-size: 18px;
 }
-
-.skill-control>div {
+.skill-control > div {
 	display: flex;
-	flex-wrap: wrap-reverse;
-	flex-direction: row-reverse;
+	flex-wrap: wrap;
+	flex-direction: row;
 }
-
-.skill-control>div::after {
-    content: "";
-    display: block;
-    clear: both;
+.skill-control > div::after {
+	content: "";
+	display: block;
+	clear: both;
 }
 
 .skill-control .trigger,
