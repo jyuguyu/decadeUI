@@ -8,6 +8,11 @@
 	box-shadow: 0px -1px 3px black, 0px 3px 8px black;
 	background-image: linear-gradient(rgb(53, 38, 32), rgb(53, 38, 32));
 	transition-property: transform, opacity, left, top, right, bottom;*/
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
 
 .dui-mobile.player {
@@ -129,6 +134,7 @@
 	left: auto;
 	right: 25px;
 }
+
 /*玩家姓名阵营*/
 .player>.camp-wrap {
 	display: block;
@@ -156,58 +162,142 @@
 
 /*势力条*/
 .player>.camp-wrap>.camp-back {
-	background-image: url('image/decoration/border_shen.png');
+	position: relative;
+	background: rgb(154, 148, 122);
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 	background-size: 100% 100%;
-	visibility: visible;
+	border-radius: 10px 0 0 10px visibility: visible;
 }
 
-.player.unseen>.camp-wrap>.camp-back {
-	background-image: url('image/decoration/border_weizhi.png');
+.player>.camp-wrap>.camp-back::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-image: url('image/decoration/border_diwen.png');
 	background-size: 100% 100%;
-	visibility: visible;
+	opacity: 0.3;
+	/* 调整背景图片的透明度 */
+	z-index: 1;
+	/* 确保图片在背景颜色上方 */
 }
 
-.player>.camp-wrap[data-camp='wei']>.camp-back {
-	background-image: url('image/decoration/border_wei.png');
-	background-size: 100% 100%;
-	visibility: visible;
+.player>.camp-wrap[data-camp="wei"]>.camp-back {
+	background: rgb(33, 79, 117);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
 
-.player>.camp-wrap[data-camp='shu']>.camp-back {
-	background-image: url('image/decoration/border_shu.png');
-	background-size: 100% 100%;
-	visibility: visible;
+.player>.camp-wrap[data-camp="shu"]>.camp-back {
+	background: rgb(124, 21, 28);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
 
-.player>.camp-wrap[data-camp='wu']>.camp-back {
-	background-image: url('image/decoration/border_wu.png');
-	background-size: 100% 100%;
-	visibility: visible;
+.player>.camp-wrap[data-camp="wu"]>.camp-back {
+	background: rgb(24, 94, 24);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
 
-.player>.camp-wrap[data-camp='qun']>.camp-back {
-	background-image: url('image/decoration/border_qun.png');
-	background-size: 100% 100%;
-	visibility: visible;
+.player>.camp-wrap[data-camp="qun"]>.camp-back {
+	background: rgb(129, 124, 102);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
 
-.player>.camp-wrap[data-camp='shen']>.camp-back {
-	background-image: url('image/decoration/border_shen.png');
-	background-size: 100% 100%;
-	visibility: visible;
+.player>.camp-wrap[data-camp="shen"]>.camp-back {
+	background: rgb(97, 87, 15);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
 
-.player>.camp-wrap[data-camp='shen2']>.camp-back {
-	background-image: url('image/decoration/border_shen.png');
-	background-size: 100% 100%;
-	visibility: visible;
+.player>.camp-wrap[data-camp="shen2"]>.camp-back {
+	background: rgb(112, 52, 126);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
 
-.player>.camp-wrap[data-camp='ye']>.camp-back {
-	background-image: url('image/decoration/border_jin.png');
-	background-size: 100% 100%;
-	visibility: visible;
+.player>.camp-wrap[data-camp="ye"]>.camp-back {
+	background: rgb(112, 52, 126);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
 }
+
+.player>.camp-wrap[data-camp="key"]>.camp-back {
+	background: rgb(147, 132, 183);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
+}
+
+.player>.camp-wrap[data-camp="western"]>.camp-back {
+	background: rgb(93, 44, 105);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
+}
+
+.player>.camp-wrap[data-camp="jin"]>.camp-back {
+	background: rgb(112, 52, 126);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
+}
+
+.player>.camp-wrap[data-camp="daqin"]>.camp-back {
+	background: rgb(100, 100, 100);
+	/* 只使用第一个颜色值 */
+	box-shadow:
+		inset 0 0 10px rgba(0, 0, 0, 0.8),
+		/* 内部发光 */
+		0 0 15px rgba(0, 0, 0, 0.6);
+	/* 外部阴影 */
+}
+
 
 .player>.camp-wrap>.camp-border {
 	display: block;
@@ -259,40 +349,6 @@
 	background-image: url("image/decoration/border_campOL4.png");
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
-}
-
-.player>.camp-wrap[data-camp='key']>.camp-back {
-	background: linear-gradient(to bottom, rgb(147, 132, 183), rgb(130, 120, 160), rgb(120, 115, 154));
-}
-
-.player>.camp-wrap[data-camp='western']>.camp-back {
-	background: linear-gradient(to bottom, rgb(93, 44, 105), rgb(54, 18, 58));
-}
-
-.player>.camp-wrap[data-camp='jin']>.camp-back {
-	background-image: url('image/decoration/border_jin.png');
-	background-size: 100% 100%;
-	visibility: visible;
-}
-
-.player>.camp-wrap[data-camp='han']>.camp-back {
-	background: linear-gradient(to bottom, rgb(112, 52, 126), rgb(52, 18, 55));
-}
-
-.player>.camp-wrap[data-camp='daqin']>.camp-back {
-	background: linear-gradient(to bottom, rgb(100, 100, 100), rgb(0, 0, 0));
-}
-
-.player>.camp-wrap[data-camp='ming']>.camp-back {
-	background: linear-gradient(to bottom, rgb(153, 28, 34), rgb(57, 12, 17));
-}
-
-.player>.camp-wrap[data-camp='yao']>.camp-back {
-	background: linear-gradient(to bottom, rgb(144, 0, 0), rgb(17, 73, 132));
-}
-
-.player>.camp-wrap[data-camp='xin']>.camp-back {
-	background: linear-gradient(to bottom, rgb(112, 52, 126), rgb(52, 18, 55));
 }
 
 
