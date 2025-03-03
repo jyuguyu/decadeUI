@@ -12237,7 +12237,7 @@ export default async function() {
 			pack.intro = (pack => {
 				let log = [
 					`魔改十周年UI ${pack.version}`,
-					"最低适配：v1.10.18",
+					"最低适配：v1.10.18 暂定",
 					"修复手杀UI自动整理，UI显示问题",
 					"添加私货meihua.js，神选势力交互音效等",
 					"新增OLUI移动端，感谢群友提供的素材",
