@@ -1,29 +1,29 @@
 .skill-control {
 	/*技能按钮*/
 	max-width: 300px;
-	/*同列技能可容纳最大宽度，建议别调*/
 	bottom: 0px;
-	/*整体上移，建议别调*/
-	right: 175px;
-	/*技能显示右移，越小越靠右，建议别调*/
+	right: 170px;
 	z-index: 0;
 }
 
 .skill-control div {
 	position: relative;
 }
+
 .skill-control .skillitem {
 	float: right;
 	white-space: nowrap;
 	color: #f5d78e;
 	font-size: 18px;
 }
-.skill-control > div {
+
+.skill-control>div {
 	display: flex;
-	flex-wrap: wrap;
-	flex-direction: row;
+	flex-wrap: wrap-reverse;
+	flex-direction: row-reverse;
 }
-.skill-control > div::after {
+
+.skill-control>div::after {
 	content: "";
 	display: block;
 	clear: both;
@@ -31,12 +31,14 @@
 
 .skill-control .trigger,
 .skill-control .enable {
-    height: auto;
-    width: auto;
-    display: flex;
-    flex-direction: row-reverse; /* 从右往左排列 */
-    align-items: flex-start;
-    margin-left: 5px; /* 技能间距 */
+	height: auto;
+	width: auto;
+	display: flex;
+	flex-direction: row-reverse;
+	/* 从右往左排列 */
+	align-items: flex-start;
+	margin-left: 5px;
+	/* 技能间距 */
 }
 
 .skill-control>.trigger>.skillitem {

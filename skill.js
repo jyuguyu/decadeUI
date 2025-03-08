@@ -3,7 +3,9 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 	decadeUI.animateSkill = {
 		//涉及game.start自定义brawl模式无法播放开局动画，故搬运到此处做成技能播放
 		mx_start: {
-			trigger: { global: "gameDrawAfter" },
+			trigger: {
+				global: "gameDrawAfter",
+			},
 			filter(event, player) {
 				return lib.config.extension_十周年UI_gameAnimationEffect;
 			},
@@ -12,7 +14,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			firstDo: true,
 			content() {
 				game.removeGlobalSkill("mx_start");
-				if (lib.config.extension_十周年UI_newDecadeStyle == "on") {
+				if (lib.config.extension_十周年UI_newDecadeStyle != "othersOn" || lib.config.extension_十周年UI_newDecadeStyle != "off") {
 					game.playAudio("../extension", decadeUI.extensionName, "audio/game_start.mp3");
 					var animation = decadeUI.animation;
 					var bounds = animation.getSpineBounds("effect_youxikaishi");
@@ -103,7 +105,9 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 		},
 		//属性赋予
 		decadeUI_usecardBegin: {
-			trigger: { global: "useCardBegin" },
+			trigger: {
+				global: "useCardBegin",
+			},
 			forced: true,
 			popup: false,
 			priority: -100,
@@ -117,7 +121,9 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 		},
 		//击杀特效
 		decadeUI_dieKillEffect: {
-			trigger: { source: ["dieBegin"] },
+			trigger: {
+				source: ["dieBegin"],
+			},
 			forced: true,
 			popup: false,
 			priority: -100,
@@ -138,7 +144,9 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 		},
 		//游戏开始分发手牌停顿
 		decadeUI_gameDrawDelay: {
-			trigger: { global: "gameDrawBegin" },
+			trigger: {
+				global: "gameDrawBegin",
+			},
 			filter() {
 				return !(_status.brawl && _status.brawl.noGameDraw);
 			},
@@ -153,7 +161,9 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			},
 		},
 		decadeUI_gameDrawDelayx: {
-			trigger: { global: "gameDrawEnd" },
+			trigger: {
+				global: "gameDrawEnd",
+			},
 			filter() {
 				return !(_status.brawl && _status.brawl.noGameDraw);
 			},
@@ -169,9 +179,13 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 		},
 	};
 	decadeUI.skill = {
-		ghujia: { mark: false },
+		ghujia: {
+			mark: false,
+		},
 		_usecard: {
-			trigger: { global: "useCardAfter" },
+			trigger: {
+				global: "useCardAfter",
+			},
 			forced: true,
 			popup: false,
 			silent: true,
@@ -422,7 +436,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				} else if (!event.isMine()) {
 					event.switchToAuto();
 				}
-				"step 1";
+				("step 1");
 				if (event.result && event.result.bool) {
 					game.cardsDiscard(event.cards1);
 					var cards2 = event.cards2;
@@ -449,7 +463,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					event.num++;
 				if (!player.isMinHandcard()) event.num++;
 				if (!player.getStat("damage")) event.num++;
-				"step 1";
+				("step 1");
 				if (event.num == 0) {
 					player.gain(event.cards, "draw");
 					event.finish();
@@ -533,7 +547,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				} else if (!event.isMine()) {
 					event.switchToAuto();
 				}
-				"step 2";
+				("step 2");
 				event.cards = event.cards2;
 				if (event.result && event.result.bool) {
 					var cards = event.cards1;
@@ -542,7 +556,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						ui.cardPile.insertBefore(cards[i], first);
 					}
 				}
-				"step 3";
+				("step 3");
 				game.updateRoundNumber();
 				if (event.cards.length) {
 					player.gain(event.cards, "draw");
@@ -554,7 +568,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						return -get.attitude(_status.event.player, target);
 					};
 				}
-				"step 4";
+				("step 4");
 				player.line(result.targets[0], "fire");
 				player.loseHp();
 				result.targets[0].loseHp();
@@ -761,9 +775,12 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				} else {
 					switchToAuto();
 				}
-				"step 1";
+				("step 1");
 				var result = event.result || result;
-				if (!result) result = { bool: false };
+				if (!result)
+					result = {
+						bool: false,
+					};
 				event._result = result;
 				game.broadcastAll(
 					function (id, result, player) {
@@ -780,7 +797,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					player
 				);
 				game.delay(2.5);
-				"step 2";
+				("step 2");
 				game.broadcastAll("closeDialog", event.videoId);
 				if (result.bool) {
 					player.logSkill("pcaudio_" + event.cardname);
@@ -854,7 +871,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					event.switchToAuto();
 				}
 
-				"step 1";
+				("step 1");
 				var first = ui.cardPile.firstChild;
 				var cards = event.cards2;
 				for (var i = 0; i < cards.length; i++) {
@@ -918,7 +935,12 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					mark.style.setProperty("background-size", "cover", "important");
 					mark.text.style.setProperty("font-size", "0px", "important");
 				}
-				player.changeSkin({ characterName: "liuxiecaojie" }, "liuxiecaojie" + (player.storage[skill] ? "_shadow" : ""));
+				player.changeSkin(
+					{
+						characterName: "liuxiecaojie",
+					},
+					"liuxiecaojie" + (player.storage[skill] ? "_shadow" : "")
+				);
 			},
 		},
 		olyicheng: {
@@ -941,7 +963,18 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 								cards,
 								list => {
 									const sum2 = list.reduce((num, card) => num + get.number(card, false), 0);
-									return "牌堆顶（现" + sum2 + { 0: "=", "-1": "<", 1: ">" }[get.sgn(sum2 - sum).toString()] + "原" + sum + "）";
+									return (
+										"牌堆顶（现" +
+										sum2 +
+										{
+											0: "=",
+											"-1": "<",
+											1: ">",
+										}[get.sgn(sum2 - sum).toString()] +
+										"原" +
+										sum +
+										"）"
+									);
 								},
 							],
 							["手牌", player.getCards("h")],
@@ -1060,7 +1093,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						return 7 - get.value(card);
 					return -1;
 				};
-				"step 1";
+				("step 1");
 				if (result.bool) {
 					if (result.cards.length == cards.length) player.draw();
 					else player.draw(cards.length);
@@ -1069,7 +1102,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						if (get.position(event.cardsx[i]) != "d") event.cardsx.splice(i--, 1);
 					}
 				} else event.finish();
-				"step 2";
+				("step 2");
 				if (event.cardsx.length) {
 					var cards = event.cardsx;
 					var dialog = decadeUI.content.chooseGuanXing(player, cards, cards.length);
@@ -1212,7 +1245,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				} else if (!event.isMine()) {
 					event.switchToAuto();
 				}
-				"step 1";
+				("step 1");
 				player.popup(get.cnNumber(event.num1) + "上" + get.cnNumber(event.num2) + "下");
 				game.log(player, "将" + get.cnNumber(event.num1) + "张牌置于牌堆顶，" + get.cnNumber(event.num2) + "张牌置于牌堆底");
 				game.updateRoundNumber();
@@ -1248,7 +1281,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					})
 					.sortBySeat(_status.currentPhase);
 				if (!event.targets.length) event.goto(4);
-				"step 1";
+				("step 1");
 				event.target = event.targets.shift();
 				event.target.chooseButton([event.prompt, [["reguhuo_ally", "reguhuo_betray"], "vcard"]], true).set("ai", function (button) {
 					var player = _status.event.player;
@@ -1276,7 +1309,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					}
 					return Math.random();
 				});
-				"step 2";
+				("step 2");
 				if (result.links[0][2] == "reguhuo_betray") {
 					target.addExpose(0.2);
 					game.log(target, "#y质疑");
@@ -1286,13 +1319,13 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					game.log(target, "#g不质疑");
 					target.popup("不质疑", "wood");
 				}
-				"step 3";
+				("step 3");
 				game.delay();
 				if (!event.betrayer && targets.length) event.goto(1);
-				"step 4";
+				("step 4");
 				player.showCards(trigger.cards);
 				if (!event.betrayer) event.finish();
-				"step 5";
+				("step 5");
 				if (event.fake) {
 					event.betrayer.popup("质疑正确", "wood");
 					game.log(player, "声明的", trigger.card, "作废了");
@@ -1303,7 +1336,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					event.betrayer.popup("质疑错误", "fire");
 					event.betrayer.addSkillLog("chanyuan");
 				}
-				"step 6";
+				("step 6");
 				game.delayx();
 			},
 		},
@@ -1339,7 +1372,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				event.prompt = get.translation(player) + "声明" + (trigger.targets && trigger.targets.length ? "对" + get.translation(trigger.targets) : "") + "使用" + (get.translation(trigger.card.nature) || "") + get.translation(trigger.card.name) + "，是否质疑？";
 				event.targets = game.filterPlayer(i => i != player && i.hp > 0).sortBySeat(_status.currentPhase);
 				if (!event.targets.length) event.goto(4);
-				"step 1";
+				("step 1");
 				event.target = event.targets.shift();
 				event.target.chooseButton([event.prompt, [["reguhuo_ally", "reguhuo_betray"], "vcard"]], true).set("ai", function (button) {
 					var player = _status.event.player;
@@ -1353,7 +1386,18 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					};
 					var ally = button.link[2] == "reguhuo_ally";
 					if (ally && (player.hp <= 1 || get.attitude(player, evt.player) >= 0)) return 1.1;
-					if (!ally && get.effect(player, { name: "losehp" }, player, player) >= 0) return 10;
+					if (
+						!ally &&
+						get.effect(
+							player,
+							{
+								name: "losehp",
+							},
+							player,
+							player
+						) >= 0
+					)
+						return 10;
 					if (!ally && get.attitude(player, evt.player) < 0) {
 						if (evtx.name == "useCard") {
 							var eff = 0;
@@ -1371,7 +1415,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					}
 					return Math.random();
 				});
-				"step 2";
+				("step 2");
 				if (result.links[0][2] == "reguhuo_betray") {
 					target.addExpose(0.2);
 					game.log(target, "#y质疑");
@@ -1381,13 +1425,13 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					game.log(target, "#g不质疑");
 					target.popup("不质疑", "wood");
 				}
-				"step 3";
+				("step 3");
 				game.delay();
 				if (targets.length) event.goto(1);
-				"step 4";
+				("step 4");
 				player.showCards(trigger.cards);
 				if (!event.betrayers.length) event.finish();
-				"step 5";
+				("step 5");
 				if (event.fake) {
 					for (var target of event.betrayers) {
 						target.popup("质疑正确", "wood");
@@ -1403,14 +1447,14 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						event.goon = false;
 					}
 				}
-				"step 6";
+				("step 6");
 				if (!event.goon) {
 					game.log(player, "声明的", trigger.card, "作废了");
 					trigger.cancel();
 					trigger.getParent().goto(0);
 					trigger.line = false;
 				}
-				"step 7";
+				("step 7");
 				game.delayx();
 			},
 		},
@@ -1428,27 +1472,47 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 							num = 1;
 						if (get.attitude(player, target) > 0) num = 3;
 						else if (!target.countCards("he") || !target.canUse("sha", player)) {
-							if (target.hp + target.countCards("hs", { name: ["tao", "jiu"] }) <= 1) num = 2;
+							if (
+								target.hp +
+									target.countCards("hs", {
+										name: ["tao", "jiu"],
+									}) <=
+								1
+							)
+								num = 2;
 							else num = 1.2;
 						}
-						return get.effect(target, { name: "guohe" }, player, player) * num * (player.hp <= 1 && get.attitude(player, target) <= 0 ? 0 : 1);
+						return (
+							get.effect(
+								target,
+								{
+									name: "guohe",
+								},
+								player,
+								player
+							) *
+							num *
+							(player.hp <= 1 && get.attitude(player, target) <= 0 ? 0 : 1)
+						);
 					})
 					.setHiddenSkill("twtanfeng");
-				"step 1";
+				("step 1");
 				if (result.bool) {
 					var target = result.targets[0];
 					event.target = target;
 					player.logSkill("twtanfeng", target);
 					player.discardPlayerCard(target, "hej", true);
 				} else event.finish();
-				"step 2";
+				("step 2");
 				var next = target.chooseToUse();
 				next.set("openskilldialog", "###探锋：选择一张牌当作【杀】对" + get.translation(player) + "使用###或点击“取消”，受到其造成的1点火焰伤害，并令其跳过本回合的一个阶段（准备阶段和结束阶段除外）");
 				next.set("norestore", true);
 				next.set("_backupevent", "twtanfeng_backup");
 				next.set("custom", {
 					add: {},
-					replace: { window() {} },
+					replace: {
+						window() {},
+					},
 				});
 				next.backup("twtanfeng_backup");
 				next.set("targetRequired", true);
@@ -1459,12 +1523,12 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				});
 				next.set("sourcex", player);
 				next.set("addCount", false);
-				"step 3";
+				("step 3");
 				if (!result.bool) {
 					player.line(target, "fire");
 					target.damage(1, "fire");
 				} else event.finish();
-				"step 4";
+				("step 4");
 				if (!target.isIn()) {
 					event.finish();
 					return;
@@ -1504,7 +1568,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 							return list2.randomGet();
 						})()
 					);
-				"step 5";
+				("step 5");
 				for (var i in event.map) {
 					if (event.map[i] == result.control) player.skip(i);
 				}
@@ -1514,13 +1578,25 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			},
 			subSkill: {
 				backup: {
-					viewAs: { name: "sha" },
+					viewAs: {
+						name: "sha",
+					},
 					filterCard: true,
 					position: "hes",
 					check(card) {
 						var player = _status.event.player,
 							target = _status.event.getParent().player;
-						var eff = get.effect(target, get.autoViewAs({ name: "sha" }, [card]), player, player);
+						var eff = get.effect(
+							target,
+							get.autoViewAs(
+								{
+									name: "sha",
+								},
+								[card]
+							),
+							player,
+							player
+						);
 						var eff2 = get.damageEffect(player, target, player, "fire");
 						if (eff < 0 || eff2 > 0 || eff2 > eff || get.tag(card, "recover")) return 0;
 						return (player.hp == 1 ? 10 : 6) - get.value(card);
@@ -1567,7 +1643,8 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			game.addGlobalSkill(key);
 		}
 		for (var key in decadeUI.skill) {
-			/*if (lib.skill[key]) */ lib.skill[key] = decadeUI.skill[key];
+			/*if (lib.skill[key]) */
+			lib.skill[key] = decadeUI.skill[key];
 		}
 		for (var key in decadeUI.inheritSkill) {
 			if (lib.skill[key]) {
