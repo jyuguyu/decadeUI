@@ -1164,6 +1164,33 @@
 	z-index: -1;
 }
 
+/* 只隐藏主玩家的手牌数字显示 */
+.player[data-position="0"]>.card-count {
+	position: absolute;
+	bottom: 5px;
+	left: -12px;
+	height: 28px;
+	width: 28px;
+	background: url("image/decoration/new_card_count5.png");
+	background-repeat: no-repeat;
+	background-size: 100% 100%;
+	background-position: 0 -1px;
+	border: none;
+	border-radius: 0px;
+	z-index: 89;
+	transition: transform, opacity;
+	visibility: visible !important;
+	/* 隐藏数字 */
+	color: transparent;
+	font-size: 0;
+}
+
+/* 隐藏主玩家手牌数字的伪元素 */
+.player[data-position="0"]>.card-count::before,
+.player[data-position="0"]>.card-count::after {
+	display: none;
+}
+
 /*玩家身份标记*/
 .player>.identity,
 #arena>.player:not(.minskin)>.identity {

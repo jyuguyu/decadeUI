@@ -196,9 +196,8 @@ export default async function () {
 								},
 							},
 							card: {
-								$init(card) {
+								$init: function (card) {
 									base.lib.element.card.$init.apply(this, arguments);
-
 									this.node.range.innerHTML = "";
 									var tags = [];
 									if (Array.isArray(card[4])) {
@@ -227,13 +226,28 @@ export default async function () {
 											this.node.range.innerHTML += tagstr;
 										}
 									}
-
 									const verticalName = this.$vertname;
 									this.$name.innerHTML = verticalName.innerHTML;
-									let cardNumber = this.number;
-									this.$suitnum.$num.innerHTML = (cardNumber !== 0 ? get.strNumber(cardNumber) : false) || cardNumber || "";
+									let cardNumber = this.number || "";
+									const parsedCardNumber = parseInt(cardNumber);
+									if (parsedCardNumber == cardNumber) cardNumber = parsedCardNumber;
+									switch (cardNumber) {
+										case 1:
+											this.$suitnum.$num.innerHTML = "A";
+											break;
+										case 11:
+											this.$suitnum.$num.innerHTML = "J";
+											break;
+										case 12:
+											this.$suitnum.$num.innerHTML = "Q";
+											break;
+										case 13:
+											this.$suitnum.$num.innerHTML = "K";
+											break;
+										default:
+											this.$suitnum.$num.innerHTML = (cardNumber !== 0 ? get.strNumber(cardNumber) : false) || cardNumber || "";
+									}
 									this.$suitnum.$suit.innerHTML = get.translation((this.dataset.suit = this.suit));
-
 									const equip = this.$equip;
 									const innerHTML = equip.innerHTML;
 									equip.$suitnum.innerHTML = innerHTML.slice(0, innerHTML.indexOf(" "));
@@ -242,41 +256,28 @@ export default async function () {
 									const background = node.background;
 									node.judgeMark.node.judge.innerHTML = background.innerHTML;
 									const classList = background.classList;
-
 									if (classList.contains("tight")) classList.remove("tight");
-
 									const cardStyle = this.style;
-
 									if (cardStyle.color) cardStyle.removeProperty("color");
-
 									if (cardStyle.textShadow) cardStyle.removeProperty("text-shadow");
-
 									const info = node.info;
 									const infoStyle = info.style;
-
 									if (infoStyle.opacity) infoStyle.removeProperty("opacity");
-
 									const verticalNameStyle = verticalName.style;
-
 									if (verticalNameStyle.opacity) verticalNameStyle.removeProperty("opacity");
-
 									if (info.childElementCount)
 										while (info.firstChild) {
 											info.removeChild(info.lastChild);
 										}
-
 									if (equip.childElementCount)
 										while (equip.firstChild) {
 											equip.removeChild(equip.lastChild);
 										}
-
 									var imgFormat = decadeUI.config.cardPrettify;
 									if (imgFormat != "off") {
 										let filename = card[2];
 										this.classList.add("decade-card");
 										if (!this.classList.contains("infohidden")) {
-											//不同属性的【杀】的图片素材
-											//仅针对单一属性【杀】
 											if (Array.isArray(card) && card[2] == "sha" && card[3] && !Array.isArray(card[3])) {
 												filename += "_";
 												filename += get.natureList(card[3]).sort(lib.sort.nature).join("_");
@@ -299,7 +300,6 @@ export default async function () {
 														rawUrl: undefined,
 													};
 												}
-
 												if (asset.loaded !== false) {
 													if (asset.loaded == undefined) {
 														var image = new Image();
@@ -307,7 +307,6 @@ export default async function () {
 															asset.loaded = true;
 															image.onload = undefined;
 														};
-
 														var card = this;
 														image.onerror = function () {
 															asset.loaded = false;
@@ -315,13 +314,11 @@ export default async function () {
 															card.style.background = asset.rawUrl;
 															card.classList.remove("decade-card");
 														};
-
 														asset.url = url;
 														asset.rawUrl = this.style.background || this.style.backgroundImage;
 														asset.image = image;
 														image.src = url;
 													}
-
 													this.style.background = 'url("' + url + '")';
 												} else {
 													this.classList.remove("decade-card");
@@ -331,9 +328,53 @@ export default async function () {
 									} else {
 										this.classList.remove("decade-card");
 									}
+									this.$equip.innerHTML = "";
+									var cardName = this.getAttribute("data-card-name");
+									if (!ele) var ele = this.getElementsByClassName("name2");
+									if (!(ele.length > 1)) {
+										var e = ele[0].children;
+										var subype = this.getAttribute("data-card-subype");
+										var cardName = this.getAttribute("data-card-name");
+										if (cardName.indexOf("feichu_") != -1) {
+											if (lib.config.extension_十周年UI_newDecadeStyle == "on") {
+												if (!e[0]) {
+													var newele = document.createElement("img");
+													newele.setAttribute("src", decadeUIPath + "/image/ass/decade/" + cardName + ".png");
+													newele.style.opacity = "0.83"; //图标透明度
+													newele.style.width = "120%";
+													newele.style.borderRadius = "5px";
+													newele.style.height = "112%";
+												}
+												ele[0].appendChild(newele);
+											} else {
+												if (!e[0]) {
+													var newele = document.createElement("img");
+													newele.setAttribute("src", decadeUIPath + "/image/ass/feichuma.png");
+													if (subype != "equip3" && subype != "equip4") {
+														newele.style.cssText = `
+														zoom:1.7;
+														width:30px;
+														height:10px;
+														position:relative;
+														left:10px;
+														`;
+													} else {
+														newele.style.cssText = `
+														zoom:1.7;
+														width:30px;
+														height:10px;
+														position:relative;
+														left:-4px;
+														`;
+													}
+												}
+												ele[0].appendChild(newele);
+											}
+										}
+									}
 									return this;
 								},
-								updateTransform(bool, delay) {
+								updateTransform: function (bool, delay) {
 									if (delay) {
 										var that = this;
 										setTimeout(function () {
@@ -354,13 +395,13 @@ export default async function () {
 									if (!player) return;
 									var arena = dui.boundsCaches.arena;
 									if (!arena.updated) arena.update();
-
+							
 									player.checkBoundsCache();
 									this.fixed = true;
 									var x = Math.round((player.cacheWidth - arena.cardWidth) / 2 + player.cacheLeft);
 									var y = Math.round((player.cacheHeight - arena.cardHeight) / 2 + player.cacheTop);
 									var scale = arena.cardScale;
-
+							
 									this.tx = x;
 									this.ty = y;
 									this.scaled = true;
