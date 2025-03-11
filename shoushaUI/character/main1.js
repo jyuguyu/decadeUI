@@ -55,20 +55,45 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					}
 				});
 				var dialog = ui.create.div(".character-dialog.popped", container);
-				var xinxi = ui.create.div(".xinxi", dialog);
-				var rightPane = ui.create.div(".right", dialog);
+        var blackBg1=ui.create.div(".blackBg.one", dialog);
+        var blackBg2=ui.create.div(".blackBg.two", dialog);
+        var basicInfo=ui.create.div(".basicInfo", blackBg1);
+        //官阶
+        var officalMap={
+          offical_icon_1:'士兵',
+          offical_icon_2:'十夫长',
+          offical_icon_3:'百夫长',
+          offical_icon_4:'千夫长',
+          offical_icon_5:'校尉',
+          offical_icon_6:'先锋',
+          offical_icon_7:'中军将军',
+          offical_icon_8:'领军将军',
+          offical_icon_9:'骠骑将军',
+          offical_icon_10:'大将军',
+          offical_icon_11:'大元帅',
+        }
+        var officalbg=ui.create.div(".offical-bg", blackBg1);
+        var officalIcon=ui.create.div(".offical-icon", officalbg);
+        var randomOffical=Object.keys(officalMap).randomGet();
+        officalIcon.setBackgroundImage(`extension/十周年UI/shoushaUI/character/images/offical_icon/${randomOffical}.png`);
+        var officalText=ui.create.div(".offical-text",officalMap[randomOffical], officalbg);
 
-				var xing = ui.create.div(".xing", dialog);
-				var biankuangname = ui.create.div(".biankuangname", dialog);
-				var mingcheng = ui.create.div(".mingcheng", dialog);
+        var fightbg=ui.create.div(".fight-bg", blackBg1);
 
-				var dengji = ui.create.div(".dengji", dialog);
+				// var xinxi = ui.create.div(".xinxi", dialog);
+				var rightPane = ui.create.div(".right", blackBg2);
+
+				var mingcheng = ui.create.div(".mingcheng", basicInfo);
+
+				var dengji = ui.create.div(".dengji", basicInfo);
 
 				//胜率
-				var shenglv = ui.create.div(".shenglv", dialog);
+				var shenglv = ui.create.div(".shenglv", fightbg);
 
 				//逃率
-				var taolv = ui.create.div(".taolv", dialog);
+				var taolv = ui.create.div(".shenglv", fightbg);
+
+        var viewBusinessCard=ui.create.div(".viewBusinessCard","查看名片", blackBg1);
 
 				var createButton = function (name, parent) {
 					if (!name) return;
@@ -87,13 +112,24 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					}
 
 					//var url = extensionPath + 'character/images/name2_' + value + '.png';
+          //武将
 					if (lib.config.extension_十周年UI_ZLLT == true) {
-						var biankuang = ui.create.div(".biankuang", dialog);
+						var biankuang = ui.create.div(".biankuang", blackBg2);
 					} else {
-						var biankuang = ui.create.div(".biankuang2", dialog);
+						var biankuang = ui.create.div(".biankuang2", blackBg2);
 					}
-
 					biankuang.setBackgroundImage(`extension/十周年UI/shoushaUI/character/images/name2_${player.group}.png`);
+
+					if (lib.config.extension_十周年UI_ZLLT == true) {
+						var leftPane = ui.create.div(".left", biankuang);
+					} else {
+						var leftPane = ui.create.div(".left2", biankuang);
+					}
+					leftPane.style.backgroundImage = player.node.avatar.style.backgroundImage;
+					createButton(name, leftPane.firstChild);
+					createButton(name2, leftPane.firstChild);
+          var biankuangname = ui.create.div(".biankuangname", biankuang);
+          var xing = ui.create.div(".xing", biankuang);
 
 					var num = 1,
 						rarity = game.getRarity(player.name);
@@ -120,31 +156,22 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					biankuangname.innerText = get.translation(player.name);
 
 					mingcheng.innerText = get.translation(player.name);
-					mingcheng.style.cssText = "display: block;position: absolute;top: -15px;right: 423px;font-size:20px;color:#4B3B30;text-shadow:none;font-weight:bold;font-family: 'FZLBJW';z-index:68";
+					// mingcheng.style.cssText = "display: block;position: absolute;top: -15px;right: 423px;font-size:20px;color:#4B3B30;text-shadow:none;font-weight:bold;font-family: 'FZLBJW';z-index:68";
 
 					//角色等级
-					dengji.innerText = num = Math.floor(Math.random() * (200 - 1 + 1) + 1);
-					dengji.style.cssText = "display: block;position: absolute;top: -13px;right: 325px;font-size:21px;font-family:'shousha';color: white; !important; z-index:68";
+					dengji.innerText= "Lv："+Math.floor(Math.random() * (200 - 1 + 1) + 1);
+					//dengji.style.cssText = "display: block;position: absolute;top: -13px;right: 325px;font-size:21px;font-family:'shousha';color: white; !important; z-index:68";
 
-					shenglv.innerText = (num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "." + (num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "%";
-					shenglv.style.cssText = "display: block;position: absolute;top: 68px;right: 383px;font-size:28px;font-family:'shousha';color: white; webkit-text-stroke:0.5px black !important; z-index:68";
+					shenglv.innerHTML = `<span style="font-size: 20px;">胜率：</span>`+(num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "." + (num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "%";
+					//shenglv.style.cssText = "display: block;position: absolute;top: 68px;right: 383px;font-size:28px;font-family:'shousha';color: white; webkit-text-stroke:0.5px black !important; z-index:68";
 
-					taolv.innerText = (num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "." + (num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "%";
-					taolv.style.cssText = "display: block;position: absolute;top: 68px;right: 170px;font-size:28px;font-family:'shousha';color: white; webkit-text-stroke:0.5px black !important; z-index:68";
+					taolv.innerHTML = `<span style="font-size: 20px;">逃率：</span>`+(num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "." + (num = Math.floor(Math.random() * (99 - 0 + 1) + 0)) + "%";
+					//taolv.style.cssText = "display: block;position: absolute;top: 68px;right: 170px;font-size:28px;font-family:'shousha';color: white; webkit-text-stroke:0.5px black !important; z-index:68";
 
 					var shanchang = get.config("recentCharacter");
-					if (lib.config.extension_十周年UI_ZLLT == true) {
-						var leftPane = ui.create.div(".left", dialog);
-					} else {
-						var leftPane = ui.create.div(".left2", dialog);
-					}
 
-					leftPane.style.backgroundImage = player.node.avatar.style.backgroundImage;
-					createButton(name, leftPane.firstChild);
-					createButton(name2, leftPane.firstChild);
 					dialog.classList.add("single");
-
-					dialog.onclick = function () {
+					viewBusinessCard.onclick = function () {
 						var popuperContainer = ui.create.div(".popup-container", { background: "rgb(0,0,0,0)" }, ui.window);
 						popuperContainer.addEventListener("click", event => {
 							event.stopPropagation();
