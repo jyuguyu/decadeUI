@@ -106,6 +106,15 @@
 	/* 确保没有额外的左边距 */
 }
 
+/* 添加新的规则处理两个技能的情况 */
+.skill-control>.enable:has(> .skillitem:nth-child(2):last-child) {
+	display: flex;
+	justify-content: flex-end;
+	gap: 1px;
+	/* 设置技能按钮之间的间距 */
+	left: -7px;
+}
+
 .skill-control>.enable>.xiandingji.select {
 	background-image: url("./images/new_btnn4.png");
 }

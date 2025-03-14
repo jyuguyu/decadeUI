@@ -5,13 +5,6 @@
 	height: 180px;
 	width: 120px;
 	border-radius: 8px;
-	box-shadow: 0px -1px 3px black, 0px 3px 8px black;
-	background-image: linear-gradient(rgb(53, 38, 32), rgb(53, 38, 32));
-	transition-property: transform, opacity, left, top, right, bottom;
-}
-
-.dui-mobile.player {
-	box-shadow: 0px -1px 2px black, 0px 1px 5px black;
 }
 
 .player.dead {

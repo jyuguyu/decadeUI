@@ -5,13 +5,6 @@
 	height: 180px;
 	width: 120px;
 	border-radius: 8px;
-	box-shadow: 0px -1px 3px black, 0px 3px 8px black;
-	background-image: linear-gradient(rgb(53, 38, 32), rgb(53, 38, 32));
-	transition-property: transform, opacity, left, top, right, bottom;
-}
-
-.dui-mobile .player {
-	box-shadow: 0px -1px 2px black, 0px 1px 5px black;
 }
 
 .player.dead {
@@ -185,60 +178,60 @@
 
 .player>.camp-wrap[data-camp="wei"]>.camp-back {
 	background-image: url('image/decoration/babywei.png');
-	width: 385%;
-	height: 147%;
-	top: 3px;
-	left: 10px;
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
 	background-size: 100% 100%;
 	pointer-events: none
 }
 
 .player>.camp-wrap[data-camp="shu"]>.camp-back {
 	background-image: url('image/decoration/babyshu.png');
-	width: 385%;
-	height: 147%;
-	top: 3px;
-	left: 10px;
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
 	background-size: 100% 100%;
 	pointer-events: none
 }
 
 .player>.camp-wrap[data-camp="wu"]>.camp-back {
 	background-image: url('image/decoration/babywu.png');
-	width: 385%;
-	height: 147%;
-	top: 3px;
-	left: 10px;
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
 	background-size: 100% 100%;
 	pointer-events: none
 }
 
 .player>.camp-wrap[data-camp="qun"]>.camp-back {
 	background-image: url('image/decoration/babyqun.png');
-	width: 385%;
-	height: 147%;
-	top: 3px;
-	left: 10px;
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
 	background-size: 100% 100%;
 	pointer-events: none
 }
 
 .player>.camp-wrap[data-camp="shen"]>.camp-back {
 	background-image: url('image/decoration/babyshen.png');
-	width: 385%;
-	height: 147%;
-	top: 3px;
-	left: 10px;
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
 	background-size: 100% 100%;
 	pointer-events: none
 }
 
 .player>.camp-wrap[data-camp="shen2"]>.camp-back {
 	background-image: url('image/decoration/babyshen.png');
-	width: 385%;
+	width: 390%;
 	height: 147%;
 	top: 3px;
-	left: 10px;
+	left: 5px;
 	background-size: 100% 100%;
 	pointer-events: none
 }
@@ -249,7 +242,15 @@
 
 .player>.camp-wrap[data-camp="western"]>.camp-back {}
 
-.player>.camp-wrap[data-camp="jin"]>.camp-back {}
+.player>.camp-wrap[data-camp="jin"]>.camp-back {
+	background-image: url('image/decoration/babyqun.png');
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
+	background-size: 100% 100%;
+	pointer-events: none
+}
 
 .player>.camp-wrap[data-camp="daqin"]>.camp-back {}
 
@@ -260,7 +261,7 @@
 	align-items: center;
 	align-content: center;
 	justify-content: center;
-	left: 43% !important;
+	left: 40% !important;
 	right: auto;
 	top: 30px;
 	width: 18px;
@@ -316,9 +317,10 @@
 	font-family: xinwei, xingkai;
 	font-display: swap;
 	font-size: 26px;
-	width: 100%;
+	width: 90%;
 	height: 30%;
-	left: 25%;
+	left: 17%;
+	top:3px;
 	display: flex;
 	text-align: center;
 	align-items: center;

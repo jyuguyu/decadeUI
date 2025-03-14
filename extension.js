@@ -196,8 +196,9 @@ export default async function () {
 								},
 							},
 							card: {
-								$init: function (card) {
+								$init(card) {
 									base.lib.element.card.$init.apply(this, arguments);
+							
 									this.node.range.innerHTML = "";
 									var tags = [];
 									if (Array.isArray(card[4])) {
@@ -226,28 +227,13 @@ export default async function () {
 											this.node.range.innerHTML += tagstr;
 										}
 									}
+							
 									const verticalName = this.$vertname;
 									this.$name.innerHTML = verticalName.innerHTML;
-									let cardNumber = this.number || "";
-									const parsedCardNumber = parseInt(cardNumber);
-									if (parsedCardNumber == cardNumber) cardNumber = parsedCardNumber;
-									switch (cardNumber) {
-										case 1:
-											this.$suitnum.$num.innerHTML = "A";
-											break;
-										case 11:
-											this.$suitnum.$num.innerHTML = "J";
-											break;
-										case 12:
-											this.$suitnum.$num.innerHTML = "Q";
-											break;
-										case 13:
-											this.$suitnum.$num.innerHTML = "K";
-											break;
-										default:
-											this.$suitnum.$num.innerHTML = (cardNumber !== 0 ? get.strNumber(cardNumber) : false) || cardNumber || "";
-									}
+									let cardNumber = this.number;
+									this.$suitnum.$num.innerHTML = (cardNumber !== 0 ? get.strNumber(cardNumber) : false) || cardNumber || "";
 									this.$suitnum.$suit.innerHTML = get.translation((this.dataset.suit = this.suit));
+							
 									const equip = this.$equip;
 									const innerHTML = equip.innerHTML;
 									equip.$suitnum.innerHTML = innerHTML.slice(0, innerHTML.indexOf(" "));
@@ -256,28 +242,41 @@ export default async function () {
 									const background = node.background;
 									node.judgeMark.node.judge.innerHTML = background.innerHTML;
 									const classList = background.classList;
+							
 									if (classList.contains("tight")) classList.remove("tight");
+							
 									const cardStyle = this.style;
+							
 									if (cardStyle.color) cardStyle.removeProperty("color");
+							
 									if (cardStyle.textShadow) cardStyle.removeProperty("text-shadow");
+							
 									const info = node.info;
 									const infoStyle = info.style;
+							
 									if (infoStyle.opacity) infoStyle.removeProperty("opacity");
+							
 									const verticalNameStyle = verticalName.style;
+							
 									if (verticalNameStyle.opacity) verticalNameStyle.removeProperty("opacity");
+							
 									if (info.childElementCount)
 										while (info.firstChild) {
 											info.removeChild(info.lastChild);
 										}
+							
 									if (equip.childElementCount)
 										while (equip.firstChild) {
 											equip.removeChild(equip.lastChild);
 										}
+							
 									var imgFormat = decadeUI.config.cardPrettify;
 									if (imgFormat != "off") {
 										let filename = card[2];
 										this.classList.add("decade-card");
 										if (!this.classList.contains("infohidden")) {
+											//不同属性的【杀】的图片素材
+											//仅针对单一属性【杀】
 											if (Array.isArray(card) && card[2] == "sha" && card[3] && !Array.isArray(card[3])) {
 												filename += "_";
 												filename += get.natureList(card[3]).sort(lib.sort.nature).join("_");
@@ -300,6 +299,7 @@ export default async function () {
 														rawUrl: undefined,
 													};
 												}
+							
 												if (asset.loaded !== false) {
 													if (asset.loaded == undefined) {
 														var image = new Image();
@@ -307,6 +307,7 @@ export default async function () {
 															asset.loaded = true;
 															image.onload = undefined;
 														};
+							
 														var card = this;
 														image.onerror = function () {
 															asset.loaded = false;
@@ -314,11 +315,13 @@ export default async function () {
 															card.style.background = asset.rawUrl;
 															card.classList.remove("decade-card");
 														};
+							
 														asset.url = url;
 														asset.rawUrl = this.style.background || this.style.backgroundImage;
 														asset.image = image;
 														image.src = url;
 													}
+							
 													this.style.background = 'url("' + url + '")';
 												} else {
 													this.classList.remove("decade-card");
@@ -328,53 +331,9 @@ export default async function () {
 									} else {
 										this.classList.remove("decade-card");
 									}
-									this.$equip.innerHTML = "";
-									var cardName = this.getAttribute("data-card-name");
-									if (!ele) var ele = this.getElementsByClassName("name2");
-									if (!(ele.length > 1)) {
-										var e = ele[0].children;
-										var subype = this.getAttribute("data-card-subype");
-										var cardName = this.getAttribute("data-card-name");
-										if (cardName.indexOf("feichu_") != -1) {
-											if (lib.config.extension_十周年UI_newDecadeStyle == "on") {
-												if (!e[0]) {
-													var newele = document.createElement("img");
-													newele.setAttribute("src", decadeUIPath + "/image/ass/decade/" + cardName + ".png");
-													newele.style.opacity = "0.83"; //图标透明度
-													newele.style.width = "120%";
-													newele.style.borderRadius = "5px";
-													newele.style.height = "112%";
-												}
-												ele[0].appendChild(newele);
-											} else {
-												if (!e[0]) {
-													var newele = document.createElement("img");
-													newele.setAttribute("src", decadeUIPath + "/image/ass/feichuma.png");
-													if (subype != "equip3" && subype != "equip4") {
-														newele.style.cssText = `
-														zoom:1.7;
-														width:30px;
-														height:10px;
-														position:relative;
-														left:10px;
-														`;
-													} else {
-														newele.style.cssText = `
-														zoom:1.7;
-														width:30px;
-														height:10px;
-														position:relative;
-														left:-4px;
-														`;
-													}
-												}
-												ele[0].appendChild(newele);
-											}
-										}
-									}
 									return this;
 								},
-								updateTransform: function (bool, delay) {
+								updateTransform(bool, delay) {
 									if (delay) {
 										var that = this;
 										setTimeout(function () {
@@ -1536,141 +1495,404 @@ export default async function () {
 
 									this.queueCssAnimation("player-hurt 0.3s");
 								},
-								$throw(cards, time, record, nosource) {
-									var itemtype;
-									var duiMod = cards.duiMod && game.me == this && !nosource;
-									if (typeof cards == "number") {
-										itemtype = "number";
-										cards = new Array(cards);
-									} else {
-										itemtype = get.itemtype(cards);
-										if (itemtype == "cards") {
-											cards = cards.concat();
-										} else if (itemtype == "card") {
-											cards = [cards];
-										} else {
-											var evt = _status.event;
-											if (evt && evt.card && evt.cards === cards) {
-												var card = ui.create.card().init([evt.card.suit, evt.card.number, evt.card.name, evt.card.nature]);
-												if (evt.card.suit == "none") card.node.suitnum.style.display = "none";
-												card.dataset.virtual = 1;
-												cards = [card];
-											}
-										}
-									}
-
-									var card;
-									var clone;
-									var player = this;
-									var hand = dui.boundsCaches.hand;
-									hand.check();
-
-									for (var i = 0; i < cards.length; i++) {
-										card = cards[i];
-										if (card) {
-											clone = card.copy("thrown");
-											if (duiMod && (card.throwWith == "h" || card.throwWith == "s")) {
-												clone.tx = Math.round(hand.x + card.tx);
-												clone.ty = Math.round(hand.y + 30 + card.ty);
-												clone.scaled = true;
-												clone.throwordered = true;
-												clone.style.transform = "translate(" + clone.tx + "px," + clone.ty + "px) scale(" + hand.cardScale + ")";
-											}
-											card = clone;
-										} else {
-											card = dui.element.create("card infohidden infoflip");
-											card.moveTo = lib.element.card.moveTo;
-											card.moveDelete = lib.element.card.moveDelete;
-										}
-
-										cards[i] = card;
-									}
-
-									if (record !== false) {
-										if (record !== "nobroadcast") {
-											game.broadcast(
-												function (player, cards, time, record, nosource) {
-													player.$throw(cards, time, record, nosource);
-												},
-												this,
-												cards,
-												0,
-												record,
-												nosource
-											);
-										}
-
-										game.addVideo("throw", this, [get.cardsInfo(cards), 0, nosource]);
-									}
-
-									if (duiMod && cards.length > 2) {
-										cards.sort(function (a, b) {
-											if (a.tx == undefined && b.tx == undefined) return 0;
-
-											if (a.tx == undefined) return duicfg.rightLayout ? -1 : 1;
-
-											if (b.tx == undefined) return duicfg.rightLayout ? 1 : -1;
-
-											return b.tx - a.tx;
-										});
-									}
-
-									for (var i = 0; i < cards.length; i++) player.$throwordered2(cards[i], nosource);
-
-									if (game.chess) this.chessFocus();
-
-									return cards[cards.length - 1];
+								$throw(card, time, init, nosource, cardsetion) {
+								    if (!cardsetion && cardsetion !== false && lib.config.card_animation_info) {
+								        let source = this;
+								        if (["useCard", "respond"].includes(get.event().name)) source = get.player();
+								        cardsetion = get.cardsetion(source);
+								    }
+								    if (typeof card == "number") {
+								        var tmp = card;
+								        card = [];
+								        while (tmp--) {
+								            var cardx = ui.create.card();
+								            cardx.classList.add("infohidden");
+								            cardx.classList.add("infoflip");
+								            if (cardsetion) {
+								                var next = ui.create.div(".cardsetion", cardsetion, cardx);
+								                next.style.setProperty("display", "block", "important");
+								                if (cardx.node) {
+								                    if (cardx.node.cardsetion) {
+								                        cardx.node.cardsetion.remove();
+								                        delete cardx.node.cardsetion;
+								                    }
+								                    cardx.node.cardsetion = next;
+								                }
+								            }
+								            card.push(cardx);
+								        }
+								    }
+								    if (init !== false) {
+								        if (init !== "nobroadcast") {
+								            game.broadcast(
+								                function (player, card, time, init, nosource, cardsetion) {
+								                    player.$throw(card, time, init, nosource, cardsetion);
+								                },
+								                this,
+								                card,
+								                time,
+								                init,
+								                nosource,
+								                cardsetion
+								            );
+								        }
+								        if (get.itemtype(card) != "cards") {
+								            if (get.itemtype(card) == "card") {
+								                card = [card];
+								            } else {
+								                return;
+								            }
+								        }
+								        game.addVideo("throw", this, [get.cardsInfo(card), time, nosource]);
+								    }
+								    for (var i = card.length - 1; i >= 0; i--)
+								        this.$throwordered2(card[i].copy('thrown'), nosource);
+								    if (game.chess) {
+								        this.chessFocus();
+								    }
+								    return card[card.length - 1];
 								},
 								$throwordered2(card, nosource) {
-									if (_status.connectMode) ui.todiscard = [];
-
-									if (card.throwordered == undefined) {
-										var x, y;
-										var bounds = dui.boundsCaches.arena;
-										if (!bounds.updated) bounds.update();
-
-										this.checkBoundsCache();
-										if (nosource) {
-											x = (bounds.width - bounds.cardWidth) / 2 - bounds.width * 0.08;
-											y = (bounds.height - bounds.cardHeight) / 2;
-										} else {
-											x = (this.cacheWidth - bounds.cardWidth) / 2 + this.cacheLeft;
-											y = (this.cacheHeight - bounds.cardHeight) / 2 + this.cacheTop;
-										}
-
-										x = Math.round(x);
-										y = Math.round(y);
-
-										card.tx = x;
-										card.ty = y;
-										card.scaled = true;
-										card.classList.add("thrown");
-										card.style.transform = "translate(" + x + "px, " + y + "px)" + "scale(" + bounds.cardScale + ")";
-									} else {
-										card.throwordered = undefined;
-									}
-
-									if (card.fixed) return ui.arena.appendChild(card);
-
-									var before;
-									for (var i = 0; i < ui.thrown; i++) {
-										if (ui.thrown[i].parentNode == ui.arena) {
-											before = ui.thrown[i];
-											break;
-										}
-									}
-
-									var tagNode = card.querySelector(".used-info");
-									if (tagNode == null) tagNode = card.appendChild(dui.element.create("used-info"));
-
-									card.$usedtag = tagNode;
-									ui.thrown.unshift(card);
-									if (before) ui.arena.insertBefore(before, card);
-									else ui.arena.appendChild(card);
-
-									dui.tryAddPlayerCardUseTag(card, this, _status.event);
-									dui.queueNextFrameTick(dui.layoutDiscard, dui);
-									return card;
+								    if (_status.connectMode) ui.todiscard = [];
+								
+								    if (card.throwordered == undefined) {
+								        var x, y;
+								        var bounds = dui.boundsCaches.arena;
+								        if (!bounds.updated) bounds.update();
+								
+								        this.checkBoundsCache();
+								        if (nosource) {
+								            x = (bounds.width - bounds.cardWidth) / 2 - bounds.width * 0.08;
+								            y = (bounds.height - bounds.cardHeight) / 2;
+								        } else {
+								            x = (this.cacheWidth - bounds.cardWidth) / 2 + this.cacheLeft;
+								            y = (this.cacheHeight - bounds.cardHeight) / 2 + this.cacheTop;
+								        }
+								
+								        x = Math.round(x);
+								        y = Math.round(y);
+								
+								        card.tx = x;
+								        card.ty = y;
+								        card.scaled = true;
+								        card.classList.add("thrown");
+								        card.style.transform = "translate(" + x + "px, " + y + "px)" + "scale(" + bounds.cardScale + ")";
+								    } else {
+								        card.throwordered = undefined;
+								    }
+								
+								    if (card.fixed) return ui.arena.appendChild(card);
+								
+								    var before;
+								    for (var i = 0; i < ui.thrown; i++) {
+								        if (ui.thrown[i].parentNode == ui.arena) {
+								            before = ui.thrown[i];
+								            break;
+								        }
+								    }
+								
+								    //牌面信息添加
+								    if (1) {
+								        let node = card;
+								        const player = this;
+								        let event = _status.event.blameEvent?_status.event.blameEvent:_status.event
+								        let eventInfo;
+								        const playername = get.translation(player)
+								        //事件名称
+								        let getName = function (card, player, event) {
+								            if (!card || !player || !event) return;
+								            if (event.blameEvent) event = event.blameEvent;
+								            let tagText;
+								            const playername = get.slimName(player?.name);
+								            let border = get.groupnature(get.bordergroup(player?.name), "raw");
+								            let eventInfo = `<span style="font-weight:700"><span data-nature=${border}>${playername}</span><br/><span style="color:#FFD700">`;
+								            switch (event.name) {
+								                case "useCard":
+								                case "respond":
+								                    tagText = eventInfo + (event.name === "useCard" ? "使用" : "打出") + "</span>";
+								                    break;
+								                default:
+								                    tagText = get.cardsetion(player);
+								                    break;
+								            }
+								            return tagText;
+								        }
+								        eventInfo = getName(node, player, event)
+								        if (node && node.node) {
+								            const cardInfo = {
+								                name: get.name(node),
+								                number: get.number(node),
+								                suit: get.suit(node)
+								            }
+								            game.broadcastAll((node, eventInfo, { name, number, suit }, event) => {
+								                let card = node;
+								                if (!node.node) {
+								                    node = [...ui.arena.childNodes].find(c => {
+								                        if (c.classList.contains('thrown') && c.classList.contains('card')) {
+								                            const n = get.number(c)
+								                            const na = get.name(c)
+								                            const s = get.suit(c)
+								                            if (n === number && na === name && s === suit && !c.selectedt) {
+								                                c.selectedt = true
+								                                return true
+								                            }
+								                        }
+								                    })
+								                }
+								                if (!node.node) return
+								                const no = ['image', 'info', 'name', 'name2', 'background', 'intro', 'range', 'gaintag']
+								                const some = [...node.childNodes].some(n => {
+								                    if (n.innerText && eventInfo.includes && eventInfo.includes(n.innerText) && !no.includes(n.classList[0])) {
+								                        n.innerHTML = eventInfo
+								                        return true
+								                    }
+								                })
+								                if (some) return
+								                if (!node.node.cardsetion) {
+								                    node.node.cardsetion = ui.create.div('.used-info', eventInfo, node)
+								                } else {
+								                    node.node.cardsetion.innerHTML = eventInfo || playername
+								                }
+								            }, node, eventInfo, cardInfo, event)
+								            const addStyle = () => {
+								                const style = document.createElement('style')
+								                style.innerHTML = /*css*/`
+								                .card .tempname.tempimage {
+								                    opacity:1 !important;
+								                }   
+								                `
+								                document.head.appendChild(style)
+								            }
+								            if (!game.throwCardStyle) {
+								                addStyle()
+								                game.throwCardStyle = true
+								            }
+								            if (lib.node && lib.node.clients) {
+								                lib.node.clients.forEach(c => {
+								                    if (!c.gameOptions) {
+								                        c.gameOptions = {}
+								                    }
+								                    if (!c.gameOptions.Cardstyle) {
+								                        c.send(addStyle)
+								                        c.gameOptions.Cardstyle = true
+								                    }
+								                })
+								            }
+								            game.addVideo('cardInfo', null, {
+								                eventInfo,
+								                cardInfo
+								            })
+								        }
+								        //播放动画骨骼
+								        switch (event.name) {
+								            //使用打出牌
+								            case "useCard":
+								            case "respond":
+								                const cardname = event.card.name,
+								                    cardnature = get.nature(event.card);
+								                if (lib.config.cardtempname != "off" && (card.name != cardname || !get.is.sameNature(cardnature, card.nature, true))) {
+								                    if (lib.config.extension_十周年UI_showTemp) {
+								                        let vname2 = cardname;
+								                        if (cardnature && cardname == 'sha') vname2 = cardname + '_' + cardnature;
+								                        let path = "extension/十周年UI/image/vcard/" + vname2 + ".png";
+								                        if (_status.connectMode) {
+								                            if (!card._tempName) card._tempName = ui.create.div(".temp-name", card);
+								                            let tempname = "",
+								                                tempname2 = get.translation(cardname);
+								                            if (cardnature) {
+								                                card._tempName.dataset.nature = cardnature;
+								                                if (cardname == "sha") {
+								                                    tempname2 = get.translation(cardnature) + tempname2;
+								                                }
+								                            }
+								                            tempname += tempname2;
+								                            card._tempName.innerHTML = tempname;
+								                            card._tempName.tempname = tempname;
+								                        }
+								                        else game.checkFile(path, function (a) {
+								                            if (a) {
+								                                if (!card._tempName) card._tempName = ui.create.div(".temp-name2", card);
+								                                card._tempName.innerHTML = '';
+								                                card._tempName.tempname = '';
+								                                card._tempName.setBackgroundImage(path);
+								                                card._tempName.style.top = 'calc(50% - 18px)';
+								                                card._tempName.style.height = '30px';
+								                            }
+								                            else {
+								                                if (!card._tempName) card._tempName = ui.create.div(".temp-name", card);
+								                                let tempname = "",
+								                                    tempname2 = get.translation(cardname);
+								                                if (cardnature) {
+								                                    card._tempName.dataset.nature = cardnature;
+								                                    if (cardname == "sha") {
+								                                        tempname2 = get.translation(cardnature) + tempname2;
+								                                    }
+								                                }
+								                                tempname += tempname2;
+								                                card._tempName.innerHTML = tempname;
+								                                card._tempName.tempname = tempname;
+								                            }
+								                        })
+								                    } else {
+								                        var node0 = ui.create.cardTempName(event.card, card);
+								                        var cardtempnameConfig = lib.config.cardtempname;
+								                        if (cardtempnameConfig !== "default") node0.classList.remove("vertical");
+								                    }
+								                }
+								                const cardnumber = get.number(event.card),
+								                    cardsuit = get.suit(event.card);
+								                if (card.dataset && card.dataset.views != 1 && event.card.cards && event.card.cards.length == 1 && (card.number != cardnumber || card.suit != cardsuit)) {
+								                    dui.cardTempSuitNum(card, cardsuit, cardnumber);
+								                }
+								                if (duicfg.cardUseEffect && event.card && (!event.card.cards || !event.card.cards.length || event.card.cards.length == 1)) {
+								                    var name0 = event.card.name,
+								                        nature = event.card.nature;
+								
+								                    switch (name0) {
+								                        case "effect_caochuanjiejian":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_caochuanjiejian");
+								                            break;
+								                        case "sha":
+								                            switch (nature) {
+								                                case "thunder":
+								                                    decadeUI.animation.cap.playSpineTo(card, "effect_leisha");
+								                                    break;
+								                                case "fire":
+								                                    decadeUI.animation.cap.playSpineTo(card, "effect_huosha");
+								                                    break;
+								                                // case "ice":
+								                                //     decadeUI.animation.cap.playSpineTo(card, "effect_bingsha");
+								                                //     break;
+								                                default:
+								                                    if (get.color(card) == "red") {
+								                                        decadeUI.animation.cap.playSpineTo(card, "effect_hongsha");
+								                                    } else {
+								                                        decadeUI.animation.cap.playSpineTo(card, "effect_heisha");
+								                                    }
+								                                    break;
+								                            }
+								                            break;
+								                        case "shan":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_shan");
+								                            break;
+								                        case "tao":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_tao", {
+								                                scale: 0.9,
+								                            });
+								                            break;
+								                        case "tiesuo":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_tiesuolianhuan", { scale: 0.9 });
+								                            break;
+								                        case "jiu":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_jiu", {
+								                                y: [-30, 0.5],
+								                            });
+								                            break;
+								                        case "kaihua":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_shushangkaihua");
+								                            break;
+								                        case "wuzhong":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_wuzhongshengyou");
+								                            break;
+								                        case "wuxie":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_wuxiekeji", { y: [10, 0.5], scale: 0.9 });
+								                            break;
+								                        case "juedou":
+								                            decadeUI.animation.cap.playSpineTo(card, "SF_eff_jiangling_juedou", { x: [10, 0.4], scale: 1 });
+								                            break;
+								                        case "nanman":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_nanmanruqin", { scale: 0.45 });
+								                            break;
+								                        case "wanjian":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_wanjianqifa", { scale: 0.78 });
+								                            break;
+								                        case "wugu":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_wugufengdeng", { y: [10, 0.5] });
+								                            break;
+								                        case "taoyuan":
+								                            decadeUI.animation.cap.playSpineTo(card, "SF_kapai_eff_taoyuanjieyi", { y: [10, 0.5] });
+								                            break;
+								                        case "shunshou":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_shunshouqianyang");
+								                            break;
+								                        case "huogong":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_huogong", {
+								                                x: [8, 0.5],
+								                                scale: 0.5,
+								                            });
+								                            break;
+								                        case "guohe":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_guohechaiqiao", { y: [10, 0.5] });
+								                            break;
+								                        case "yuanjiao":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_yuanjiaojingong");
+								                            break;
+								                        case "zhibi":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_zhijizhibi");
+								                            break;
+								                        case "zhulu_card":
+								                            decadeUI.animation.cap.playSpineTo(card, "effect_zhulutianxia");
+								                            break;
+								                    }
+								                }
+								                break;
+								            //判定
+								            case 'judge':
+								                event.addMessageHook("judgeResult", function () {
+								                    var event = this;
+								                    var card = event.result.card.clone;
+								                    var apcard = event.apcard;
+								                    if (event.result.suit != get.suit(card) || event.result.number != get.number(card)) {
+								                        dui.cardTempSuitNum(card, event.result.suit, event.result.number);
+								                    }
+								                    var action;
+								                    var judgeValue;
+								                    var getEffect = event.judge2;
+								                    if (getEffect) {
+								                        judgeValue = getEffect(event.result);
+								                    } else {
+								                        judgeValue = decadeUI.get.judgeEffect(event.judgestr, event.result.judge);
+								                    }
+								                    if (typeof judgeValue == "boolean") {
+								                        judgeValue = judgeValue ? 1 : -1;
+								                    } else {
+								                        judgeValue = event.result.judge;
+								                    }
+								                    if (judgeValue >= 0) {
+								                        action = "play4";
+								                    } else {
+								                        action = "play5";
+								                    }
+								                    if (apcard && apcard._ap) apcard._ap.stopSpineAll();
+								                    if (apcard && apcard._ap && apcard == card) {
+								                        apcard._ap.playSpine({
+								                            name: "effect_panding",
+								                            action: action,
+								                        });
+								                    } else {
+								                        decadeUI.animation.cap.playSpineTo(card, {
+								                            name: "effect_panding",
+								                            action: action,
+								                        });
+								                    }
+								                    event.apcard = undefined;
+								                });
+								                if (duicfg.cardUseEffect) {
+								                    decadeUI.animation.cap.playSpineTo(card, {
+								                        name: "effect_panding",
+								                        action: "play",
+								                        loop: true,
+								                    });
+								                    event.apcard = card;
+								                }
+								                break;
+								        }
+								    }
+								    ui.thrown.unshift(card);
+								    if (before) ui.arena.insertBefore(before, card);
+								    else ui.arena.appendChild(card);
+								    dui.queueNextFrameTick(dui.layoutDiscard, dui);
+								    return card;
 								},
 								$phaseJudge(card) {
 									game.addVideo("phaseJudge", this, get.cardInfo(card));
@@ -1718,7 +1940,7 @@ export default async function () {
 								gain() {
 									"step 0";
 									if (event.animate == "give") event.visible = true;
-									if (cards) {
+									if (get.itemtype(cards) == "cards") {
 										var map = {};
 										for (var i of cards) {
 											var owner = get.owner(i, "judge");
@@ -1729,6 +1951,7 @@ export default async function () {
 												var position = get.position(i);
 												if (position == "h") map[id][1].push(i);
 												else map[id][2].push(i);
+												if (event.visible) i.addKnower("everyone");
 											} else if (!event.updatePile && get.position(i) == "c") event.updatePile = true;
 										}
 										event.losing_map = map;
@@ -1736,7 +1959,7 @@ export default async function () {
 											var owner = (_status.connectMode ? lib.playerOL : game.playerMap)[i];
 											var next = owner.lose(map[i][0], ui.special).set("type", "gain").set("forceDie", true).set("getlx", false);
 											if (event.visible == true) next.visible = true;
-
+										
 											event.relatedLose = next;
 										}
 									} else {
@@ -6049,217 +6272,6 @@ export default async function () {
 					if (cardsuit) snnode.$suit.innerHTML = get.translation(cardsuit);
 					else snnode.$suit.innerHTML = "◈";
 					card.dataset.tempsn = cardsuit;
-				},
-
-				tryAddPlayerCardUseTag(card, player, event) {
-					if (!card || !player || !event) return;
-					var tagNode = card.querySelector(".used-info");
-					if (tagNode == null) tagNode = card.appendChild(dui.element.create("used-info"));
-					card.$usedtag = tagNode;
-					if (event.blameEvent) event = event.blameEvent;
-					let tagText;
-					const playername = get.slimName(player?.name);
-					let border = get.groupnature(get.bordergroup(player?.name), "raw");
-					let eventInfo = `<span style="font-weight:700"><span data-nature=${border}>${playername}</span><br/><span style="color:#FFD700">`;
-					switch (event.name) {
-						case "useCard":
-						case "respond":
-							tagText = eventInfo + (event.name === "useCard" ? "使用" : "打出") + "</span>";
-							const cardname = event.card.name,
-								cardnature = get.nature(event.card);
-							if (lib.config.cardtempname != "off" && (card.name != cardname || !get.is.sameNature(cardnature, card.nature, true))) {
-								if (lib.config.extension_十周年UI_showTemp) {
-									if (!card._tempName) card._tempName = ui.create.div(".temp-name", card);
-									var tempname = "";
-									var tempname2 = get.translation(cardname);
-									if (cardnature) {
-										card._tempName.dataset.nature = cardnature;
-										if (cardname == "sha") {
-											tempname2 = get.translation(cardnature) + tempname2;
-										}
-									}
-									tempname += tempname2;
-									card._tempName.innerHTML = tempname;
-									card._tempName.tempname = tempname;
-								} else {
-									var node = ui.create.cardTempName(event.card, card);
-									var cardtempnameConfig = lib.config.cardtempname;
-									if (cardtempnameConfig !== "default") node.classList.remove("vertical");
-								}
-							}
-							const cardnumber = get.number(event.card),
-								cardsuit = get.suit(event.card);
-							if (card.dataset.views != 1 && event.card.cards && event.card.cards.length == 1 && (card.number != cardnumber || card.suit != cardsuit)) {
-								dui.cardTempSuitNum(card, cardsuit, cardnumber);
-							}
-							if (duicfg.cardUseEffect && event.card && (!event.card.cards || !event.card.cards.length || event.card.cards.length == 1)) {
-								var name = event.card.name,
-									nature = event.card.nature;
-
-								switch (name) {
-									case "effect_caochuanjiejian":
-										decadeUI.animation.cap.playSpineTo(card, "effect_caochuanjiejian");
-										break;
-									case "sha":
-										switch (nature) {
-											case "thunder":
-												decadeUI.animation.cap.playSpineTo(card, "effect_leisha");
-												break;
-											case "fire":
-												decadeUI.animation.cap.playSpineTo(card, "effect_huosha");
-												break;
-											default:
-												if (get.color(card) == "red") {
-													decadeUI.animation.cap.playSpineTo(card, "effect_hongsha");
-												} else {
-													decadeUI.animation.cap.playSpineTo(card, "effect_heisha");
-												}
-												break;
-										}
-										break;
-									case "shan":
-										decadeUI.animation.cap.playSpineTo(card, "effect_shan");
-										break;
-									case "tao":
-										decadeUI.animation.cap.playSpineTo(card, "effect_tao", {
-											scale: 0.9,
-										});
-										break;
-									case "tiesuo":
-										decadeUI.animation.cap.playSpineTo(card, "effect_tiesuolianhuan", {
-											scale: 0.9,
-										});
-										break;
-									case "jiu":
-										decadeUI.animation.cap.playSpineTo(card, "effect_jiu", {
-											y: [-30, 0.5],
-										});
-										break;
-									case "kaihua":
-										decadeUI.animation.cap.playSpineTo(card, "effect_shushangkaihua");
-										break;
-									case "wuzhong":
-										decadeUI.animation.cap.playSpineTo(card, "effect_wuzhongshengyou");
-										break;
-									case "wuxie":
-										decadeUI.animation.cap.playSpineTo(card, "effect_wuxiekeji", {
-											y: [10, 0.5],
-											scale: 0.9,
-										});
-										break;
-									case "juedou":
-										decadeUI.animation.cap.playSpineTo(card, "SF_eff_jiangling_juedou", {
-											x: [10, 0.4],
-											scale: 1,
-										});
-										break;
-									case "nanman":
-										decadeUI.animation.cap.playSpineTo(card, "effect_nanmanruqin", {
-											scale: 0.45,
-										});
-										break;
-									case "wanjian":
-										decadeUI.animation.cap.playSpineTo(card, "effect_wanjianqifa", {
-											scale: 0.78,
-										});
-										break;
-									case "wugu":
-										decadeUI.animation.cap.playSpineTo(card, "effect_wugufengdeng", {
-											y: [10, 0.5],
-										});
-										break;
-									case "taoyuan":
-										decadeUI.animation.cap.playSpineTo(card, "SF_kapai_eff_taoyuanjieyi", {
-											y: [10, 0.5],
-										});
-										break;
-									case "shunshou":
-										decadeUI.animation.cap.playSpineTo(card, "effect_shunshouqianyang");
-										break;
-									case "huogong":
-										decadeUI.animation.cap.playSpineTo(card, "effect_huogong", {
-											x: [8, 0.5],
-											scale: 0.5,
-										});
-										break;
-									case "guohe":
-										decadeUI.animation.cap.playSpineTo(card, "effect_guohechaiqiao", {
-											y: [10, 0.5],
-										});
-										break;
-									case "yuanjiao":
-										decadeUI.animation.cap.playSpineTo(card, "effect_yuanjiaojingong");
-										break;
-									case "zhibi":
-										decadeUI.animation.cap.playSpineTo(card, "effect_zhijizhibi");
-										break;
-									case "zhulu_card":
-										decadeUI.animation.cap.playSpineTo(card, "effect_zhulutianxia");
-										break;
-								}
-							}
-							break;
-						case "judge":
-							tagText = eventInfo + event.judgestr + "判定" + "</span>";
-							event.addMessageHook("judgeResult", function () {
-								var event = this;
-								var card = event.result.card.clone;
-								var apcard = event.apcard;
-								var tagText = "";
-								var tagNode = card.querySelector(".used-info");
-								if (tagNode == null) tagNode = card.appendChild(dui.element.create("used-info"));
-								if (event.result.suit != get.suit(card) || event.result.number != get.number(card)) {
-									dui.cardTempSuitNum(card, event.result.suit, event.result.number);
-								}
-								var action;
-								var judgeValue;
-								var getEffect = event.judge2;
-								if (getEffect) {
-									judgeValue = getEffect(event.result);
-								} else {
-									judgeValue = decadeUI.get.judgeEffect(event.judgestr, event.result.judge);
-								}
-								if (typeof judgeValue == "boolean") {
-									judgeValue = judgeValue ? 1 : -1;
-								} else {
-									judgeValue = event.result.judge;
-								}
-								if (judgeValue >= 0) {
-									action = "play4";
-									tagText = "判定生效";
-								} else {
-									action = "play5";
-									tagText = "判定失效";
-								}
-								if (apcard && apcard._ap) apcard._ap.stopSpineAll();
-								if (apcard && apcard._ap && apcard == card) {
-									apcard._ap.playSpine({
-										name: "effect_panding",
-										action: action,
-									});
-								} else {
-									decadeUI.animation.cap.playSpineTo(card, {
-										name: "effect_panding",
-										action: action,
-									});
-								}
-								event.apcard = undefined;
-								tagNode.innerHTML = '<span style="color:#FFD700">' + tagText + "</span>";
-							});
-							if (duicfg.cardUseEffect) {
-								decadeUI.animation.cap.playSpineTo(card, {
-									name: "effect_panding",
-									action: "play",
-									loop: true,
-								});
-								event.apcard = card;
-							}
-							break;
-						default:
-							tagText = get.cardsetion(player);
-							break;
-					}
-					tagNode.innerHTML = tagText;
 				},
 
 				getRandom(min, max) {

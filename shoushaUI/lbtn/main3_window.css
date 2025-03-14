@@ -216,9 +216,9 @@
 
 .handcardNumber>.cardPicture {
 	left: 110px;
-	bottom: 10px;
+	bottom: 12px;
 	--w: 100px;
-	--h: calc(var(--w) * 92 / 370);
+	--h: calc(var(--w) * 92 / 420);
 	/*宽和长*/
 	width: var(--w);
 	height: var(--h);
