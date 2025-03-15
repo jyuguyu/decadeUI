@@ -259,7 +259,7 @@
 	left: 40px;
 	top: 10px;
 	width: 215%;
-	height: 15%;
+	height: 13%;
 	position: absolute;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
@@ -432,7 +432,7 @@
 	border-width: 12px 8px 21px 82px;
 	border-style: solid;
 	border-color: transparent;
-	/* border-image-source: url("image/decoration/new_border_hp.png"); */
+	border-image-source: url("image/decorationh/new_border_hp.png");
 	border-image-slice: 32 6 25 113 fill;
 	pointer-events: none;
 	transition-property: transform, opacity, height;
@@ -1235,25 +1235,6 @@
 	-webkit-text-stroke: 4px #803b02;
 	z-index: -1;
 }
-
-/* .player>.damage[data-nature='metal']::before { */
-/* -webkit-text-stroke: 4px #FFCB00; */
-/* } */
-/* .player>.damage[data-nature='wood']::before { */
-/* -webkit-text-stroke: 4px #5D832C; */
-/* } */
-/* .player>.damage[data-nature='water']::before { */
-/* -webkit-text-stroke: 4px #355CA1; */
-/* } */
-/* .player>.damage[data-nature='fire']::before { */
-/* -webkit-text-stroke: 4px #EE7F01; */
-/* } */
-/* .player>.damage[data-nature='soil']::before { */
-/* -webkit-text-stroke: 4px #803B02; */
-/* } */
-/* .player>.damage[data-nature='thunder']::before { */
-/* -webkit-text-stroke: 4px #644A8B; */
-/* } */
 
 /*联机用牌时限*/
 .player>.timerbar {
