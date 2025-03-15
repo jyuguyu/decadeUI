@@ -17,9 +17,12 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			priority: Infinity,
 			filter: (_, player) => player.group && !lib.group.contains(player.group),
 			content: function() {
-				player.chooseControl(lib.group.slice(0, 5))
-					.set('ai', () => lib.group.slice(0, 5).randomGet())
-					.set('prompt', '请选择你的势力');
+				"step 0"
+				var list = lib.group.slice(0, 5);
+				player.chooseControl(list).set('ai', function() {
+					return list.randomGet();
+				}).set('prompt', '请选择你的势力');
+				"step 1"
 				player.group = result.control;
 			}
 		};
