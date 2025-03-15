@@ -254,6 +254,33 @@
 
 .player>.camp-wrap[data-camp="daqin"]>.camp-back {}
 
+.player>.camp-wrap>.camp-border {
+	display: block;
+	left: 40px;
+	top: 10px;
+	width: 215%;
+	height: 15%;
+	position: absolute;
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+#arena.decadeUI[data-border-level="five"] .player>.camp-wrap>.camp-border {
+	background-image: url("image/decorationh/border_camphs5.png");
+}
+
+#arena.decadeUI[data-border-level="two"] .player>.camp-wrap>.camp-border {
+	background-image: url("image/decorationh/border_camphs2.png");
+}
+
+#arena.decadeUI[data-border-level="three"] .player>.camp-wrap>.camp-border {
+	background-image: url("image/decorationh/border_camphs3.png");
+}
+
+#arena.decadeUI[data-border-level="four"] .player>.camp-wrap>.camp-border {
+	background-image: url("image/decorationh/border_camphs4.png");
+}
+
 /*主将名，根据部分群友需要，添加定位代码*/
 .player>.camp-wrap>.avatar-name,
 #arena>.player:not(.minskin)>.name.name {
@@ -320,7 +347,7 @@
 	width: 90%;
 	height: 30%;
 	left: 17%;
-	top:3px;
+	top: 3px;
 	display: flex;
 	text-align: center;
 	align-items: center;
@@ -398,14 +425,14 @@
 /*玩家血量显示*/
 .player>.hp-wrap {
 	display: block;
-	right: -2px;
+	right: -7px;
 	bottom: -5px;
-	width: 12px;
-	height: 50px;
-	border-width: 24px 5px 21px 82px;
+	width: 20px;
+	height: 55px;
+	border-width: 12px 8px 21px 82px;
 	border-style: solid;
 	border-color: transparent;
-	/* border-image-source: url("image/decoration/border_hp.png"); */
+	/* border-image-source: url("image/decoration/new_border_hp.png"); */
 	border-image-slice: 32 6 25 113 fill;
 	pointer-events: none;
 	transition-property: transform, opacity, height;
@@ -441,8 +468,8 @@
 .hujia {
 	top: auto;
 	bottom: 43px;
-	left: -5px;
-	background-image: url("image/decoration/shield_decade.png");
+	left: -3px;
+	background-image: url("image/decoration/shield_baby.png");
 	background-size: 100% 100%;
 	background-repeat: no-repeat;
 	width: 20.25px;
@@ -450,8 +477,8 @@
 	color: white;
 	font-size: 17px;
 	font-family: "yuanli";
-	line-height: 24px;
-	height: 22.5px;
+	line-height: 23px;
+	height: 20.5px;
 	position: relative;
 	text-shadow: 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18, 0.3px 0px 1.8px #332c18;
 	z-index: 100;
@@ -462,17 +489,23 @@
 }
 
 .player>.hp-wrap>.hp,
-#arena.slim_player .player .hp,
-#window>.player:not(.minskin) .hp {
+#arena.slim_player.player.hp,
+#window>.player:not(.minskin).hp {
 	display: flex;
 	left: 0;
-	right: 0;
-	width: 12px;
+	right: 2;
+	width: 19.5px;
 	bottom: -8px;
 	font-size: 13px;
 	line-height: 14px;
 	flex-direction: column;
 }
+
+/*
+.player>.hp-wrap>.hp.textstyle{
+	flex-direction:column;
+}
+*/
 
 .player>.hp-wrap>.hp.hidden {
 	opacity: 1 !important;
@@ -480,18 +513,84 @@
 
 .player>.hp-wrap>.hp>div {
 	position: static;
-	margin-top: 3px;
-	width: 12px;
-	height: 12px;
+	margin-top: 5px;
+	width: 10px;
+	height: 10px;
 	line-height: 100%;
 	border: none;
+	margin-left: 4px;
 }
 
-.hp:not(.text):not(.actcount):not(.treasure)>.lost,
-.hp:not(.text):not(.actcount):not(.treasure)[data-condition="mid"]>div:not(.lost),
-.hp:not(.text):not(.actcount):not(.treasure)[data-condition="high"]>div:not(.lost),
-.hp:not(.text):not(.actcount):not(.treasure)[data-condition="low"]>div:not(.lost) {
-	transform: none !important;
+.hp:not(.text):not(.actcount):not(.treasure)[data-condition="high"]>div:not(.lost):not(.shield) {
+	background: url("image/decoration/shield_baby1.png");
+	box-shadow: none;
+	border: none;
+	background-size: 100% 100%;
+	transform: scale(1.4);
+	-webkit-filter: none;
+	border-radius: 0px;
+}
+
+.hp:not(.text):not(.actcount):not(.treasure)[data-condition="mid"]>div:not(.lost):not(.shield) {
+	background: url("image/decoration/shield_baby2.png");
+	box-shadow: none;
+	border: none;
+	background-size: 100% 100%;
+	transform: scale(1.4);
+	-webkit-filter: none;
+	border-radius: 0px;
+}
+
+.hp:not(.text):not(.actcount):not(.treasure)[data-condition="low"]>div:not(.lost):not(.shield) {
+	background: url("image/decoration/shield_baby3.png");
+	box-shadow: none;
+	border: none;
+	background-size: 100% 100%;
+	transform: scale(1.4);
+	-webkit-filter: none;
+	border-radius: 0px;
+}
+
+.hp:not(.text):not(.actcount):not(.treasure)>.lost {
+	background: url("image/decoration/shield_baby4.png");
+	box-shadow: none;
+	border: none;
+	background-size: 100% 100%;
+	transform: scale(1.4);
+	border-radius: 0px;
+}
+
+.hp:not(.text):not(.actcount):not(.treasure)>.shield {
+	background: url("image/shield.png");
+	box-shadow: none;
+	border: none;
+	background-size: 100% 100%;
+	transform: scale(1.4);
+	border-radius: 0px;
+}
+
+#arena.oldlayout .player .hp:not(.text):not(.actcount):not(.treasure)[data-condition="high"]>div:not(.lost):not(.shield) {
+	transform: scale(1.6);
+}
+
+#arena.oldlayout .player .hp:not(.text):not(.actcount):not(.treasure)[data-condition="mid"]>div:not(.lost):not(.shield) {
+	transform: scale(1.6);
+}
+
+#arena.oldlayout .player .hp:not(.text):not(.actcount):not(.treasure)[data-condition="low"]>div:not(.lost):not(.shield) {
+	transform: scale(1.6);
+}
+
+#arena.oldlayout .player .hp:not(.text):not(.actcount):not(.treasure)>.lost {
+	transform: scale(1.6);
+}
+
+#arena.oldlayout .player .hp:not(.text):not(.actcount):not(.treasure)>.shield {
+	transform: scale(1.6);
+}
+
+.button.newstyle>.hp>.text {
+	margin-left: 5px;
 }
 
 /*武将牌显示*/
@@ -791,9 +890,9 @@
 /*玩家标记显示-新样式*/
 #arena[data-player-mark-style="decade"]>.player>.dui-marks {
 	left: auto;
-	top: 34px;
+	top: 24px;
 	/*下移*/
-	right: -3px;
+	right: 70px;
 	/*左移*/
 	width: auto;
 	max-width: 80px;
@@ -807,7 +906,7 @@
 	height: 18px;
 	/*高度*/
 	white-space: nowrap;
-	background-image: url("assets/image/player_mark.png");
+	background-image: url("assets/image/player_markhs.png");
 	animation: fade-in 0.5s;
 	margin-bottom: 1px;
 	/*标记纵向间隔*/
@@ -987,29 +1086,47 @@
 
 /*玩家号位显示*/
 .player>.seat {
-	display: block;
 	position: absolute;
-	bottom: -16px;
-	width: 100%;
-	line-height: 16px;
-	color: rgb(255, 165, 0);
+	bottom: -25px;
+	width: 40%;
+	height: 8%;
+	left: 38px;
+	line-height: 15px;
 	font-family: "yuanli";
-	font-weight: bold;
-	/*字体加粗*/
-	font-size: 22px;
+	font-size: 13px;
 	text-align: center;
-	text-shadow: 0 0 2px black, 0 0 1px black;
-	white-space: nowrap;
+	color: #FFE5B4;
+	background: url("image/decoration/card_countbj.png");
+	background-size: 100% 100%;
+	text-shadow: 0 0 2px #000,
+		0 0 5px #000,
+		0 0 10px #000;
 	z-index: 89;
 	pointer-events: none;
+	transform: scale(1.2);
 }
 
+/* 主玩家座位号位置调整 */
 .player[data-position="0"]>.seat {
-	bottom: -10px;
+	bottom: 190px;
 }
 
+/* 隐藏原有座位号 */
 .player>.name_seat {
 	display: none !important;
+}
+
+/* 所有位置添加"号位"文本 */
+.player[data-position="0"]>.seat::after,
+.player[data-position="1"]>.seat::after,
+.player[data-position="2"]>.seat::after,
+.player[data-position="3"]>.seat::after,
+.player[data-position="4"]>.seat::after,
+.player[data-position="5"]>.seat::after,
+.player[data-position="6"]>.seat::after,
+.player[data-position="7"]>.seat::after,
+.player[data-position="8"]>.seat::after {
+	content: "";
 }
 
 /*玩家手牌数显示*/
@@ -1017,12 +1134,12 @@
 	position: absolute;
 	top: auto;
 	right: auto;
-	left: -12px;
-	bottom: -6px;
+	left: -1px;
+	bottom: -2px;
 	line-height: 28px;
-	height: 28px;
-	width: 28px;
-	background: url("image/decoration/card_count5.png");
+	height: 23px;
+	width: 26px;
+	background: url("image/decoration/card_count15.png");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: 0 -1px;
@@ -1056,11 +1173,11 @@
 .player>.identity,
 #arena>.player:not(.minskin)>.identity {
 	left: auto;
-	top: 1px;
+	top: 0px;
 	right: 1px;
 	width: 29px;
 	height: 31px;
-	line-height: 31px;
+	line-height: 41px;
 	font-size: 31px;
 	background-size: 100% 100%;
 	background-repeat: no-repeat;

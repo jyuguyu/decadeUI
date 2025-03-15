@@ -64,13 +64,13 @@
 /*---------新版小配件--------*/
 .jiluButton_new {
 	display: block;
-	--w: 90px;
-	--h: 45px;
+	--w: 105px;
+	--h: 35px;
 	width: var(--w);
 	height: var(--h);
 	position: absolute;
-	bottom: 85%;
-	left: 1%;
+	bottom: 83.5%;
+	left: 0.6%;
 	background-image: url("./images/uibutton/jiluOL.png");
 	background-size: 100% 100%;
 	border-radius: 1px;
@@ -80,8 +80,8 @@
 
 .xiaolianButton_new {
 	display: block;
-	--w: 77px;
-	--h: 45px;
+	--w: 90px;
+	--h: 60px;
 	width: var(--w);
 	height: var(--h);
 	position: absolute;
@@ -95,8 +95,8 @@
 
 .huanfuButton_new {
 	display: block;
-	--w: 80px;
-	--h: 45px;
+	--w: 90px;
+	--h: 60px;
 	width: var(--w);
 	height: var(--h);
 	position: absolute;
@@ -228,17 +228,17 @@
 }
 
 .cardRoundNumber>.cardPileNumber {
-	left: 20px;
+	left: 15px;
 	top: -15px;
-	--w: 85px;
-	--h: calc(var(--w) * 173 / 157);
+	--w: 100px;
+	--h: calc(var(--w) * 148 / 157);
 	width: var(--w);
 	height: var(--h);
 	background-image: url("./images/uibutton/cardbackOL.png");
 	background-size: 100% 100%;
 	background-color: transparent;
 	position: relative;
-	z-index: 2;
+	z-index: 1;
 }
 
 .cardRoundNumber>.cardPileNumber>span {
@@ -298,247 +298,6 @@
 	-webkit-text-fill-color: transparent;
 	text-shadow: none !important;
 }
-
-/*身份任务主公*/
-.Tipzhugong {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipzhugong.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务忠臣*/
-.Tipzhongchen {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipzhongchen.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务反贼*/
-.Tipfanzei {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipfanzei.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务内奸*/
-.Tipneijian {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipneijian.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务地主*/
-.Tipdizhu {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipdizhu.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务农民*/
-.Tipnongmin {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipnongmin.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务虎队*/
-.Tiphu {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/hu.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务魏国*/
-.Tipweiguo {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipweiguo.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务蜀国*/
-.Tipshuguo {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipshuguo.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务吴国*/
-.Tipwuguo {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipwuguo.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务晋国*/
-.Tipjinguo {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipjinguo.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务野心家*/
-.Tipyexinjia {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipye.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务群雄*/
-.Tipqunxiong {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipqunxiong.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*身份任务未选择*/
-.Tipundefined {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipyinbi.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
-/*容错选项*/
-.Tipweizhi {
-	position: fixed;
-	background-color: none;
-	background-repeat: no-repeat;
-	background-image: url("./images/SFTS/Tipweizhi.png") !important;
-	background-size: 100% 100%;
-	--w: 269px;
-	--h: calc(var(--w) * 214 / 600);
-	/*高和长*/
-	width: var(--w);
-	height: var(--h);
-	left: calc(100% - 400.5px);
-	bottom: calc(100% - 145px);
-}
-
 /*左手模式*/
 /*换肤*/
 .huanfuButton_new1 {

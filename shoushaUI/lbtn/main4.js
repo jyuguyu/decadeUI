@@ -1,80 +1,212 @@
 app.import(function(lib, game, ui, get, ai, _status, app) {
 	lib.arenaReady.push(function() {
+		game.ui_identityShow_update = function() {
+			var identityShow = game.ui_identityShow; /*图层1*/
+			var identityShowx = game.ui_identityShowx; /*图层2 在图层1下面*/
+			var str = "";
+			if (lib.config.mode == "guozhan" || (lib.config.mode == "versus" && get.config(
+					"versus_mode") == "siguo") || (lib.config.mode == "versus" && get.config(
+					"versus_mode") == "jiange")) {
+				var unknown = game.countPlayer(function(current) {
+					return current.identity == "unknown";
+				});
+				var wei = game.countPlayer(function(current) {
+					return current.identity == "wei";
+				});
+				var shu = game.countPlayer(function(current) {
+					return current.identity == "shu";
+				});
+				var wu = game.countPlayer(function(current) {
+					return current.identity == "wu";
+				});
+				var qun = game.countPlayer(function(current) {
+					return current.identity == "qun";
+				});
+				var jin = game.countPlayer(function(current) {
+					return current.identity == "jin";
+				});
+				var ye = game.countPlayer(function(current) {
+					return current.identity == "ye";
+				});
+				var key = game.countPlayer(function(current) {
+					return current.identity == "key";
+				});
+				if (unknown > 0) str += '<font color="#FFFFDE">' + get.translation("unknown") +
+					"</font>" + unknown + "  ";
+				if (wei > 0) str += '<font color="#0075FF">' + get.translation("wei") + "</font>" +
+					wei + "  ";
+				if (shu > 0) str += '<font color="#ff0000">' + get.translation("shu") + "</font>" +
+					shu + "  ";
+				if (wu > 0) str += '<font color="#00ff00">' + get.translation("wu") + "</font>" +
+					wu + "  ";
+				if (qun > 0) str += '<font color="#ffff00">' + get.translation("qun") + "</font>" +
+					qun + "  ";
+				if (jin > 0) str += '<font color="#9e00ff">' + get.translation("jin") + "</font>" +
+					jin + "  ";
+				if (ye > 0) str += '<font color="#9e00ff">' + get.translation("ye") + "</font>" +
+					ye + "  ";
+				if (key > 0) str += '<font color="#9e00ff">' + get.translation("key") + "</font>" +
+					key + "  ";
+				str += '<br>'
+			} else if (lib.config.mode == "versus" && get.config("versus_mode") == "two" || lib
+				.config.mode == 'doudizhu') {} else {
+				var zhu = game.countPlayer(function(current) {
+					return current.identity == "zhu" || current.identity == "rZhu" ||
+						current.identity == "bZhu";
+				});
+				var zhong = game.countPlayer(function(current) {
+					return current.identity == "zhong" || current.identity == "rZhong" ||
+						current.identity == "bZhong" || current.identity == "mingzhong";
+				});
+				var fan = game.countPlayer(function(current) {
+					return current.identity == "fan" || current.identity == "rYe" || current
+						.identity == "bYe";
+				});
+				var nei = game.countPlayer(function(current) {
+					return current.identity == "nei" || current.identity == "rNei" ||
+						current.identity == "bNei";
+				});
+				if (zhu > 0) str += '<font color="#ae5f35">' + get.translation("zhu") + "</font>" +
+					zhu + "  ";
+				if (zhong > 0) str += '<font color="#e9d765">' + get.translation("zhong") +
+					"</font>" + zhong + "  ";
+				if (fan > 0) str += '<font color="#87a671">' + get.translation("fan") + "</font>" +
+					fan + "  ";
+				if (nei > 0) str += '<font color="#9581c4">' + get.translation("nei") + "</font>" +
+					nei;
+				str += '<br>'
+			}
+
+			str += '<span style="color: orange;">' + get.translation(game.me.identity +
+				"_win_option") + '</span>';
+
+			identityShow.innerHTML =
+				'<span style="font-family:shousha; font-size: 14.0px;font-weight:500;text-align: right; line-height: 20px; color: #C1AD92;text-shadow:none; max-width: 200px; word-wrap: break-word;">' +
+				str + "</span>"; /*图层1*/
+			identityShowx.innerHTML =
+				'<span style="font-family:shousha; font-size: 14.0px;font-weight:500;text-align: right; line-height: 20px; color: #2D241B; -webkit-text-stroke: 2.7px #322B20;text-shadow:none; max-width: 200px; word-wrap: break-word;">' +
+				str + "</span>"; /*图层2*/
+
+		};
+
+		game.ui_identityShow_init = function() {
+			if (game.ui_identityShow == undefined) {
+				game.ui_identityShow = ui.create.div("", "身份加载中......");
+				game.ui_identityShow.style.top = "-6.5px"; /*图层1 上下位置如果需要改动 两个图层都要改*/
+				game.ui_identityShow.style.left = "23.5px"; /*图层2 左右位置如果需要改动 两个图层都要改*/
+				game.ui_identityShow.style["z-index"] = 4;
+				game.ui_identityShow.style.backgroundColor = "rgba(0, 0, 0, 0.1)"; /* 透明的黑色背景 */
+				game.ui_identityShow.style.borderRadius = "3px"; /* 圆角 */
+				game.ui_identityShow.style.padding = "0px 10px"; /* 内边距 */
+				ui.arena.appendChild(game.ui_identityShow);
+			}
+			if (game.ui_identityShowx == undefined) {
+				game.ui_identityShowx = ui.create.div("", "身份加载中......");
+				game.ui_identityShowx.style.top = "-6.5px"; /*图层2*/
+				game.ui_identityShowx.style.left = "23.5px"; /*图层2*/
+				game.ui_identityShowx.style["z-index"] = 3;
+				game.ui_identityShowx.style.backgroundColor = "rgba(0, 0, 0, 0.1)"; /* 透明的黑色背景 */
+				game.ui_identityShowx.style.borderRadius = "3px"; /* 圆角 */
+				game.ui_identityShowx.style.padding = "0px 10px"; /* 内边距 */
+				ui.arena.appendChild(game.ui_identityShowx);
+			}
+
+		};
+		if (lib.config.mode == "identity" || lib.config.mode == "guozhan" || lib.config.mode ==
+			"versus" || lib.config.mode == "single" || lib.config.mode == "boss" || lib.config.mode ==
+			"doudizhu") {
+			var translate = {};
+			switch (lib.config.mode) {
+				case "single":
+					translate = {
+						zhu: "<center>击败对手</center>",
+						fan: "<center>击败对手</center>",
+						undefined: "<center>未选择阵营</center>",
+					};
+					break;
+				case "boss":
+					translate = {
+						zhu: "<center>击败盟军</center>",
+						cai: "<center>击败神祇</center>",
+						undefined: "<center>未选择阵营</center>",
+					};
+					break;
+				case "guozhan":
+					translate = {
+						undefined: "<center>未选择势力</center>",
+						unknown: "<center>保持隐蔽</center>",
+						ye: "<center>击败场上所有其他角色</center>",
+						key: "<center>击败所有非键势力角色</center>",
+					};
+					for (var i = 0; i < lib.group.length; i++) {
+						translate[lib.group[i]] = "<center>击败所有非" + get.translation(lib.group[i]) +
+							"势力角色</center>";
+					}
+					break;
+				case "versus":
+					if (get.config("versus_mode") == "standard") {
+						return;
+					}
+					if (get.config("versus_mode") == "two") {
+						translate = {
+							undefined: "<center>" + (get.config("replace_character_two") ?
+								"击败所有敌方" : "协同队友击败所有敌人") + "</center>",
+						};
+					}
+					if (get.config("versus_mode") == "jiange") {
+						translate = {
+							wei: "<center>击败所有蜀势力角色</center>",
+							shu: "<center>击败所有魏势力角色</center>",
+						};
+					}
+					if (get.config("versus_mode") == "siguo") {
+						for (var i = 0; i < lib.group.length; i++) {
+							translate[lib.group[i]] = "<center>获得龙船或击败非" + get.translation(lib.group[
+								i]) + "势力角色</center>";
+						}
+					}
+					break;
+				case "doudizhu":
+					translate = {
+						zhu: "<center>击败所有农民</center>",
+						fan: "<center>击败地主</center>",
+						undefined: "<center>未选择阵营</center>",
+					};
+					break;
+				default:
+					translate = {
+						rZhu: "<center>击败冷方主公与所有野心家</center>",
+						rZhong: "<center>保护暖方主公击败<br>冷方主公与所有野心家</center></small>",
+						rYe: "<center>联合冷方野心家击败其他角色</center>",
+						rNei: "<center>协助冷方主公击败<br>暖方主公与所有野心家</center></small>",
+						bZhu: "<center>击败暖方主公与<br>所有野心家</center></small>",
+						bZhong: "<center>保护冷方主公击败<br>暖方主公与所有野心家</center></small>",
+						bYe: "<center>联合暖方野心家<br>击败其他角色</center></small>",
+						bNei: "<center>协助暖方主公击败<br>冷方主公与所有野心家</center></small>",
+						zhu: "<center>击败反贼和内奸</center>",
+						zhong: "<center>保护主公，击败<br>反贼内奸</center></small>",
+						fan: "<center>击败主公</center>",
+						nei: "<center>击败所有角色，<br>最后击败主公</center></small>",
+						mingzhong: "<center>保护主公，击败<br>反贼内奸</center></small>",
+						undefined: "<center>击败所有敌方</center>",
+					};
+
+					break;
+			}
+			for (var i in translate) {
+				lib.translate[i + "_win_option"] = translate[i];
+			}
+			game.ui_identityShow_init();
+			setInterval(function() {
+				game.ui_identityShow_update();
+			}, 1000);
+		}
 		//更新轮次
 		var originUpdateRoundNumber = game.updateRoundNumber;
 		game.updateRoundNumber = function() {
 			originUpdateRoundNumber.apply(this, arguments);
 			if (ui.cardRoundTime) ui.cardRoundTime.updateRoundCard();
 		};
-		if (lib.config.mode == "identity" || lib.config.mode == "doudizhu" || lib.config.mode ==
-			"guozhan" || lib.config.mode == "versus" || lib.config.mode == "single" || lib.config
-			.mode == "martial") {
-			var wenhao = ui.create.node("ismg");
-			wenhao.src = lib.assetURL + "extension/十周年UI/shoushaUI/lbtn/images/CD/new_wenhao.png";
-			wenhao.style.cssText =
-				"display: block;width: 40px;height: 29px;position: absolute;bottom: calc(100% - 55px);left: calc(100% - 159.5px);background-color: transparent;z-index:3";
-
-			//--------------//
-			if (lib.config.mode == "identity" || lib.config.mode == "doudizhu" || lib.config.mode ==
-				"versus" || lib.config.mode == "guozhan") {
-				wenhao.onclick = function() {
-					var popuperContainer = ui.create.div(".popup-container", ui.window);
-					game.playAudio("../extension/十周年UI/shoushaUI/lbtn/images/SSCD/label.mp3");
-
-					if (lib.config.mode == "identity") {
-						if (game.me.identity == "zhu") {
-							ui.create.div(".Tipzhugong", popuperContainer);
-						} else if (game.me.identity == "zhong") {
-							ui.create.div(".Tipzhongchen", popuperContainer);
-						} else if (game.me.identity == "fan") {
-							ui.create.div(".Tipfanzei", popuperContainer);
-						} else if (game.me.identity == "nei") {
-							ui.create.div(".Tipneijian", popuperContainer);
-						}
-					}
-					if (lib.config.mode == "doudizhu") {
-						if (game.me.identity == "zhu") {
-							ui.create.div(".Tipdizhu", popuperContainer);
-						} else if (game.me.identity == "fan") {
-							ui.create.div(".Tipnongmin", popuperContainer);
-						}
-					}
-
-					if (lib.config.mode == "versus") {
-						ui.create.div(".Tiphu", popuperContainer);
-					}
-
-					if (lib.config.mode == "guozhan") {
-						if (game.me.group == "unknown" || game.me.group == "undefined") {
-							//未选择身份势力
-							ui.create.div(".Tipundefined", popuperContainer);
-						} else if (game.me.group == "wei") {
-							ui.create.div(".Tipweiguo", popuperContainer);
-						} else if (game.me.group == "shu") {
-							ui.create.div(".Tipshuguo", popuperContainer);
-						} else if (game.me.group == "wu") {
-							ui.create.div(".Tipwuguo", popuperContainer);
-						} else if (game.me.group == "qun") {
-							ui.create.div(".Tipqunxiong", popuperContainer);
-						} else if (game.me.group == "jin") {
-							ui.create.div(".Tipjinguo", popuperContainer);
-						} else if (game.me.group == "ye") {
-							ui.create.div(".Tipyexinjia", popuperContainer);
-						}
-						//容错选项
-						else {
-							ui.create.div(".Tipweizhi", popuperContainer);
-						}
-					}
-					popuperContainer.addEventListener("click", event => {
-						game.playAudio(
-							"../extension/十周年UI/shoushaUI/lbtn/images/SSCD/caidan.mp3");
-						popuperContainer.delete(200);
-					});
-				};
-			}
-			document.body.appendChild(wenhao);
-		}
 
 		var head = ui.create.node("ismg");
 		head.src = lib.assetURL + "extension/十周年UI/shoushaUI/lbtn/images/uibutton/yinying.png";
@@ -155,7 +287,7 @@ app.import(function(lib, game, ui, get, ai, _status, app) {
 		//左手整理手牌按钮位置
 		if (lib.config["extension_十周年UI_rightLayout"] == "on") {
 			head.style.cssText =
-				"display: block;--w: 80px;--h: calc(var(--w) * 81/120);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 65px);left: 30px;right:auto;background-color: transparent;z-index:2";
+				"display: block;--w: 92px;--h: calc(var(--w) * 98/138);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 80px);left: 32px;right:auto;background-color: transparent;z-index:2";
 		} else {
 			head.style.cssText =
 				"display: block;--w: 88px;--h: calc(var(--w) * 81/247);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 33px);right: calc(100% - 367.2px);background-color: transparent;z-index:2;";
@@ -461,7 +593,8 @@ app.import(function(lib, game, ui, get, ai, _status, app) {
 				node.updateRoundCard = function() {
 					var cardNumber = ui.cardPile.childNodes.length || 0;
 					var roundNumber = game.roundNumber || 0;
-					this.node.roundNumber.innerHTML = "<span>第" + game.roundNumber + "轮</span>";
+					this.node.roundNumber.innerHTML = "<span>第" + get.cnNumber(game.roundNumber) +
+						"轮</span>";
 					this.setNumberAnimation(cardNumber);
 					this.show();
 					game.addVideo("updateCardRoundTime", null, {
@@ -474,14 +607,15 @@ app.import(function(lib, game, ui, get, ai, _status, app) {
 					var item = this.node.cardPileNumber;
 					clearTimeout(item.interval);
 					if (!item._num) {
-						item.innerHTML = "<span>" + num + "</span>";
+						item.innerHTML = '<span style="font-size: 13px;">' + num + "张</span>"; // 减小字体大小
 						item._num = num;
 					} else {
 						if (item._num !== num) {
 							if (!step) step = 500 / Math.abs(item._num - num);
 							if (item._num > num) item._num--;
 							else item._num++;
-							item.innerHTML = "<span>" + item._num + "</span>";
+							item.innerHTML = '<span style="font-size: 13px;">' + item._num +
+							"张</span>"; // 减小字体大小
 							if (item._num !== num) {
 								item.interval = setTimeout(function() {
 									node.setNumberAnimation(num, step);
@@ -490,6 +624,7 @@ app.import(function(lib, game, ui, get, ai, _status, app) {
 						}
 					}
 				};
+
 
 				ui.time4 = node.node.time;
 				ui.time4.starttime = get.utc();

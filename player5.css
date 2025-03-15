@@ -711,8 +711,6 @@
 	-webkit-clip-path: url(#duor-clip);
 }
 
-border-radius: 8px;
-
 /* 默认状态（关闭动皮露头时）的样式 */
 .player>.dynamic-wrap {
 	display: block;
@@ -1163,10 +1161,6 @@ border-radius: 8px;
 .player[data-position="7"]>.seat::after,
 .player[data-position="8"]>.seat::after {
 	content: "";
-}
-
-.player>.name_seat {
-	display: none !important;
 }
 
 /*玩家手牌数显示*/
