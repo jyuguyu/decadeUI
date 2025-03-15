@@ -212,111 +212,67 @@
 .player>.camp-wrap[data-camp="wei"]>.camp-back {
 	background: rgb(33, 79, 117);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="shu"]>.camp-back {
 	background: rgb(124, 21, 28);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="wu"]>.camp-back {
 	background: rgb(24, 94, 24);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="qun"]>.camp-back {
 	background: rgb(129, 124, 102);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="shen"]>.camp-back {
 	background: rgb(97, 87, 15);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="shen2"]>.camp-back {
 	background: rgb(112, 52, 126);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="ye"]>.camp-back {
 	background: rgb(112, 52, 126);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="key"]>.camp-back {
 	background: rgb(147, 132, 183);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="western"]>.camp-back {
 	background: rgb(93, 44, 105);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="jin"]>.camp-back {
 	background: rgb(112, 52, 126);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 .player>.camp-wrap[data-camp="daqin"]>.camp-back {
 	background: rgb(100, 100, 100);
 	/* 只使用第一个颜色值 */
-	box-shadow:
-		inset 0 0 10px rgba(0, 0, 0, 0.8),
-		/* 内部发光 */
-		0 0 15px rgba(0, 0, 0, 0.6);
-	/* 外部阴影 */
+	
 }
 
 
@@ -1208,7 +1164,7 @@
 	left: auto;
 	top: -12px;
 	right: -10px;
-	width: 35px;
+	width: 40px;
 	height: 38px;
 	line-height: 31px;
 	font-size: 31px;

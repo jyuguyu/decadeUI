@@ -1,39 +1,30 @@
 "use strict";
 decadeModule.import(function(lib, game, ui, get, ai, _status) {
-	//神势力选择
-	lib.skill._group = {
-		charlotte: true,
-		ruleSkill: true,
-		trigger: {
-			global: "gameStart",
-			player: "enterGame",
-		},
-		forced: true,
-		popup: false,
-		silent: true,
-		priority: 520,
-		firstDo: true,
-		direct: true,
-		filter(event, player) {
-			// 检查是否有特定技能和状态
-			if (player.hasSkill("mbjsrgxiezheng")) return false;
-			// 检查游戏模式
-			if (!["doudizhu", "versus"].includes(get.mode())) return false;
-			// 检查角色类型
-			if (lib.character[player.name1][1] === "shen") return true;
-		},
-		content() {
-			"step 0";
-			const name = player.name1;
-			let options;
-			options = lib.group.filter(group => group !== "shen");
-			player.chooseControl(options).set("prompt", "请选择神武将的势力");
-			("step 1");
-			if (result.control) {
-				player.changeGroup(result.control);
+	//势力选择
+	if (lib.config["extension_十周年UI_shiliyouhua"]) {
+		Object.defineProperty(lib, 'group', {
+			get: () => ['wei', 'shu', 'wu', 'qun', 'jin'],
+			set: () => {}
+		});
+		lib.skill._slyh = {
+			trigger: {
+				global: 'gameStart',
+				player: 'enterGame'
+			},
+			forced: true,
+			popup: false,
+			silent: true,
+			priority: Infinity,
+			filter: (_, player) => player.group && !lib.group.contains(player.group),
+			content: function() {
+				player.chooseControl(lib.group.slice(0, 5))
+					.set('ai', () => lib.group.slice(0, 5).randomGet())
+					.set('prompt', '请选择你的势力');
+				player.group = result.control;
 			}
-		},
+		};
 	};
+
 
 	//武将背景
 	if (lib.config["extension_十周年UI_wujiangbeijing"]) {

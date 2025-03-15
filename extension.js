@@ -4324,7 +4324,7 @@ export default async function() {
 										if (lib.config.extension_十周年UI_newDecadeStyle ==
 											"onlineUI") {
 											image.src = decadeUIPath +
-												"image/decoration/identity_" + filename +
+												"image/decorations/identity2_" + filename +
 												".png";
 										} else if (lib.config.extension_十周年UI_newDecadeStyle ==
 											"babysha") {
@@ -11970,7 +11970,12 @@ export default async function() {
 			wujiangbeijing: {
 				name: "武将背景",
 				init: false,
-				intro: "开启后，单双将和国战模式将用设置好的武将背景，但是会与武将信息冲突",
+				intro: "开启后，单双将和国战模式将用设置好的武将背景",
+			},
+			shiliyouhua: {
+				name: "势力优化",
+				init: false,
+				intro: "开启后，非魏蜀吴群晋势力的角色将会重新选择势力",
 			},
 			borderLevel: {
 				name: "玩家边框等阶",
@@ -12413,6 +12418,7 @@ export default async function() {
 				"添加私货meihua.js，神选势力交互音效等",
 				"新增OLUI&欢杀UI，感谢群友提供的素材",
 				"添加全选按钮 by咪咪狗奇妙工具",
+				"整合活动群群主lp提供的$throw函数优化",
 				];
 				return `<a href=${pack.diskURL}>点击前往十周年Github仓库</a><br><p style="color:rgb(210,210,000); font-size:12px; line-height:14px; text-shadow: 0 0 2px black;">${log.join("<br>•")}</p>`;
 			})(pack);
