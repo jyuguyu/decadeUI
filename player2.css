@@ -1190,8 +1190,8 @@
 	font-family: "HYZLSJ";
 	text-align: center;
 	white-space: nowrap;
-	font-weight: bold;
-	-webkit-text-stroke: 0.2px #3e362a;
+	font-weight: 500;
+	-webkit-text-stroke: 0.7px #3e362a;
 	text-shadow: none;
 	background: linear-gradient(180deg, #f5df88 16%, #ab8d35 60%);
 	/*-webkit-background-clip: text;*/

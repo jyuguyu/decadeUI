@@ -1194,7 +1194,10 @@
 	z-index: 89;
 	transform: none;
 	transition: none;
+	border-radius: 0;
+	/* 去掉圆角 */
 }
+
 
 .player>.identity[data-color="rYe"] {
 	text-shadow: rgba(255, 120, 0, 1) 0 0 2px, rgba(255, 120, 0, 1) 0 0 5px, rgba(255, 120, 0, 1) 0 0 10px, rgba(255, 120, 0, 1) 0 0 10px, rgba(255, 120, 0, 1) 0 0 20px, rgba(255, 120, 0, 1) 0 0 20px, black 0 0 1px;
