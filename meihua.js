@@ -1,33 +1,35 @@
 "use strict";
-decadeModule.import(function(lib, game, ui, get, ai, _status) {
+decadeModule.import(function (lib, game, ui, get, ai, _status) {
 	//势力选择
 	if (lib.config["extension_十周年UI_shiliyouhua"]) {
-		Object.defineProperty(lib, 'group', {
-			get: () => ['wei', 'shu', 'wu', 'qun', 'jin'],
-			set: () => {}
+		Object.defineProperty(lib, "group", {
+			get: () => ["wei", "shu", "wu", "qun", "jin"],
+			set: () => {},
 		});
 		lib.skill._slyh = {
 			trigger: {
-				global: 'gameStart',
-				player: 'enterGame'
+				global: "gameStart",
+				player: "enterGame",
 			},
 			forced: true,
 			popup: false,
 			silent: true,
 			priority: Infinity,
-			filter: (_, player) => player.group && !lib.group.contains(player.group),
-			content: function() {
-				"step 0"
-				var list = lib.group.slice(0, 5);
-				player.chooseControl(list).set('ai', function() {
-					return list.randomGet();
-				}).set('prompt', '请选择你的势力');
-				"step 1"
-				player.group = result.control;
-			}
+			filter: (_, player) => player.group && !lib.group.includes(player.group),
+			async content(event, trigger, player) {
+				const list = lib.group.slice(0, 5);
+				const result = await player
+					.chooseControl(list)
+					.set("ai", () => get.event().controls.randomGet())
+					.set("prompt", "请选择你的势力")
+					.forResult();
+				if (result?.control) {
+					player.group = result.control;
+					player.node.name.dataset.nature = get.groupnature(result.control);
+				}
+			},
 		};
-	};
-
+	}
 
 	//武将背景
 	if (lib.config["extension_十周年UI_wujiangbeijing"]) {
@@ -45,8 +47,7 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					if (!player) return;
 					// 检查游戏模式和双将设置
 					const mode = get.mode();
-					const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[
-						mode].double_character;
+					const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode].double_character;
 					if (mode === "guozhan" || isDoubleCharacter) {
 						// 国战模式或开启双将时使用bj2
 						player.setAttribute("data-mode", "guozhan");
@@ -65,10 +66,9 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			game.addGlobalSkill("_wjBackground");
 		}
 		// 在游戏开始时检查并设置背景
-		lib.arenaReady.push(function() {
+		lib.arenaReady.push(function () {
 			const mode = get.mode();
-			const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode]
-				.double_character;
+			const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode].double_character;
 			if (mode === "guozhan" || isDoubleCharacter) {
 				document.body.setAttribute("data-mode", "guozhan");
 			} else {
@@ -80,6 +80,7 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 	// 全选按钮功能 by奇妙工具做修改
 	lib.hooks.checkBegin.add("Selectall", () => {
 		const event = get.event();
+		if (!event?.isMine) return;
 		const needMultiSelect = event.selectCard?.[1] > 1;
 		// 创建或移除全选按钮
 		if (needMultiSelect && !ui.Selectall) {
@@ -92,21 +93,20 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 				ui.selected.cards?.forEach(card => card.updateTransform(true));
 			});
 		} else if (!needMultiSelect) {
-			removeCardQX();
+			if (ui.Selectall) {
+				ui.Selectall.remove();
+				delete ui.Selectall;
+			}
 		}
 	});
 	lib.hooks.uncheckBegin.add("Selectall", () => {
 		if (get.event().result?.bool) {
-			removeCardQX();
+			if (ui.Selectall) {
+				ui.Selectall.remove();
+				delete ui.Selectall;
+			}
 		}
 	});
-	// 抽取移除按钮的公共函数
-	const removeCardQX = () => {
-		if (ui.Selectall) {
-			ui.Selectall.remove();
-			delete ui.Selectall;
-		}
-	};
 
 	// 局内交互优化
 	if (lib.config["extension_十周年UI_jiaohuyinxiao"]) {
@@ -182,11 +182,10 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			game.addGlobalSkill("_phaseStartAudio");
 		}
 		// 处理按钮点击音效
-		document.body.addEventListener("mousedown", function(e) {
+		document.body.addEventListener("mousedown", function (e) {
 			const target = e.target;
 			if (target.closest("#dui-controls")) {
-				if (target.classList.contains("control") || target.parentElement.classList.contains(
-						"control")) {
+				if (target.classList.contains("control") || target.parentElement.classList.contains("control")) {
 					game.playAudio("..", "extension", "十周年UI", "audio/BtnSure");
 				}
 			}
@@ -198,7 +197,7 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			}
 		});
 		// 处理按钮缩放效果
-		document.body.addEventListener("mousedown", function(e) {
+		document.body.addEventListener("mousedown", function (e) {
 			const control = e.target.closest(".control");
 			if (control && !control.classList.contains("disabled")) {
 				control.style.transform = "scale(0.95)";
