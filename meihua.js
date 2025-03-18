@@ -1,5 +1,5 @@
 "use strict";
-decadeModule.import(function (lib, game, ui, get, ai, _status) {
+decadeModule.import(function(lib, game, ui, get, ai, _status) {
 	//势力选择
 	if (lib.config["extension_十周年UI_shiliyouhua"]) {
 		Object.defineProperty(lib, "group", {
@@ -47,7 +47,8 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					if (!player) return;
 					// 检查游戏模式和双将设置
 					const mode = get.mode();
-					const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode].double_character;
+					const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[
+						mode].double_character;
 					if (mode === "guozhan" || isDoubleCharacter) {
 						// 国战模式或开启双将时使用bj2
 						player.setAttribute("data-mode", "guozhan");
@@ -66,9 +67,10 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			game.addGlobalSkill("_wjBackground");
 		}
 		// 在游戏开始时检查并设置背景
-		lib.arenaReady.push(function () {
+		lib.arenaReady.push(function() {
 			const mode = get.mode();
-			const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode].double_character;
+			const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode]
+				.double_character;
 			if (mode === "guozhan" || isDoubleCharacter) {
 				document.body.setAttribute("data-mode", "guozhan");
 			} else {
@@ -182,10 +184,11 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			game.addGlobalSkill("_phaseStartAudio");
 		}
 		// 处理按钮点击音效
-		document.body.addEventListener("mousedown", function (e) {
+		document.body.addEventListener("mousedown", function(e) {
 			const target = e.target;
 			if (target.closest("#dui-controls")) {
-				if (target.classList.contains("control") || target.parentElement.classList.contains("control")) {
+				if (target.classList.contains("control") || target.parentElement.classList.contains(
+						"control")) {
 					game.playAudio("..", "extension", "十周年UI", "audio/BtnSure");
 				}
 			}
@@ -197,7 +200,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			}
 		});
 		// 处理按钮缩放效果
-		document.body.addEventListener("mousedown", function (e) {
+		document.body.addEventListener("mousedown", function(e) {
 			const control = e.target.closest(".control");
 			if (control && !control.classList.contains("disabled")) {
 				control.style.transform = "scale(0.95)";
