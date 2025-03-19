@@ -382,93 +382,48 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					if (player.classList.contains("unseen2") && player !== game.me) {
 						name2 = "unknown";
 					}
-					/*//原版
-					          //主将立绘
-					          var playerSkin;
-					          if(name != 'unknown'){
-					            playerSkin = player.style.backgroundImage;
-					            if (!playerSkin) playerSkin = player.childNodes[0].style.backgroundImage;
-					            skin1.style.backgroundImage = playerSkin;
-					          }
-					          else {
-					            var url = extensionPath + 'character/images/unknown.png';
-					            skin1.style.backgroundImage = 'url("' + url + '")';
-					          }
-					          //副将立绘
-					          if (name2) {
-					            var playerSkin2;
-					            if (name2 != 'unknown') {
-					              playerSkin2 = player.childNodes[1].style.backgroundImage;
-					              skin2.style.backgroundImage = playerSkin2;
-					            }
-					            else {
-					              var url = extensionPath + 'character/images/unknown.png';
-					              skin2.style.backgroundImage = 'url("' + url + '")';
-					            }
-					          }
-					          */
-					//点点大佬修改版(读取立绘，无立绘读取原画)
 					//主将立绘
 					var playerSkin;
 					if (name != "unknown") {
-						// 尝试从lihui文件夹读取，如果不存在则使用原始路径
-						var lihuiPath = lib.assetURL + "image/lihui/" + name + ".jpg";
-						var originalPath = player.style.backgroundImage;
-						// 检查lihui图片是否存在
-						var img = new Image();
-						img.onload = function () {
-							playerSkin = 'url("' + lihuiPath + '")';
-							skin1.style.backgroundImage = playerSkin;
-							skin1.style.cssText += `
-                                background-size: auto 100% !important;
-                                background-position: center top !important;
-                                transform: scale(1);
-                                transform-origin: center top;
-                            `;
-						};
-						img.onerror = function () {
-							// lihui图片不存在，使用原始路径
-							playerSkin = player.style.backgroundImage;
-							if (!playerSkin) playerSkin = player.childNodes[0].style.backgroundImage;
+						playerSkin = player.style.backgroundImage;
+						if (!playerSkin) playerSkin = player.childNodes[0].style.backgroundImage;
+						let originalPath = "";
+						if (playerSkin.indexOf('url("') == 0) {
+							originalPath = playerSkin.slice(5, playerSkin.indexOf('")'));
+						} else if (playerSkin.indexOf("url('") == 0) {
+							originalPath = playerSkin.slice(5, playerSkin.indexOf("')"));
+						}
+						let testImg = new Image();
+						testImg.onerror = function () {
 							skin1.style.backgroundImage = playerSkin;
 						};
-						img.src = lihuiPath;
+						testImg.onload = function () {
+							skin1.style.backgroundImage = 'url("' + this.src + '")';
+						};
+						testImg.src = originalPath.replace(/image\/character/, "image/lihui");
 					} else {
 						var url = extensionPath + "character/images/unknown.png";
 						skin1.style.backgroundImage = 'url("' + url + '")';
 					}
-
 					//副将立绘
 					if (name2) {
 						var playerSkin2;
 						if (name2 != "unknown") {
-							// 尝试从lihui文件夹读取，如果不存在则使用原始路径
-							var lihuiPath2 = lib.assetURL + "image/lihui/" + name2 + ".png";
-							var originalPath2 = lib.assetURL + "image/character/" + name2 + ".jpg";
-							// 检查lihui图片是否存在
-							var img2 = new Image();
-							img2.onload = function () {
-								playerSkin2 = 'url("' + lihuiPath2 + '")';
+							playerSkin2 = player.childNodes[1].style.backgroundImage;
+							let originalPath = "";
+							if (playerSkin2.indexOf('url("') == 0) {
+								originalPath = playerSkin2.slice(5, playerSkin2.indexOf('")'));
+							} else if (playerSkin2.indexOf("url('") == 0) {
+								originalPath = playerSkin2.slice(5, playerSkin2.indexOf("')"));
+							}
+							let testImg = new Image();
+							testImg.onerror = function () {
 								skin2.style.backgroundImage = playerSkin2;
-								skin2.style.cssText += `
-                                    background-size: auto 100% !important;
-                                    background-position: center center !important;
-                                    transform: scale(1);
-                                    transform-origin: center center;
-                                `;
 							};
-							img2.onerror = function () {
-								// lihui图片不存在，使用原始路径
-								playerSkin2 = 'url("' + originalPath2 + '")';
-								skin2.style.backgroundImage = playerSkin2;
-								skin2.style.cssText += `
-                                    background-size: auto 100% !important;
-                                    background-position: center center !important;
-                                    transform: scale(1);
-                                    transform-origin: center center;
-                                `;
+							testImg.onload = function () {
+								skin2.style.backgroundImage = 'url("' + this.src + '")';
 							};
-							img2.src = lihuiPath2;
+							testImg.src = originalPath.replace(/image\/character/, "image/lihui");
 						} else {
 							var url = extensionPath + "character/images/unknown.png";
 							skin2.style.backgroundImage = 'url("' + url + '")';
