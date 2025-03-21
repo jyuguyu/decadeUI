@@ -1498,9 +1498,11 @@ export default async function () {
 									this.queueCssAnimation("player-hurt 0.3s");
 								},
 								$throw(card, time, init, nosource, cardsetion) {
-									if (!cardsetion && cardsetion !== false && lib.config.card_animation_info) {
+									if (!cardsetion && cardsetion !== false && lib.config
+										.card_animation_info) {
 										let source = this;
-										if (["useCard", "respond"].includes(get.event().name)) source = get.player();
+										if (["useCard", "respond"].includes(get.event().name)) source = get
+											.player();
 										cardsetion = get.cardsetion(source);
 									}
 									if (typeof card == "number") {
@@ -1527,8 +1529,10 @@ export default async function () {
 									if (init !== false) {
 										if (init !== "nobroadcast") {
 											game.broadcast(
-												function (player, card, time, init, nosource, cardsetion) {
-													player.$throw(card, time, init, nosource, cardsetion);
+												function(player, card, time, init, nosource,
+												cardsetion) {
+													player.$throw(card, time, init, nosource,
+														cardsetion);
 												},
 												this,
 												card,
@@ -1542,56 +1546,13 @@ export default async function () {
 											if (get.itemtype(card) == "card") {
 												card = [card];
 											} else {
-												//虚拟牌
-												if (_status.connectMode) return;
-												var evt = _status.event;
-												if (evt && evt.card && evt.cards === card) {
-													var card0 = ui.create.card().init([evt.card.suit, evt.card.number, evt.card.name, evt.card.nature]);
-													if (evt.card.suit == "none") card0.node.suitnum.style.display = "none";
-													card0.dataset.virtualCard = true;
-													card = [card0];
-													//card0.virtualMark = ui.create.div('.virtualMark', card0);
-												}
+												return;
 											}
 										}
 										game.addVideo("throw", this, [get.cardsInfo(card), time, nosource]);
 									}
-									//出牌角度
-									var duiMod = card.duiMod && game.me == this && !nosource;
-									var hand = dui.boundsCaches.hand;
-									for (var i = 0; i < card.length; i++) {
-										let card0 = card[i];
-										let clone;
-										if (card0) {
-											clone = card0.copy("thrown");
-											if (duiMod && (card0.throwWith == "h" || card0.throwWith == "s")) {
-												clone.tx = Math.round(hand.x + card0.tx);
-												clone.ty = Math.round(hand.y + 30 + card0.ty);
-												clone.scaled = true;
-												clone.throwordered = true;
-												clone.style.transform = "translate(" + clone.tx + "px," + clone.ty + "px) scale(" + hand.cardScale + ")";
-											}
-											card0 = clone;
-										} else {
-											card0 = dui.element.create("card infohidden infoflip");
-											card0.moveTo = lib.element.card.moveTo;
-											card0.moveDelete = lib.element.card.moveDelete;
-										}
-
-										card[i] = card0;
-									}
-									if (duiMod && card.length > 2) {
-										card.sort(function (a, b) {
-											if (a.tx == undefined && b.tx == undefined) return 0;
-
-											if (a.tx == undefined) return duicfg.rightLayout ? -1 : 1;
-
-											if (b.tx == undefined) return duicfg.rightLayout ? 1 : -1;
-
-											return b.tx - a.tx;
-										});
-									}
-									for (var i = card.length - 1; i >= 0; i--) this.$throwordered2(card[i], nosource);
+									for (var i = card.length - 1; i >= 0; i--)
+										this.$throwordered2(card[i].copy('thrown'), nosource);
 									if (game.chess) {
 										this.chessFocus();
 									}

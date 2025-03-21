@@ -1,4 +1,21 @@
 app.import(function (lib, game, ui, get, ai, _status, app) {
+	window.nimade = {
+		name: "十周年UI",
+		url: lib.assetURL + "extension/十周年UI",
+		SS_ZNQ_wenyang: {
+			name: "../../../十周年UI/shoushaUI/character/SS_ZNQ_wenyang",
+		},
+		SS_DaTing_zhounianqing_beijingyanhua: {
+			name: "../../../十周年UI/shoushaUI/character/SS_DaTing_zhounianqing_beijingyanhua",
+		},
+		SS_dt_caidan: {
+			name: "../../../十周年UI/shoushaUI/character/SS_dt_caidan",
+		},
+		SS_dt_quanpingluoye: {
+			name: "../../../十周年UI/shoushaUI/character/SS_dt_quanpingluoye",
+		},
+	};
+
 	var plugin = {
 		name: "character",
 		filter: function () {
@@ -62,10 +79,10 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 				}
 
 				var container = ui.create.div(".popup-container.hidden", ui.window, function (e) {
-					if (e.target === container) {
-						container.hide();
-						game.resume2();
-					}
+					/* if (e.target === container) {
+            container.hide();
+            game.resume2();
+          }*/
 				});
 				var dialog = ui.create.div(".character-dialog.popped", container);
 				var leftPane = ui.create.div(".left", dialog);
@@ -74,12 +91,19 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 				var xing = ui.create.div(".xing", dialog);
 				var biankuangname = ui.create.div(".biankuangname", dialog);
 				var mingcheng = ui.create.div(".mingcheng", dialog);
+
 				var dengji = ui.create.div(".dengji", dialog);
+
+				/* 新增   */
+
+				/*结束*/
+
 				var createButton = function (name, parent) {
 					if (!name) return;
 					if (!lib.character[name]) return;
 					var button = ui.create.button(name, "character", parent, true);
 				};
+
 				container.show = function (player) {
 					//新加
 					var zbdialog = ui.create.div(".zbdialog", dialog);
@@ -98,13 +122,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					//dialog.classList.add('single');
 
 					(zbdialog.onclick = function () {
-						var popuperContainer = ui.create.div(
-							".popup-container",
-							{
-								background: "rgb(0,0,0,0)",
-							},
-							ui.window
-						);
+						var popuperContainer = ui.create.div(".popup-container", { background: "rgb(0,0,0,0)" }, ui.window);
 						game.playAudio("../extension/十周年UI/shoushaUI/lbtn/images/SSCD/label.mp3");
 						var zbbigdialog = ui.create.div(".zbbigdialog", popuperContainer);
 
@@ -117,18 +135,12 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 						});
 					}),
 						(caizhu.onclick = function () {
-							var popuperContainer = ui.create.div(
-								".popup-container",
-								{
-									background: "rgb(0,0,0,0)",
-								},
-								ui.window
-							);
+							var popuperContainer = ui.create.div(".popup-container", { background: "rgb(0,0,0,0)" }, ui.window);
 							game.playAudio("../extension/十周年UI/shoushaUI/lbtn/images/SSCD/label.mp3");
 
 							/* setTimeout(function(){
-							     game.playAudio('../extension/十周年UI/shoushaUI/character/SS_ZNQ_wenyang.mp3');
-							 },2000)*/
+                game.playAudio('../extension/十周年UI/shoushaUI/character/SS_ZNQ_wenyang.mp3');
+            },2000)*/
 
 							var bigdialog = ui.create.div(".bigdialog", popuperContainer);
 
@@ -137,6 +149,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							var kuangkuang3 = ui.create.div(".kuangkuang3", bigdialog);
 							var kuangkuang4 = ui.create.div(".kuangkuang4", bigdialog);
 
+							//var jingji = ui.create.div('.jingji', bigdialog);
 							var xingbie = ui.create.div(".xingbie", bigdialog);
 							var useless = ui.create.div(".useless", bigdialog);
 							var nameshutiao = ui.create.div(".nameshutiao", bigdialog);
@@ -151,8 +164,8 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							shutiao2.setBackgroundImage("extension/十周年UI/shoushaUI/character/images/shutiao.png");
 							/*新增势力*/
 							/*    var namegroup = ui.create.div('.namegroup',dialog);
-							  namegroup.setBackgroundImage('extension/十周年UI/image/decoration/name_' + group + '.png');
-							  */
+            namegroup.setBackgroundImage('extension/十周年UI/image/decoration/name_' + group + '.png');
+            */
 							//皮肤名
 							var pos1 = player.node.avatar.style.backgroundImage.lastIndexOf("/");
 							var pos2 = player.node.avatar.style.backgroundImage.lastIndexOf("\\");
@@ -168,25 +181,6 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							/*var pifuming = ui.create.div('.pifuming', bigdialog, get.translation(innerText = pfzwm+'*'+get.translation(player['name'])));*/
 							var pifuming = ui.create.div(".pifuming", bigdialog, get.translation((innerText = pfzwm)));
 							var wujiangming = ui.create.div(".wujiangming", bigdialog, get.translation(player["name"]));
-							//pifuming.innerHTML=pfzwm+'*'+get.translation(player['name']);
-							/*案例 
-							'我是昵称' + '<div style="width:16px;height:16px;position:relative;background-image: url(' + lib.assetURL + 'extension/十周年UI/我是图片啦.png); background-size: 100% 100%;"></div>'
-							*/
-							/*玩家名字*/
-							/*原版
-							       var wanjiaming = ui.create.div('.wanjiaming', bigdialog, player === game.me ? lib.config.connect_nickname : get.translation(innerText = num = ["氪金抽66", "卡宝真可爱", "蒸蒸日上", "√卡视我如父", "麒麟弓免疫枸杞", "坏可宣（老坏批）", "六千大败而归",
-							              "开局酒古锭", "遇事不决刷个乐", "见面两刀喜相逢", "改名出66", "时代的六万五", "韩旭", "司马长衫", "ogx",
-							              "狗卡不如无名杀", "王八万", "一拳兀突骨", "开局送神将", "丈八二桃", "装甲车车", "等我喝口酒", "Samuri", "马",
-							              "Log-Frunki", "aoe银钱豹", "没有丈八就托管", "无中yyds", "给咸鱼鸽鸽打call", "小零二哟～", "长歌最帅了",
-							              "大猫有侠者之风", "布灵布灵❤️", "我爱～摸鱼🐠～", "小寻寻真棒", "呲牙哥超爱笑", "是俺杀哒", "阿七阿七",
-							              "祖安·灰晖是龙王", "吃颗桃桃好遗计", "好可宣✓良民", "藏海表锅好", "金乎？木乎？水乎！！", "无法也无天", "西风不识相",
-							              "神秘喵酱", "星城在干嘛？", "子鱼今天摸鱼了吗？", "阳光苞里有阳光", "诗笺的小裙裙", "轮回中的消逝", "乱踢jb的云野",
-							              "小一是不是...是不是...", "美羊羊爱瑟瑟", "化梦的星辰", "杰哥带你登dua郎", "世中君子人", "叹年华未央", "短咕咕",
-							              "洛天依？！", "黄老板是好人～", "来点瑟瑟文和", "鲨鱼配辣椒", "萝卜～好萝卜", "废城君", "E佬细节鬼才",
-							              "感到棘手要怀念谁？", "半价小薯片", "JK欧拉欧拉欧拉", "新年快乐", "乔姐带你飞", "12345678？", "缘之空", "小小恐龙", "教主：杀我！", "才思泉涌的司马", "我是好人", "喜怒无常的大宝", "黄赌毒", "阴间杀～秋", "敢于劈瓜的关羽", "暮暮子"].randomGet(1))+'<div style="width:60px;top:2px;height:20px;left:3px;position:relative;background-image: url(' + lib.assetURL + 'extension/十周年UI/shoushaUI/character/images/vip/vip0.png);background-size: 100% 100%;"></div>');   
-							              var gonghui = ui.create.div('.gonghui', bigdialog, get.translation(innerText = '公会：' + (num = ['武将美化群', '活动武将群', '萌新代码群', '萌新花园', '无名杀琉璃版', '点草施法小鱼']).randomGet(1))+'<div style="width:40px;top:2px;height:15px;position:relative;left:20px;background-image: url(' + lib.assetURL + 'extension/十周年UI/shoushaUI/character/images/chengyuan.png); background-size: 100% 100%;"></div>');
-							   */
-							/*修改，感谢猫猫虫的提供的vip代码以及太子之争，素来如此的素材*/
 							var wanjiaming = ui.create.div(
 								".wanjiaming",
 								bigdialog,
@@ -297,8 +291,8 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							vipimg.setBackgroundImage("extension/十周年UI/shoushaUI/character/images/vip/" + viptuji.randomGet() + ".png");
 							wanjiaming.appendChild(vipimg);
 							/*原版*
-							           var gonghui = ui.create.div('.gonghui', bigdialog, get.translation(innerText = '公会：' + (num = ['武将美化群', '活动武将群', '萌新代码群', '萌新花园',  '爱门',  '美图交流群',  '无名杀十周年样式',  '无名杀主题样式', '无名杀琉璃版', '点草施法小鱼']).randomGet(1))+'<div style="width:40px;top:2px;height:15px;position:relative;left:20px;background-image: url(' + lib.assetURL + 'extension/十周年UI/shoushaUI/character/images/chengyuan.png); background-size: 100% 100%;"></div>');
-							*/
+              var gonghui = ui.create.div('.gonghui', bigdialog, get.translation(innerText = '公会：' + (num = ['武将美化群', '活动武将群', '萌新代码群', '萌新花园',  '爱门',  '美图交流群',  '无名杀十周年样式',  '无名杀主题样式', '无名杀琉璃版', '点草施法小鱼']).randomGet(1))+'<div style="width:40px;top:2px;height:15px;position:relative;left:20px;background-image: url(' + lib.assetURL + 'extension/十周年UI/shoushaUI/character/images/chengyuan.png); background-size: 100% 100%;"></div>');
+   */
 							/*修改*/
 							var gonghui = ui.create.div(".gonghui", bigdialog, get.translation((innerText = "公会：" + (num = ["武将美化群", "活动武将群", "萌新代码群", "萌新花园", "爱门", "爱莉爱莉爱", "小爱莉の动物园", "Ciallo～(∠・ω< )⌒★", "美图交流群", "无名杀十周年样式", "无名杀主题样式", "💎备用💎", "无名杀琉璃版", "点草施法小鱼"]).randomGet(1))));
 							var gonghuiimg = document.createElement("div");
@@ -352,11 +346,11 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 
 							/*var shanchang = ["bailingyun", "baosanniang", "beimihu", "bianyue", "caizhenji", "caohua", "caojinyu", "caoxian", "caoxiancaohua", "caoyi", "caoying", "clan_xuncai", 'clan_zhongyan', 'mb_guozhao', 'dc_yuezhoufei', 'dongwan', 'dongxie', 'duanqiaoxiao', 'dufuren', 'luyi', 'luyusheng', 'lvlingqi', 'ol_caifuren', 'ol_bianfuren', 'ol_dingshangwan', 'ol_wangyi', 'ol_zhangchunhua', 'quanhuijie', 'sb_xiahoushi', 'sb_sunshangxiang', 'sb_zhenji', 'sb_zhurong', 'shen_caocao', 'shen_caopi', 'shen_dengai', 'shen_dianwei', 'shen_diaochan', "shen_ganning", "shen_guanyu", "shen_guojia", "shen_huatuo", "shen_jiangwei", "shen_liubei", "shen_lusu", "shen_luxun", "shen_lvbu", "shen_lvmeng", "shen_machao", "shen_simayi", "shen_sunce", "shen_sunquan", "shen_taishici", "shen_zhangfei", "shen_xunyu", "shen_zhangjiao", "shen_zhangliao", "shen_zhaoyun", "shen_zhenji", "shen_zhouyu", "shen_zhugeliang", "wu_guanyu", "wu_luxun","wu_zhugeliang"];
 
-							
-							shanchang4.onclick = function () {           
-							shanchang4.setBackgroundImage("image/character/" + shanchang.randomGet() + ".jpg");
-							};          
-							shanchang4.setBackgroundImage("image/character/" + shanchang.randomGet() + ".jpg");*/
+            
+            shanchang4.onclick = function () {           
+            shanchang4.setBackgroundImage("image/character/" + shanchang.randomGet() + ".jpg");
+            };          
+            shanchang4.setBackgroundImage("image/character/" + shanchang.randomGet() + ".jpg");*/
 							var minixingxiang = ui.create.div(".minixingxiang", bigdialog);
 							//minixingxiang.style.backgroundImage = player.node.avatar.style.backgroundImage;
 							//var houzhui = Math.floor(Math.random() * 5)
@@ -382,7 +376,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					if (player.classList.contains("unseen2") && player !== game.me) {
 						name2 = "unknown";
 					}
-					//主将立绘
+          //主将立绘
 					var playerSkin;
 					if (name != "unknown") {
 						playerSkin = player.style.backgroundImage;
@@ -429,7 +423,6 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							skin2.style.backgroundImage = 'url("' + url + '")';
 						}
 					}
-
 					//等阶。适配最新版千幻
 					var rarity = game.getRarity(name);
 					if (!rarity) rarity = "junk";
@@ -474,6 +467,14 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					var pn = ui.create.div(".pn1");
 					/* var pn= ui.create.div('.pn1',value+'*'+get.translation(name));*/
 					pe.appendChild(pn);
+					//吊坠配件
+					var diaozhui = ui.create.div(".diaozhui", dialog);
+					diaozhui.setBackgroundImage("extension/十周年UI/shoushaUI/character/images/宝宝杀/2.png");
+					diaozhui.addEventListener("click", event => {
+						game.playAudio("../extension/十周年UI/shoushaUI/lbtn/images/SSCD/caidan.mp3"); // 可选：播放关闭时的音频
+						container.hide();
+						game.resume2();
+					});
 
 					/*新增龙框*/
 					var longkuang = ui.create.div(".longkuang", dialog);
@@ -635,12 +636,12 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 
 					leftPane.innerHTML = "<div></div>";
 					/*    createButton(name, leftPane.firstChild);
-					    createButton(name2, leftPane.firstChild);
-					    if (name && name2) {
-					      dialog.classList.remove('single');
-					    } else {
-					      dialog.classList.add('single');
-					    }*/
+          createButton(name2, leftPane.firstChild);
+          if (name && name2) {
+            dialog.classList.remove('single');
+          } else {
+            dialog.classList.add('single');
+          }*/
 
 					rightPane.innerHTML = "<div></div>";
 					lib.setScroll(rightPane.firstChild);
