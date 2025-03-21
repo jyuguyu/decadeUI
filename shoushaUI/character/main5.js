@@ -50,10 +50,10 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 				}
 
 				var container = ui.create.div(".popup-container.hidden", ui.window, function (e) {
-					if (e.target === container) {
+					/*	if (e.target === container) {
 						container.hide();
 						game.resume2();
-					}
+					}*/
 				});
 				var dialog = ui.create.div(".character-dialog.popped", container);
 				var blackBg1 = ui.create.div(".blackBg.one", dialog);
@@ -178,6 +178,11 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					//吊坠配件
 					var diaozhui = ui.create.div(".diaozhui", biankuang4);
 					diaozhui.setBackgroundImage("extension/十周年UI/shoushaUI/character/images/宝宝杀/2.png");
+					diaozhui.addEventListener("click", event => {
+						game.playAudio("../extension/十周年UI/shoushaUI/lbtn/images/SSCD/caidan.mp3"); // 可选：播放关闭时的音频
+						container.hide();
+						game.resume2();
+					});
 
 					//角色名-资料页
 					name.innerText = get.translation(player.name);
@@ -417,10 +422,13 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							} else ui.create.div(".xskill", "<div data-color>" + lib.translate[name] + "</div>" + "<div>" + get.skillInfoTranslation(name, player) + "</div>", rightPane.firstChild);
 						});
 					}
-					//装备
+					//装备*
+
 					var eSkills = player.getVCards("e");
 					if (eSkills.length) {
 						ui.create.div(".xcaption", "装备区域", rightPane.firstChild);
+
+						//装备描述
 						eSkills.forEach(function (card) {
 							let str = [get.translation(card), get.translation(card.name + "_info")];
 							const cards = card.cards;
@@ -430,7 +438,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							ui.create.div(".xskill", "<div data-color>" + str[0] + "</div><div>" + str[1] + "</div>", rightPane.firstChild);
 						});
 					}
-
+					//判定牌
 					var judges = player.getVCards("j");
 					if (judges.length) {
 						ui.create.div(".xcaption", "判定区域", rightPane.firstChild);
