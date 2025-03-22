@@ -1123,7 +1123,7 @@
 	top: auto;
 	right: auto;
 	left: -12px;
-	bottom: -6px;
+	bottom: -1px;
 	line-height: 28px;
 	height: 28px;
 	width: 28px;
@@ -1164,7 +1164,7 @@
 	left: -12px;
 	height: 28px;
 	width: 28px;
-	background: url("image/decoration/new_card_count5.png");
+	background: url("image/decoration/new_card_count6.png");
 	background-repeat: no-repeat;
 	background-size: 100% 100%;
 	background-position: 0 -1px;

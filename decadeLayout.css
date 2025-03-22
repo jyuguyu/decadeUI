@@ -60,6 +60,7 @@
 	width: 120px;
 	height: 180px;
 }
+
 /* * * * * 默认布局 * * * * */
 /*8人座*/
 #arena[data-layout="mobile"][data-number="8"]>.player[data-position="1"] {
@@ -238,12 +239,15 @@
 #arena[data-new-decade-style="othersOff"]>.player {
 	--w: 120px;
 }
+
 #arena[data-new-decade-style="onlineUI"]>.player {
 	--w: 120px;
 }
+
 #arena[data-new-decade-style="babysha"]>.player {
 	--w: 120px;
 }
+
 /*--------------------分割线--------------------*/
 /*8人座*/
 #arena[data-layout="nova"][data-number="8"]>.player[data-position="1"] {
@@ -403,6 +407,7 @@
 	left: calc(50% - (var(--w) / 2));
 	top: 9px;
 }
+
 /*--------------------分割线--------------------*/
 /*8人座*/
 #arena[data-layout="nova"][data-decade-layout="off"][data-number="8"]>.player[data-position="1"] {
