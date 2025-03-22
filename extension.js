@@ -11193,18 +11193,6 @@ export default async function () {
 			// 		if (window.decadeUI) decadeUI.config.playerLineEffect = value;
 			// 	},
 			// },
-			outcropSkin: {
-				name: "露头皮肤(需对应素材)",
-				init: "off",
-				item: {
-					shizhounian: "十周年露头",
-					shousha: "手杀露头",
-					off: "关闭",
-				},
-				update() {
-					if (window.decadeUI) ui.arena.dataset.outcropSkin = lib.config["extension_十周年UI_outcropSkin"];
-				},
-			},
 			showTemp: {
 				name: "视为卡牌显示",
 				init: false,
@@ -11255,6 +11243,31 @@ export default async function () {
 					}
 				},
 			},
+			aloneEquip: {
+				name: '<b><font color="#99FF75">单独装备栏',
+				intro: '<b><font color="#99FF75">切换玩家装备栏为单独装备栏或非单独装备栏，初始为单独装备栏，根据个人喜好调整',
+				init: true,
+				update() {
+					const config = lib.config["extension_十周年UI_aloneEquip"];
+					if (window.decadeUI) ui.arena.dataset.aloneEquip = config ? "on" : "off";
+					_status.nopopequip = config;
+					if (_status.gameStarted && ui && ui.equipSolts) {
+						if (config && game.me != ui.equipSolts.me) {
+							if (ui.equipSolts.me) {
+								ui.equipSolts.me.appendChild(ui.equipSolts.equips);
+							}
+							ui.equipSolts.me = game.me;
+							ui.equipSolts.equips = game.me.node.equips;
+							ui.equipSolts.appendChild(game.me.node.equips);
+							game.me.$syncExpand();
+						}
+						if (!config && game.me == ui.equipSolts.me) {
+							ui.equipSolts.me.appendChild(ui.equipSolts.equips);
+							ui.equipSolts.me = undefined;
+						}
+					}
+				},
+			},
 			wujiangbeijing: {
 				name: "武将背景",
 				init: false,
@@ -11264,6 +11277,18 @@ export default async function () {
 				name: "势力优化",
 				init: false,
 				intro: "开启后，非魏蜀吴群晋势力的角色将会重新选择势力",
+			},
+			outcropSkin: {
+				name: "露头皮肤(需对应素材)",
+				init: "off",
+				item: {
+					shizhounian: "十周年露头",
+					shousha: "手杀露头",
+					off: "关闭",
+				},
+				update() {
+					if (window.decadeUI) ui.arena.dataset.outcropSkin = lib.config["extension_十周年UI_outcropSkin"];
+				},
 			},
 			borderLevel: {
 				name: "玩家边框等阶",
@@ -11377,31 +11402,6 @@ export default async function () {
 				},
 				update() {
 					if (window.decadeUI) ui.arena.dataset.longLevel = lib.config["extension_十周年UI_longLevel"];
-				},
-			},
-			aloneEquip: {
-				name: '<b><font color="#99FF75">单独装备栏',
-				intro: '<b><font color="#99FF75">切换玩家装备栏为单独装备栏或非单独装备栏，初始为单独装备栏，根据个人喜好调整',
-				init: true,
-				update() {
-					const config = lib.config["extension_十周年UI_aloneEquip"];
-					if (window.decadeUI) ui.arena.dataset.aloneEquip = config ? "on" : "off";
-					_status.nopopequip = config;
-					if (_status.gameStarted && ui && ui.equipSolts) {
-						if (config && game.me != ui.equipSolts.me) {
-							if (ui.equipSolts.me) {
-								ui.equipSolts.me.appendChild(ui.equipSolts.equips);
-							}
-							ui.equipSolts.me = game.me;
-							ui.equipSolts.equips = game.me.node.equips;
-							ui.equipSolts.appendChild(game.me.node.equips);
-							game.me.$syncExpand();
-						}
-						if (!config && game.me == ui.equipSolts.me) {
-							ui.equipSolts.me.appendChild(ui.equipSolts.equips);
-							ui.equipSolts.me = undefined;
-						}
-					}
 				},
 			},
 			loadingStyle: {

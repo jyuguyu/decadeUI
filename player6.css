@@ -257,7 +257,15 @@
 	pointer-events: none
 }
 
-.player>.camp-wrap[data-camp="ye"]>.camp-back {}
+.player>.camp-wrap[data-camp="ye"]>.camp-back {
+	background-image: url('image/decoration/babyjin.png');
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
+	background-size: 100% 100%;
+	pointer-events: none
+}
 
 .player>.camp-wrap[data-camp="key"]>.camp-back {
 	background-image: url('image/decoration/babyshen.png');
@@ -272,7 +280,7 @@
 .player>.camp-wrap[data-camp="western"]>.camp-back {}
 
 .player>.camp-wrap[data-camp="jin"]>.camp-back {
-	background-image: url('image/decoration/babywei.png');
+	background-image: url('image/decoration/babyjin.png');
 	width: 390%;
 	height: 150%;
 	top: 0px;
@@ -281,7 +289,15 @@
 	pointer-events: none
 }
 
-.player>.camp-wrap[data-camp="daqin"]>.camp-back {}
+.player>.camp-wrap[data-camp="daqin"]>.camp-back {
+	background-image: url('image/decoration/babyjin.png');
+	width: 390%;
+	height: 150%;
+	top: 0px;
+	left: 5px;
+	background-size: 100% 100%;
+	pointer-events: none
+}
 
 .player>.camp-wrap>.camp-border {
 	display: block;
