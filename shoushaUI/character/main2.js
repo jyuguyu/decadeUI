@@ -228,43 +228,13 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 
 					//分包
 					var getPack = function (name) {
-						for (const pak in lib.characterSort) {
-							for (const package in lib.characterSort[pak]) {
-								if (lib.characterSort[pak][package].includes(name)) {
-									if (pak == "standard" || package == "sp_waitforsort" || package == "sp_qifu" || package == "sp_others" || package == "sp_guozhan2" || pak == "old" || pak == "diy" || pak == "collab") return lib.translate[pak + "_character_config"];
-									if (pak == "sp") {
-										if (get.translation(package).length > 6) return get.translation(package).slice(0, 2);
-									}
-									if (pak == "sp2") {
-										if (get.translation(package).length > 6) return get.translation(package).slice(3, 7);
-									}
-									if (pak == "mobile") {
-										if (get.translation(package).length > 6) return "手杀异构";
-									}
-									if (pak == "WeChatkill") return "微信三国杀";
-									if (pak == "tw") return "海外";
-									if (pak == "MiNikill") return "欢乐三国杀";
-									switch (package) {
-										case "sp_decade":
-										case "extra_decade":
-											return "限定";
-										case "extra_tw":
-											return "海外";
-										case "mobile_default":
-										case "mobile_sunben":
-											return "手杀";
-										case "offline_piracyE":
-											return "官盗E系列";
-										default:
-											return get.translation(package);
-									}
-								}
+						const pack = Object.keys(lib.characterPack).find(pack => lib.characterPack[pack][name]);
+						if (pack) {
+							if (lib.characterSort[pack]) {
+								const sort = Object.keys(lib.characterSort[pack]).find(sort => lib.characterSort[pack][sort].includes(name));
+								if (sort) return lib.translate[sort];
 							}
-						}
-						for (const pak in lib.characterPack) {
-							for (const namein in lib.characterPack[pak]) {
-								if (name == namein) return get.translation(pak + "_character_config");
-							}
+							return lib.translate[pack + "_character_config"] || lib.translate[pack];
 						}
 						return "暂无分包";
 					};
@@ -273,9 +243,6 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					leftPane.innerHTML = "<div></div>";
 					rightPane.innerHTML = "<div></div>";
 					lib.setScroll(rightPane.firstChild);
-					var hSkills = player.getCards("h");
-					var eSkills = player.getVCards("e");
-					var judges = player.getVCards("j");
 					var oSkills = player.getSkills(null, false, false).slice(0);
 					if (player == game.me) oSkills = oSkills.concat(player.hiddenSkills);
 					if (oSkills.length) {
@@ -310,8 +277,9 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 						});
 					}
 
+					var hSkills = player.getCards("h");
 					if (hSkills.length) {
-						var allShown = player.isUnderControl() || (!game.observe && game.me && game.me.hasSkillTag("viewHandcard", null, player, true));
+						var allShown = player.isUnderControl() || (!game.observe && game.me?.hasSkillTag("viewHandcard", null, player, true));
 						var shownHs = player.getShownCards();
 						if (shownHs.length) {
 							ui.create.div(".xcaption", player.hasCard(card => !shownHs.includes(card), "h") ? "明置的手牌" : "手牌区域", rightPane.firstChild);
@@ -342,24 +310,26 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 						}
 					}
 
+					var eSkills = player.getCards("e");
 					if (eSkills.length) {
 						ui.create.div(".xcaption", "装备区域", rightPane.firstChild);
 						eSkills.forEach(function (card) {
+							const cards = card.cards;
 							let str = [get.translation(card), get.translation(card.name + "_info")];
-							if (card.cards?.length) str[0] += "（" + get.translation(card.cards) + "）";
-							const special = card.cards?.find(item => item.name == card.name && lib.card[item.name]?.cardPrompt);
-							if (special) str[1] = lib.card[special.name].cardPrompt(special, player);
+							if (Array.isArray(cards) && cards.length) str[0] += "（" + get.translation(card.cards) + "）";
+							if (lib.card[card.name]?.cardPrompt) str[1] = lib.card[card.name].cardPrompt(card, player);
 							ui.create.div(".xskill", "<div data-color>" + str[0] + "</div><div>" + str[1] + "</div>", rightPane.firstChild);
 						});
 					}
 
+					var judges = player.getCards("j");
 					if (judges.length) {
 						ui.create.div(".xcaption", "判定区域", rightPane.firstChild);
 						judges.forEach(function (card) {
 							const cards = card.cards;
-							let str = get.translation(card);
-							if ((cards?.length && !lib.card[card]?.blankCard) || player.isUnderControl(true)) str += "（" + get.translation(cards) + "）";
-							ui.create.div(".xskill", "<div data-color>" + str + "</div><div>" + get.translation(card.name + "_info") + "</div>", rightPane.firstChild);
+							let str = [get.translation(card), get.translation(card.name + "_info")];
+							if ((Array.isArray(cards) && cards.length && !lib.card[card]?.blankCard) || player.isUnderControl(true)) str[0] += "（" + get.translation(cards) + "）";
+							ui.create.div(".xskill", "<div data-color>" + str[0] + "</div><div>" + str[1] + "</div>", rightPane.firstChild);
 						});
 					}
 

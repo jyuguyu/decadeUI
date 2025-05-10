@@ -186,7 +186,7 @@
 .player>.camp-wrap {
 	display: block;
 	left: -19px;
-	top: 0px;
+	top: 1px;
 	width: 37px;
 	height: 128px;
 	transition: none;
@@ -1097,11 +1097,11 @@
 	bottom: -19px;
 	width: 100%;
 	line-height: 16px;
-	color: rgb(255, 165, 0);
+	color: rgb(226, 160, 37);
 	font-family: "yuanli";
 	font-weight: bold;
 	/*字体加粗*/
-	font-size: 18px;
+	font-size: 15px;
 	text-align: center;
 	text-shadow: 0 0 2px black, 0 0 1px black;
 	white-space: nowrap;

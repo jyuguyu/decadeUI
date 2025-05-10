@@ -1,45 +1,44 @@
 "use strict";
-decadeModule.import(function(lib, game, ui, get, ai, _status) {
+decadeModule.import(function (lib, game, ui, get, ai, _status) {
 	//OL随机框 by柳下跖
 	if (lib.config.extension_十周年UI_newDecadeStyle && lib.config.extension_十周年UI_newDecadeStyle == "onlineUI") {
 		//给龙头添加OL等阶框
 		lib.skill._longLevel = {
 			trigger: {
-				global: "gameStart"
+				global: "gameStart",
 			},
 			silent: true,
 			forced: true,
-			filter: function(event, player) {
-				return (lib.config.extension_十周年UI_longLevel == 'ten') || (lib.config
-					.extension_十周年UI_longLevel == 'eleven');
+			filter: function (event, player) {
+				return lib.config.extension_十周年UI_longLevel == "ten" || lib.config.extension_十周年UI_longLevel == "eleven";
 			},
-			content: function() {
-				if (lib.config.extension_十周年UI_longLevel == 'ten') {
-					var rarity = ['silver', 'gold', 'yu', 'bing', 'yan'];
+			content: function () {
+				if (lib.config.extension_十周年UI_longLevel == "ten") {
+					var rarity = ["silver", "gold", "yu", "bing", "yan"];
 					switch (game.getRarity(player.name)) {
-						case 'junk':
+						case "junk":
 							rarity = rarity[0];
 							break;
-						case 'common':
+						case "common":
 							rarity = rarity[1];
 							break;
-						case 'rare':
+						case "rare":
 							rarity = rarity[2];
 							break;
-						case 'epic':
+						case "epic":
 							rarity = rarity[3];
 							break;
-						case 'legend':
+						case "legend":
 							rarity = rarity[4];
 							break;
 						default:
 							break;
-					};
+					}
 				}
-				if (lib.config.extension_十周年UI_longLevel == 'eleven') {
-					var rarity = ['silver', 'gold', 'yu', 'bing', 'yan'].randomGet();
-				};
-				if (rarity === 'yan') {
+				if (lib.config.extension_十周年UI_longLevel == "eleven") {
+					var rarity = ["silver", "gold", "yu", "bing", "yan"].randomGet();
+				}
+				if (rarity === "yan") {
 					var longtou = document.createElement("img");
 					longtou.src = decadeUIPath + "/assets/image/OL等阶露头框/k2.png";
 					longtou.style.cssText = "pointer-events:none";
@@ -48,9 +47,9 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longtou.style.top = "-20.5px";
 					longtou.style.right = "-5px";
 					longtou.style.height = "115%";
-					longtou.style.width = "139.5%";
+					longtou.style.width = "130%";
 					longtou.style.zIndex = "60";
-					player.appendChild(longtou)
+					player.appendChild(longtou);
 					var longwei = document.createElement("img");
 					longwei.src = decadeUIPath + "/assets/image/OL等阶露头框/border_campOL5.png";
 					longwei.style.cssText = "pointer-events:none";
@@ -59,11 +58,11 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longwei.style.top = "-20.5px";
 					longwei.style.right = "-5px";
 					longwei.style.height = "115%";
-					longwei.style.width = "139.5%";
+					longwei.style.width = "130%";
 					longwei.style.zIndex = "72";
-					player.appendChild(longwei)
-				};
-				if (rarity === 'bing') {
+					player.appendChild(longwei);
+				}
+				if (rarity === "bing") {
 					var longtou = document.createElement("img");
 					longtou.src = decadeUIPath + "/assets/image/OL等阶露头框/k8.png";
 					longtou.style.cssText = "pointer-events:none";
@@ -72,9 +71,9 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longtou.style.top = "-6px";
 					longtou.style.right = "-5.5px";
 					longtou.style.height = "109%";
-					longtou.style.width = "131.5%";
+					longtou.style.width = "123%";
 					longtou.style.zIndex = "60";
-					player.appendChild(longtou)
+					player.appendChild(longtou);
 					var longwei = document.createElement("img");
 					longwei.src = decadeUIPath + "/assets/image/OL等阶露头框/border_campOL4.png";
 					longwei.style.cssText = "pointer-events:none";
@@ -83,11 +82,11 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longwei.style.top = "-6px";
 					longwei.style.right = "-5.5px";
 					longwei.style.height = "107%";
-					longwei.style.width = "131.5%";
+					longwei.style.width = "123%";
 					longwei.style.zIndex = "72";
-					player.appendChild(longwei)
-				};
-				if (rarity === 'yu') {
+					player.appendChild(longwei);
+				}
+				if (rarity === "yu") {
 					var longtou = document.createElement("img");
 					longtou.src = decadeUIPath + "/assets/image/OL等阶露头框/k6.png";
 					longtou.style.cssText = "pointer-events:none";
@@ -96,9 +95,9 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longtou.style.top = "-3px";
 					longtou.style.right = "-3px";
 					longtou.style.height = "107.5%";
-					longtou.style.width = "123.5%";
+					longtou.style.width = "114.5%";
 					longtou.style.zIndex = "60";
-					player.appendChild(longtou)
+					player.appendChild(longtou);
 					var longwei = document.createElement("img");
 					longwei.src = decadeUIPath + "/assets/image/OL等阶露头框/border_campOL3.png";
 					longwei.style.cssText = "pointer-events:none";
@@ -107,11 +106,11 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longwei.style.top = "-3px";
 					longwei.style.right = "-3px";
 					longwei.style.height = "105.5%";
-					longwei.style.width = "123.5%";
+					longwei.style.width = "114.5%";
 					longwei.style.zIndex = "72";
-					player.appendChild(longwei)
-				};
-				if (rarity === 'gold') {
+					player.appendChild(longwei);
+				}
+				if (rarity === "gold") {
 					var longtou = document.createElement("img");
 					longtou.src = decadeUIPath + "/assets/image/OL等阶露头框/k4.png";
 					longtou.style.cssText = "pointer-events:none";
@@ -120,9 +119,9 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longtou.style.top = "-5px";
 					longtou.style.right = "-3px";
 					longtou.style.height = "107.5%";
-					longtou.style.width = "123.5%";
+					longtou.style.width = "114.5%";
 					longtou.style.zIndex = "60";
-					player.appendChild(longtou)
+					player.appendChild(longtou);
 					var longwei = document.createElement("img");
 					longwei.src = decadeUIPath + "/assets/image/OL等阶露头框/border_campOL2.png";
 					longwei.style.cssText = "pointer-events:none";
@@ -131,11 +130,11 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longwei.style.top = "-5px";
 					longwei.style.right = "-3px";
 					longwei.style.height = "107.5%";
-					longwei.style.width = "123.5%";
+					longwei.style.width = "114.5%";
 					longwei.style.zIndex = "72";
-					player.appendChild(longwei)
-				};
-				if (rarity === 'silver') {
+					player.appendChild(longwei);
+				}
+				if (rarity === "silver") {
 					var longtou = document.createElement("img");
 					longtou.src = decadeUIPath + "/assets/image/OL等阶露头框/k2.png";
 					longtou.style.cssText = "pointer-events:none";
@@ -144,9 +143,9 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longtou.style.top = "-20.5px";
 					longtou.style.right = "-5px";
 					longtou.style.height = "115%";
-					longtou.style.width = "139.5%";
+					longtou.style.width = "130%";
 					longtou.style.zIndex = "60";
-					player.appendChild(longtou)
+					player.appendChild(longtou);
 					var longwei = document.createElement("img");
 					longwei.src = decadeUIPath + "/assets/image/OL等阶露头框/border_campOL5.png";
 					longwei.style.cssText = "pointer-events:none";
@@ -155,18 +154,21 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					longwei.style.top = "-20.5px";
 					longwei.style.right = "-5px";
 					longwei.style.height = "115%";
-					longwei.style.width = "139.5%";
+					longwei.style.width = "130%";
 					longwei.style.zIndex = "72";
-					player.appendChild(longwei)
-				};
-			}
-		}
-	};
+					player.appendChild(longwei);
+				}
+			},
+		};
+	}
 
 	//势力选择
 	if (lib.config["extension_十周年UI_shiliyouhua"]) {
 		Object.defineProperty(lib, "group", {
-			get: () => ["wei", "shu", "wu", "qun", "jin"],
+			get: () => {
+				if (get.mode() === "guozhan") return ["wei", "shu", "wu", "qun", "jin", "key"];
+				return ["wei", "shu", "wu", "qun", "jin", "key"];
+			},
 			set: () => {},
 		});
 		lib.skill._slyh = {
@@ -178,7 +180,10 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			popup: false,
 			silent: true,
 			priority: Infinity,
-			filter: (_, player) => player.group && !lib.group.includes(player.group),
+			filter: (_, player) => {
+				if (get.mode() === "guozhan") return false;
+				return player.group && !lib.group.includes(player.group);
+			},
 			async content(event, trigger, player) {
 				const list = lib.group.slice(0, 5);
 				const result = await player
@@ -210,8 +215,7 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 					if (!player) return;
 					// 检查游戏模式和双将设置
 					const mode = get.mode();
-					const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[
-						mode].double_character;
+					const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode].double_character;
 					if (mode === "guozhan" || isDoubleCharacter) {
 						// 国战模式或开启双将时使用bj2
 						player.setAttribute("data-mode", "guozhan");
@@ -230,10 +234,9 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			game.addGlobalSkill("_wjBackground");
 		}
 		// 在游戏开始时检查并设置背景
-		lib.arenaReady.push(function() {
+		lib.arenaReady.push(function () {
 			const mode = get.mode();
-			const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode]
-				.double_character;
+			const isDoubleCharacter = lib.config.mode_config[mode] && lib.config.mode_config[mode].double_character;
 			if (mode === "guozhan" || isDoubleCharacter) {
 				document.body.setAttribute("data-mode", "guozhan");
 			} else {
@@ -245,29 +248,29 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 	// 全选按钮功能 by奇妙工具做修改
 	lib.hooks.checkBegin.add("Selectall", () => {
 		const event = get.event();
-		if (!event?.isMine) return;
-		const needMultiSelect = event.selectCard?.[1] > 1;
-		if (needMultiSelect && !ui.Selectall) {
+		const needMultiSelect = event.selectCard?.[1] > 1 && event.player == game.me;
+		const isDiscardPhase = event.name === "phaseDiscard" || event.parent?.name === "phaseDiscard";
+		if (needMultiSelect && !ui.Selectall && !isDiscardPhase) {
 			ui.Selectall = ui.create.control("全选", () => {
 				ai.basic.chooseCard(card => (get.position(card) === "h" ? 114514 : 0));
 				event.custom?.add?.card?.();
 				ui.selected.cards?.forEach(card => card.updateTransform(true));
 			});
-		} else if (!needMultiSelect) {
-			if (ui.Selectall) {
-				ui.Selectall.remove();
-				delete ui.Selectall;
-			}
+		} else if (!needMultiSelect || isDiscardPhase) {
+			removeCardQX();
 		}
 	});
 	lib.hooks.uncheckBegin.add("Selectall", () => {
 		if (get.event().result?.bool) {
-			if (ui.Selectall) {
-				ui.Selectall.remove();
-				delete ui.Selectall;
-			}
+			removeCardQX();
 		}
 	});
+	const removeCardQX = () => {
+		if (ui.Selectall) {
+			ui.Selectall.remove();
+			delete ui.Selectall;
+		}
+	};
 
 	// 局内交互优化
 	if (lib.config["extension_十周年UI_jiaohuyinxiao"]) {
@@ -343,11 +346,10 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			game.addGlobalSkill("_phaseStartAudio");
 		}
 		// 处理按钮点击音效
-		document.body.addEventListener("mousedown", function(e) {
+		document.body.addEventListener("mousedown", function (e) {
 			const target = e.target;
 			if (target.closest("#dui-controls")) {
-				if (target.classList.contains("control") || target.parentElement.classList.contains(
-						"control")) {
+				if (target.classList.contains("control") || target.parentElement.classList.contains("control")) {
 					game.playAudio("..", "extension", "十周年UI", "audio/BtnSure");
 				}
 			}
@@ -359,7 +361,7 @@ decadeModule.import(function(lib, game, ui, get, ai, _status) {
 			}
 		});
 		// 处理按钮缩放效果
-		document.body.addEventListener("mousedown", function(e) {
+		document.body.addEventListener("mousedown", function (e) {
 			const control = e.target.closest(".control");
 			if (control && !control.classList.contains("disabled")) {
 				control.style.transform = "scale(0.95)";

@@ -103,7 +103,6 @@ export default async function () {
 							skillState: get.skillState,
 						},
 						game: {
-							gameDraw: game.gameDraw,
 							swapSeat: game.swapSeat,
 						},
 						lib: {
@@ -1140,7 +1139,7 @@ export default async function () {
 											if (isViewAsCard) {
 												cardx.cards = cards || [];
 												cardx.viewAs = VCard.name;
-												const bgMark = lib.translate[cardx.viewAs + "_bg"] || get.translation(cardx.viewAs)[0]
+												const bgMark = lib.translate[cardx.viewAs + "_bg"] || get.translation(cardx.viewAs)[0];
 												//cardx.node.name2.innerHTML = `${suit}${number} [${get.translation(VCard.name)}]`;
 												if (cardx.classList.contains("fullskin") || cardx.classList.contains("fullborder")) {
 													if (window.decadeUI) cardx.node.judgeMark.node.judge.innerHTML = bgMark;
@@ -1696,8 +1695,8 @@ export default async function () {
 								},
 								$phaseJudge(card) {
 									game.addVideo("phaseJudge", this, get.cardInfo(card));
-									if (card.cards?.length) {
-										const cards = card.cards;
+									if (card[card.cardSymbol]?.cards?.length) {
+										const cards = card[card.cardSymbol].cards;
 										this.$throw(cards);
 									} else {
 										const VCard = game.createCard(card.name, "虚拟", "");
@@ -1740,8 +1739,7 @@ export default async function () {
 								gain: [
 									...base.lib.element.content.gain.slice(0, -2),
 									async (event, trigger, player) => {
-										let { cards } = event;
-										var gaintag = event.gaintag;
+										let { cards, gaintag } = event;
 										var handcards = player.node.handcards1;
 										var fragment = document.createDocumentFragment();
 
@@ -1759,7 +1757,7 @@ export default async function () {
 												continue;
 											}
 
-											event.gaintag.forEach(tag => card.addGaintag(tag));
+											gaintag.forEach(tag => card.addGaintag(tag));
 											if (event.knowers) card.addKnower(event.knowers);
 
 											fragment.insertBefore(card, fragment.firstChild);
@@ -2099,6 +2097,7 @@ export default async function () {
 										game.broadcast(
 											function (player, cards, num) {
 												for (var i = 0; i < cards.length; i++) {
+													cards[i].removeGaintag(true);
 													cards[i].classList.remove("glow");
 													cards[i].classList.remove("glows");
 													cards[i].fix();
@@ -3124,9 +3123,8 @@ export default async function () {
 
 					game.swapControl = function (player) {
 						var result = swapControlFunction.call(this, player);
-						/*-----------------分割线-----------------*/
 						// 单独装备栏
-						if (lib.config.extension_十周年UI_aloneEquup) {
+						if (lib.config.extension_十周年UI_aloneEquip) {
 							if (game.me && game.me != ui.equipSolts.me) {
 								ui.equipSolts.me.appendChild(ui.equipSolts.equips);
 								ui.equipSolts.me = game.me;
@@ -3135,7 +3133,12 @@ export default async function () {
 								game.me.$syncExpand();
 							}
 						}
-
+						if (ui.equipSolts && game.me && typeof game.me.$handleEquipChange === "function") {
+							game.me.$handleEquipChange();
+						}
+						if (ui.equipSolts && player && typeof player.$handleEquipChange === "function") {
+							player.$handleEquipChange();
+						}
 						return result;
 					};
 
@@ -4673,7 +4676,7 @@ export default async function () {
 								var image = new Image();
 								var url = decadeUIPath + (decadeUI.config.newDecadeStyle == "off" ? "image/decorations/name2_" : "image/decoration/name_") + group + ".png";
 								this._finalGroup = group;
-								image.onerror = () => {
+								const create = () => {
 									if (!this._finalGroup) this.node.campWrap.node.campName.innerHTML = "";
 									else {
 										const name = get.translation(this._finalGroup),
@@ -4682,7 +4685,11 @@ export default async function () {
 										else this.node.campWrap.node.campName.innerHTML = name.replaceAll(str, str[0]);
 									}
 								};
-								this.node.campWrap.node.campName.style.backgroundImage = `url("${url}")`;
+								image.onerror = () => {
+									create();
+								};
+								if (decadeUI.config.newDecadeStyle != "onlineUI") this.node.campWrap.node.campName.style.backgroundImage = `url("${url}")`;
+								else create();
 								image.src = url;
 							},
 						},
@@ -10910,6 +10917,39 @@ export default async function () {
 					game.reload();
 				},
 			},
+			borderLevel: {
+				name: "玩家边框等阶",
+				init: "five",
+				item: {
+					one: "一阶",
+					two: "二阶",
+					three: "三阶",
+					four: "四阶",
+					five: "五阶",
+				},
+				update() {
+					if (window.decadeUI) ui.arena.dataset.borderLevel = lib.config["extension_十周年UI_borderLevel"];
+				},
+			},
+			longLevel: {
+				name: '<b><font color="#FF0FF0">龙头框等阶',
+				init: "eight",
+				item: {
+					eight: "关闭",
+					one: "银龙",
+					two: "金龙",
+					three: "玉龙",
+					four: "冰龙",
+					five: "炎龙",
+					sex: "随机",
+					seven: "评级",
+					ten: "OL等阶框·评级",
+					eleven: "OL等阶框·随机",
+				},
+				update() {
+					if (window.decadeUI) ui.arena.dataset.longLevel = lib.config["extension_十周年UI_longLevel"];
+				},
+			},
 			FL120: {
 				name: "<img style=width:240px src=" + lib.assetURL + "extension/十周年UI/shoushaUI/line.png>",
 				intro: "",
@@ -11201,20 +11241,6 @@ export default async function () {
 					if (window.decadeUI) ui.arena.dataset.outcropSkin = lib.config["extension_十周年UI_outcropSkin"];
 				},
 			},
-			borderLevel: {
-				name: "玩家边框等阶",
-				init: "five",
-				item: {
-					one: "一阶",
-					two: "二阶",
-					three: "三阶",
-					four: "四阶",
-					five: "五阶",
-				},
-				update() {
-					if (window.decadeUI) ui.arena.dataset.borderLevel = lib.config["extension_十周年UI_borderLevel"];
-				},
-			},
 			gainSkillsVisible: {
 				name: "获得技能显示",
 				init: "on",
@@ -11270,25 +11296,6 @@ export default async function () {
 				},
 				update() {
 					if (window.decadeUI) ui.arena.dataset.shadowStyle = lib.config["extension_十周年UI_shadowStyle"];
-				},
-			},
-			longLevel: {
-				name: '<b><font color="#FF0FF0">龙头框等阶',
-				init: "eight",
-				item: {
-					one: "银龙",
-					two: "金龙",
-					three: "玉龙",
-					four: "冰龙",
-					five: "炎龙",
-					sex: "随机",
-					seven: "评级",
-					eight: "关闭",
-					ten: "OL等阶露头框·评级",
-					eleven: "OL等阶露头框·随机",
-				},
-				update() {
-					if (window.decadeUI) ui.arena.dataset.longLevel = lib.config["extension_十周年UI_longLevel"];
 				},
 			},
 			loadingStyle: {
@@ -11574,10 +11581,12 @@ export default async function () {
 			pack.intro = (pack => {
 				let log = [
 					`魔改十周年UI ${pack.version}`,
-					"最低适配：v1.10.18",
-					"OL样式联机完善适配",
+					"最低适配：v1.10.17.3",
+					"bugfix",
+					"OL样式联机适配",
 					"新版本函数跟进",
 					"回滚$throw，添加弃牌动画",
+					"致谢：萌新（转型中）、U、小爱莉",
 				];
 				return `<a href=${pack.diskURL}>点击前往十周年Github仓库</a><br><p style="color:rgb(210,210,000); font-size:12px; line-height:14px; text-shadow: 0 0 2px black;">${log.join("<br>•")}</p>`;
 			})(pack);
