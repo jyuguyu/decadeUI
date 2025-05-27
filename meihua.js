@@ -1,5 +1,12 @@
 "use strict";
 decadeModule.import(function (lib, game, ui, get, ai, _status) {
+	if (lib.config["extension_十周年UI_kapaituozhuai"]) {
+		lib.init.js(lib.assetURL + "extension/十周年UI/cardtuozhuai.js");
+		game.saveConfig("enable_drag", false);
+	} else {
+		game.saveConfig("enable_drag", true);
+	}
+
 	//OL随机框 by柳下跖
 	if (lib.config.extension_十周年UI_newDecadeStyle && lib.config.extension_十周年UI_newDecadeStyle == "onlineUI") {
 		//给龙头添加OL等阶框
@@ -346,64 +353,6 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 		});
 	}
 
-	//宝宝杀人机技能显示
-	if (lib.config["extension_十周年UI_babyshaskill"]) {
-		lib.skill._babyskill = {
-			trigger: {
-				global: ["gameStart", "addSkill", "removeSkill"],
-			},
-			forced: true,
-			popup: false,
-			priority: 114514,
-			filter: function () {
-				return (get.mode() == "doudizhu" || get.mode() == "versus") && lib.config.extension_十周年UI_newDecadeStyle == "babysha";
-			},
-			content: function () {
-				game.players.forEach(function (player) {
-					if (player != game.me) {
-						var skills = player.skills.filter(function (skill) {
-							return lib.skill[skill];
-						});
-						console.log(player.name, player.skills, skills);
-						if (!skills.length) return;
-						var skillBox = ui.create.div(".doudizhu-skill-box");
-						skillBox.style.position = "absolute";
-						skillBox.style.right = "30px";
-						skillBox.style.top = "10px";
-						skillBox.style.display = "flex";
-						skillBox.style.flexDirection = "column";
-						skillBox.style.zIndex = 10;
-						skills.reverse().forEach(function (skill) {
-							var btn = ui.create.div(".doudizhu-skill-btn", get.translation(skill));
-							btn.style.margin = "2px 0";
-							skillBox.appendChild(btn);
-						});
-						player.node.babyskillBox = skillBox;
-						let avatarNode = player.node.name || player.node.avatar;
-						let rect = avatarNode && avatarNode.getBoundingClientRect ? avatarNode.getBoundingClientRect() : null;
-						let showRight = false;
-						if (rect && rect.left < 120) {
-							showRight = true;
-						}
-						skillBox.style.top = "10px";
-						skillBox.style.bottom = "auto";
-						skillBox.style.left = showRight ? "440%" : "auto";
-						skillBox.style.right = showRight ? "auto" : "100%";
-						if (player.node.name && player.node.name.parentNode) {
-							player.node.name.parentNode.style.position = "relative";
-							player.node.name.parentNode.appendChild(skillBox);
-						} else if (player.node.avatar && player.node.avatar.parentNode) {
-							player.node.avatar.parentNode.style.position = "relative";
-							player.node.avatar.parentNode.appendChild(skillBox);
-						} else {
-							player.appendChild(skillBox);
-						}
-					}
-				});
-			},
-		};
-	}
-
 	//手气卡美化
 	if (lib.config["extension_十周年UI_shouqikamh"]) {
 		lib.element.content.gameDraw = function () {
@@ -454,7 +403,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			if (_status.connectMode || (lib.config.mode == "single" && _status.mode != "wuxianhuoli") || (lib.config.mode == "doudizhu" && _status.mode == "online") || (lib.config.mode != "identity" && lib.config.mode != "guozhan" && lib.config.mode != "doudizhu" && lib.config.mode != "single")) {
 				event.changeCard = "disabled";
 			}
-			("step 1");
+			"step 1";
 			if (event.changeCard != "disabled" && !_status.auto && game.me.countCards("h")) {
 				function getRandomInt(min, max) {
 					min = Math.ceil(min);
@@ -473,7 +422,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			} else {
 				event.finish();
 			}
-			("step 2");
+			"step 2";
 			if (event.changeCard == "once") {
 				event.changeCard = "disabled";
 			} else if (event.changeCard == "twice") {
@@ -488,7 +437,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				game.resume();
 			};
 			game.pause();
-			("step 3");
+			"step 3";
 			_status.imchoosing = false;
 			if (event.bool) {
 				if (game.changeCoin) {
@@ -542,7 +491,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				game.me._start_cards = game.me.getCards("h");
 				event.finish();
 			}
-			("step 4");
+			"step 4";
 			setTimeout(decadeUI.effect.gameStart, 51);
 		};
 	}

@@ -1211,32 +1211,31 @@ export default async function () {
 										game.addVideo("line", player, [target.dataset.position, config]);
 
 										player.checkBoundsCache(true);
-                						target.checkBoundsCache(true);
-                						var x1, y1;
-                						var x2, y2;
-                						var hand = dui.boundsCaches.hand;
-                						var targetRect = target.getBoundingClientRect();
-                						var playerRect = player.getBoundingClientRect();
-                						if (player == game.me) {
-                							hand.check();
-                							x1 = playerRect.right / 2;
-                							y1 = hand.y;
-                						} else {
-                							x1 = playerRect.x + playerRect.width / 2;
-                							y1 = playerRect.y + playerRect.height / 2;
-                						}
-                						
-                						if (target == game.me) {
-                							hand.check();
-                							x2 = targetRect.right / 2;
-                							y2 = hand.y;
-                						} else {
-                							x2 = targetRect.x + targetRect.width / 2;
-                							y2 = targetRect.y + targetRect.height / 2;
-                						}
-                						game.linexy([x1, y1, x2, y2], config, true);
-                					}
-                				},
+										target.checkBoundsCache(true);
+										var x1, y1;
+										var x2, y2;
+										var hand = dui.boundsCaches.hand;
+										if (player == game.me) {
+											hand.check();
+											x1 = hand.x + hand.width / 2;
+											y1 = hand.y;
+										} else {
+											x1 = player.cacheLeft + player.cacheWidth / 2;
+											y1 = player.cacheTop + player.cacheHeight / 2;
+										}
+
+										if (target == game.me) {
+											hand.check();
+											x2 = hand.x + hand.width / 2;
+											y2 = hand.y;
+										} else {
+											x2 = target.cacheLeft + target.cacheWidth / 2;
+											y2 = target.cacheTop + target.cacheHeight / 2;
+										}
+
+										game.linexy([x1, y1, x2, y2], config, true);
+									}
+								},
 								checkBoundsCache(forceUpdate) {
 									var update;
 									var refer = dui.boundsCaches.arena;
@@ -3059,10 +3058,12 @@ export default async function () {
 						}
 					};
 					//根据手杀ui选项开关调用不同结束出牌阶段的弹出样式
+					//为onlineUI样式单独改为取消
 					lib.hooks["checkEnd"].push(function decadeUI_UIconfirm() {
 						if (ui.confirm && ui.confirm.lastChild.link == "cancel") {
 							if (_status.event.type == "phase") {
-								const innerHTML = lib.config.extension_十周年UI_newDecadeStyle != "othersOff" || decadeUI.config.newDecadeStyle == "on" ? "回合结束" : "结束出牌";
+								const isOnlineUI = lib.config.extension_十周年UI_newDecadeStyle === "onlineUI";
+								const innerHTML = isOnlineUI ? "取消" : lib.config.extension_十周年UI_newDecadeStyle != "othersOff" || decadeUI.config.newDecadeStyle == "on" ? "回合结束" : "结束出牌";
 								ui.confirm.lastChild.innerHTML = _status.event.skill ? "取消" : innerHTML;
 							}
 						}
@@ -3702,7 +3703,7 @@ export default async function () {
 										/*-----------------分割线-----------------*/
 										// 不同样式身份标记
 										if (lib.config.extension_十周年UI_newDecadeStyle == "onlineUI") {
-											image.src = decadeUIPath + "image/decorations/identity2_" + filename + ".png";
+											image.src = decadeUIPath + "image/decorationo/identity2_" + filename + ".png";
 										} else if (lib.config.extension_十周年UI_newDecadeStyle == "babysha") {
 											image.src = decadeUIPath + "image/decorationh/identity3_" + filename + ".png";
 										} else if (lib.config.extension_十周年UI_newDecadeStyle == "on" || lib.config.extension_十周年UI_newDecadeStyle == "othersOff") {
@@ -4441,167 +4442,168 @@ export default async function () {
 						game.broadcastAll(ui.clear);
 						event.cards.add(event.card1);
 					};
+					//联机禁用chhoseToGuanxing函数
+					if (!_status.connectMode) {
+						lib.element.content.chooseToGuanxing = function () {
+							"step 0";
+							if (player.isUnderControl()) game.modeSwapPlayer(player);
+							var cards = get.cards(num);
+							var guanxing = decadeUI.content.chooseGuanXing(player, cards, cards.length, null, cards.length);
+							guanxing.caption = event.getParent() && event.getParent().name && get.translation(event.getParent().name) != event.getParent().name ? "【" + get.translation(event.getParent().name) + "】" : "请按顺序排列牌";
 
-					lib.element.content.chooseToGuanxing = function () {
-						"step 0";
-						if (player.isUnderControl()) game.modeSwapPlayer(player);
-						var cards = get.cards(num);
-						var guanxing = decadeUI.content.chooseGuanXing(player, cards, cards.length, null, cards.length);
-						guanxing.caption = event.getParent() && event.getParent().name && get.translation(event.getParent().name) != event.getParent().name ? "【" + get.translation(event.getParent().name) + "】" : "请按顺序排列牌";
+							game.broadcast(
+								function (player, cards, callback) {
+									if (!window.decadeUI) return;
+									var guanxing = decadeUI.content.chooseGuanXing(player, cards, cards.length, null, cards.length);
+									guanxing.caption = "观星";
+									guanxing.callback = callback;
+									game.log(guanxing.callback);
+								},
+								player,
+								cards,
+								guanxing.callback
+							);
 
-						game.broadcast(
-							function (player, cards, callback) {
-								if (!window.decadeUI) return;
-								var guanxing = decadeUI.content.chooseGuanXing(player, cards, cards.length, null, cards.length);
-								guanxing.caption = "观星";
-								guanxing.callback = callback;
-								game.log(guanxing.callback);
-							},
-							player,
-							cards,
-							guanxing.callback
-						);
+							if (event.isOnline()) {
+								event.player.send(function () {
+									if (!window.decadeUI && decadeUI.eventDialog) _status.event.finish();
+								}, event.player);
 
-						if (event.isOnline()) {
-							event.player.send(function () {
-								if (!window.decadeUI && decadeUI.eventDialog) _status.event.finish();
-							}, event.player);
-
-							event.player.wait();
-							decadeUI.game.wait();
-						} else if (!(typeof event.isMine == "function" && event.isMine())) {
-							const processAI =
-								event.processAI ||
-								function (list) {
-									let cards = list[0][1],
-										player = _status.event.player,
-										target = _status.currentPhase || player,
-										name = _status.event.getTrigger()?.name,
-										countWuxie = current => {
-											let num = current.getKnownCards(player, card => {
-												return get.name(card, current) === "wuxie";
-											});
-											if (num && current !== player) return num;
-											let skills = current.getSkills("invisible").concat(lib.skill.global);
-											game.expandSkills(skills);
-											for (let i = 0; i < skills.length; i++) {
-												let ifo = get.info(skills[i]);
-												if (!ifo) continue;
-												if (ifo.viewAs && typeof ifo.viewAs != "function" && ifo.viewAs.name == "wuxie") {
-													if (!ifo.viewAsFilter || ifo.viewAsFilter(current)) {
-														num++;
-														break;
-													}
-												} else {
-													let hiddenCard = ifo.hiddenCard;
-													if (typeof hiddenCard == "function" && hiddenCard(current, "wuxie")) {
-														num++;
-														break;
-													}
-												}
-											}
-											return num;
-										},
-										top = [];
-									switch (name) {
-										case "phaseJieshu":
-											target = target.next;
-										case "phaseZhunbei":
-											let att = get.sgn(get.attitude(player, target)),
-												judges = target.getCards("j"),
-												needs = 0,
-												wuxie = countWuxie(target);
-											for (let i = Math.min(cards.length, judges.length) - 1; i >= 0; i--) {
-												let j = judges[i],
-													cardj = j.viewAs
-														? {
-																name: j.viewAs,
-																cards: j.cards || [j],
-														  }
-														: j;
-												if (wuxie > 0 && get.effect(target, j, target, target) < 0) {
-													wuxie--;
-													continue;
-												}
-												let judge = get.judge(j);
-												cards.sort((a, b) => {
-													return (judge(b) - judge(a)) * att;
+								event.player.wait();
+								decadeUI.game.wait();
+							} else if (!(typeof event.isMine == "function" && event.isMine())) {
+								const processAI =
+									event.processAI ||
+									function (list) {
+										let cards = list[0][1],
+											player = _status.event.player,
+											target = _status.currentPhase || player,
+											name = _status.event.getTrigger()?.name,
+											countWuxie = current => {
+												let num = current.getKnownCards(player, card => {
+													return get.name(card, current) === "wuxie";
 												});
-												if (judge(cards[0]) * att < 0) {
-													needs++;
-													continue;
-												} else {
+												if (num && current !== player) return num;
+												let skills = current.getSkills("invisible").concat(lib.skill.global);
+												game.expandSkills(skills);
+												for (let i = 0; i < skills.length; i++) {
+													let ifo = get.info(skills[i]);
+													if (!ifo) continue;
+													if (ifo.viewAs && typeof ifo.viewAs != "function" && ifo.viewAs.name == "wuxie") {
+														if (!ifo.viewAsFilter || ifo.viewAsFilter(current)) {
+															num++;
+															break;
+														}
+													} else {
+														let hiddenCard = ifo.hiddenCard;
+														if (typeof hiddenCard == "function" && hiddenCard(current, "wuxie")) {
+															num++;
+															break;
+														}
+													}
+												}
+												return num;
+											},
+											top = [];
+										switch (name) {
+											case "phaseJieshu":
+												target = target.next;
+											case "phaseZhunbei":
+												let att = get.sgn(get.attitude(player, target)),
+													judges = target.getCards("j"),
+													needs = 0,
+													wuxie = countWuxie(target);
+												for (let i = Math.min(cards.length, judges.length) - 1; i >= 0; i--) {
+													let j = judges[i],
+														cardj = j.viewAs
+															? {
+																	name: j.viewAs,
+																	cards: j.cards || [j],
+															  }
+															: j;
+													if (wuxie > 0 && get.effect(target, j, target, target) < 0) {
+														wuxie--;
+														continue;
+													}
+													let judge = get.judge(j);
+													cards.sort((a, b) => {
+														return (judge(b) - judge(a)) * att;
+													});
+													if (judge(cards[0]) * att < 0) {
+														needs++;
+														continue;
+													} else {
+														top.unshift(cards.shift());
+													}
+												}
+												if (needs > 0 && needs >= judges.length) {
+													return [top, cards];
+												}
+												cards.sort((a, b) => {
+													return (get.value(b, target) - get.value(a, target)) * att;
+												});
+												while (needs--) {
 													top.unshift(cards.shift());
 												}
-											}
-											if (needs > 0 && needs >= judges.length) {
+												while (cards.length) {
+													if (get.value(cards[0], target) > 6 == att > 0) top.push(cards.shift());
+													else break;
+												}
 												return [top, cards];
-											}
-											cards.sort((a, b) => {
-												return (get.value(b, target) - get.value(a, target)) * att;
-											});
-											while (needs--) {
-												top.unshift(cards.shift());
-											}
-											while (cards.length) {
-												if (get.value(cards[0], target) > 6 == att > 0) top.push(cards.shift());
-												else break;
-											}
-											return [top, cards];
-										default:
-											cards.sort((a, b) => {
-												return get.value(b, target) - get.value(a, target);
-											});
-											while (cards.length) {
-												if (get.value(cards[0], target) > 6) top.push(cards.shift());
-												else break;
-											}
-											return [top, cards];
-									}
-								};
-							var [cards, cheats] = processAI([[" ", guanxing.cards[0].slice()]]),
-								time = 500;
-							for (var i = 0; i < cheats.length; i++) {
-								setTimeout(
-									function (card, index, finished) {
-										guanxing.move(card, index, 0);
-										if (finished) guanxing.finishTime(1000);
-									},
-									time,
-									cheats[i],
-									i,
-									i >= cheats.length - 1 && cards.length == 0
-								);
-								time += 500;
-							}
+											default:
+												cards.sort((a, b) => {
+													return get.value(b, target) - get.value(a, target);
+												});
+												while (cards.length) {
+													if (get.value(cards[0], target) > 6) top.push(cards.shift());
+													else break;
+												}
+												return [top, cards];
+										}
+									};
+								var [cards, cheats] = processAI([[" ", guanxing.cards[0].slice()]]),
+									time = 500;
+								for (var i = 0; i < cheats.length; i++) {
+									setTimeout(
+										function (card, index, finished) {
+											guanxing.move(card, index, 0);
+											if (finished) guanxing.finishTime(1000);
+										},
+										time,
+										cheats[i],
+										i,
+										i >= cheats.length - 1 && cards.length == 0
+									);
+									time += 500;
+								}
 
-							for (var i = 0; i < cards.length; i++) {
-								setTimeout(
-									function (card, index, finished) {
-										guanxing.move(card, index, 1);
-										if (finished) guanxing.finishTime(1000);
-									},
-									time,
-									cards[i],
-									i,
-									i >= cards.length - 1
-								);
-								time += 500;
+								for (var i = 0; i < cards.length; i++) {
+									setTimeout(
+										function (card, index, finished) {
+											guanxing.move(card, index, 1);
+											if (finished) guanxing.finishTime(1000);
+										},
+										time,
+										cards[i],
+										i,
+										i >= cards.length - 1
+									);
+									time += 500;
+								}
 							}
-						}
-						"step 1";
-						var [top, bottom] = [event.cards1, event.cards2];
-						event.result = {
-							bool: true,
-							moved: [top, bottom],
+							"step 1";
+							var [top, bottom] = [event.cards1, event.cards2];
+							event.result = {
+								bool: true,
+								moved: [top, bottom],
+							};
+							game.addCardKnower(top, player);
+							game.addCardKnower(bottom, player);
+							player.popup(get.cnNumber(event.num1) + "上" + get.cnNumber(event.num2) + "下");
+							game.logv(player, "将" + get.cnNumber(event.num1) + "张牌置于牌堆顶，" + get.cnNumber(event.num2) + "张牌置于牌堆底");
+							game.updateRoundNumber();
 						};
-						game.addCardKnower(top, player);
-						game.addCardKnower(bottom, player);
-						player.popup(get.cnNumber(event.num1) + "上" + get.cnNumber(event.num2) + "下");
-						game.logv(player, "将" + get.cnNumber(event.num1) + "张牌置于牌堆顶，" + get.cnNumber(event.num2) + "张牌置于牌堆底");
-						game.updateRoundNumber();
-					};
-
+					}
 					lib.element.player.setIdentity = function (identity) {
 						if (!identity) identity = this.identity;
 
@@ -4710,7 +4712,6 @@ export default async function () {
 					};
 
 					lib.element.player.$damagepop = function (num, nature, font, nobroadcast) {
-						if(lib.config.extension_十周年UI_newDecadeStyle == "onlineUI")return;
 						if (typeof num == "number" || typeof num == "string") {
 							game.addVideo("damagepop", this, [num, nature, font]);
 							if (nobroadcast !== false) {
@@ -4740,13 +4741,15 @@ export default async function () {
 
 							if (typeof num == "number") {
 								node.popupNumber = num;
-								if (num == Infinity) {
-									num = "+∞";
-								} else if (num == -Infinity) {
-									num = "-∞";
-								} else if (num > 0) {
-									num = "+" + num;
-								}
+								if (lib.config.extension_十周年UI_newDecadeStyle !== "onlineUI") {
+									if (num == Infinity) {
+										num = "+∞";
+									} else if (num == -Infinity) {
+										num = "-∞";
+									} else if (num > 0) {
+										num = "+" + num;
+									}
+								} else num = "";
 							} else {
 								node.popupNumber = null;
 							}
@@ -5990,8 +5993,8 @@ export default async function () {
 					if (event.blameEvent) event = event.blameEvent;
 					let tagText;
 					const playername = get.slimName(player?.name);
-					let border = get.groupnature(get.bordergroup(player?.name), "raw");
-					let eventInfo = `<span style="font-weight:700"><span data-nature=${border}>${playername}</span><br/><span style="color:#FFD700">`;
+					let border = get.groupnature(get.bordergroup(player?.name));
+					let eventInfo = `<span style="font-weight:700"><span data-nature=${border}><span style="letter-spacing:0.1em">${playername}</span></span><br/><span style="color:#FFD700">`;
 					switch (event.name) {
 						case "useCard":
 						case "respond":
@@ -9247,6 +9250,7 @@ export default async function () {
 					this.js(decadeUIPath + "content.js");
 					this.js(decadeUIPath + "effect.js");
 					this.js(decadeUIPath + "meihua.js");
+					//this.js(decadeUIPath + "cardtuozhuai.js");
 					this.js(decadeUIPath + "animation.js");
 					this.js(decadeUIPath + "dynamicSkin.js");
 
@@ -10879,9 +10883,18 @@ export default async function () {
 				name: "调试助手",
 				init: false,
 			},
+			kapaituozhuai: {
+				name: "卡牌拖拽",
+				init: false,
+				intro: "开启后手牌可以任意拖拽牌序，自动重启",
+				onclick(bool) {
+					game.saveConfig("extension_十周年UI_kapaituozhuai", bool);
+					setTimeout(() => game.reload(), 100);
+				},
+			},
 			newDecadeStyle: {
-				name: '切换样式',
-				intro: '切换武将边框样式和界面布局，初始为十周年样式，根据个人喜好自行切换，选择不同的设置后游戏会自动重启以生效新的设置',
+				name: "切换样式",
+				intro: "切换武将边框样式和界面布局，初始为十周年样式，根据个人喜好自行切换，选择不同的设置后游戏会自动重启以生效新的设置",
 				init: "off",
 				item: {
 					on: "十周年",
@@ -10906,7 +10919,7 @@ export default async function () {
 				},
 			},
 			rightLayout: {
-				name: '左右布局',
+				name: "左右布局",
 				init: "on",
 				intro: "切换完以后自动重启游戏，手杀十周年一将之后的样式不再维护",
 				item: {
@@ -10938,8 +10951,9 @@ export default async function () {
 				init: "webp",
 				item: {
 					off: "关闭",
-					webp: "WEBP素材",
-					png: "PNG 素材",
+					jpg: "online",
+					webp: "彩色卡牌",
+					png: "原十周年",
 				},
 			},
 			//菜单美化
@@ -11127,8 +11141,8 @@ export default async function () {
 				intro: "开启后，手气卡锁定五次",
 			},
 			aloneEquip: {
-				name: '单独装备栏',
-				intro: '切换玩家装备栏为单独装备栏或非单独装备栏，初始为单独装备栏，根据个人喜好调整',
+				name: "单独装备栏",
+				intro: "切换玩家装备栏为单独装备栏或非单独装备栏，初始为单独装备栏，根据个人喜好调整",
 				init: true,
 				update() {
 					const config = lib.config["extension_十周年UI_aloneEquip"];
@@ -11150,11 +11164,6 @@ export default async function () {
 						}
 					}
 				},
-			},
-			babyshaskill: {
-				name: "欢杀技能显示",
-				init: false,
-				intro: "开启后，斗地主对决模式人机技能显示，目前有bug",
 			},
 			outcropSkin: {
 				name: "露头样式",
@@ -11183,7 +11192,7 @@ export default async function () {
 				},
 			},
 			longLevel: {
-				name: '等阶龙头',
+				name: "等阶龙头",
 				init: "eight",
 				item: {
 					eight: "关闭",
@@ -11202,8 +11211,8 @@ export default async function () {
 			},
 			foldCardMinWidth: {
 				name: "手牌折叠",
-				intro: "设置当手牌过多时，折叠手牌露出部分的最小宽度（默认值为81）",
-				init: "81",
+				intro: "设置当手牌过多时，折叠手牌露出部分的最小宽度（默认值为9）",
+				init: "9",
 				item: {
 					9: "9",
 					18: "18",
@@ -11234,8 +11243,8 @@ export default async function () {
 				},
 			},
 			shadowStyle: {
-				name: '特效风格',
-				intro: '可根据个人喜好切换局内阴影动态特效与人物弹出文字的样式，目前只有新手杀样式可用',
+				name: "特效风格",
+				intro: "可根据个人喜好切换局内阴影动态特效与人物弹出文字的样式，目前只有新手杀样式可用",
 				init: "on",
 				item: {
 					on: "原样式",
@@ -11258,8 +11267,8 @@ export default async function () {
 				},
 			},
 			loadingStyle: {
-				name: '更换光标+loading框',
-				intro: '可以更换局内选项框以及光标',
+				name: "更换光标+loading框",
+				intro: "可以更换局内选项框以及光标",
 				init: "on",
 				item: {
 					off: "关闭",
@@ -11556,14 +11565,9 @@ export default async function () {
 			pack.intro = (pack => {
 				let log = [
 					`魔改十周年UI ${pack.version}`,
-					"最低适配：v1.10.17.2",
+					"最低适配：v1.10.17.3",
 					"bugfix",
 					"局内UI显示调整",
-					"新版本函数跟进",
-					"简化菜单名称、动态背景",
-					"回滚$throw，添加弃牌动画",
-					"新增手气卡美化，欢杀技能显示",
-					"致谢：萌新（转型中）、戏志才、U、小爱莉、扶苏",
 				];
 				return `<a href=${pack.diskURL}>点击前往十周年Github仓库</a><br><p style="color:rgb(210,210,000); font-size:12px; line-height:14px; text-shadow: 0 0 2px black;">${log.join("<br>•")}</p>`;
 			})(pack);
