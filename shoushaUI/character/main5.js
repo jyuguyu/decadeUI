@@ -132,7 +132,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					if (!rarity) rarity = "junk";
 					var pe = ui.create.div(".pe1", dialog);
 					var url;
-					if (lib.config["extension_千幻聆音_enable"]) {
+					if (lib.config["extension_千幻聆音_enable"] && game.qhly_getSkin && game.qhly_getSkinLevel) {
 						var temp;
 						switch (game.qhly_getSkinLevel(name, game.qhly_getSkin(name), true, false)) {
 							case "xiyou":
@@ -237,6 +237,21 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					//官阶气泡框
 					var duihuak = ui.create.div(".duihuak", biankuang4);
 					duihuak.setBackgroundImage(`extension/十周年UI/shoushaUI/character/images/baby/seatinfo.png`);
+
+					//分包
+					var getPack = function (name) {
+						const pack = Object.keys(lib.characterPack).find(pack => lib.characterPack[pack][name]);
+						if (pack) {
+							if (lib.characterSort[pack]) {
+								const sort = Object.keys(lib.characterSort[pack]).find(sort => lib.characterSort[pack][sort].includes(name));
+								if (sort) return lib.translate[sort];
+							}
+							return lib.translate[pack + "_character_config"] || lib.translate[pack];
+						}
+						return "暂无分包";
+					};
+
+					ui.create.div(".pack", getPack(name), biankuang4);
 
 					//技能文本
 					dialog.classList.add("single");

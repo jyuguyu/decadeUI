@@ -244,7 +244,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 
 				showSkills.forEach(function (item) {
 					//势力技能筛选
-					if (lib.skill[item.id].filter) {
+					if (lib.skill[item.id] && lib.skill[item.id].filter) {
 						if ((lib.skill[item.id].filter + "").indexOf("player.group") != -1) {
 							var str = (lib.skill[item.id].filter + "").substr((lib.skill[item.id].filter + "").indexOf("player.group"));
 							if (str.indexOf("'") != -1) {
@@ -528,7 +528,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					//如果不是转换技就调用限定技的标记
 					else {
 						//判断图片存在，不存在就用底图
-						var url = lib.assetURL + "extension/十周年UI/shoushaUI/skill/images/" + k + "_yang.png";
+						var url = lib.assetURL + "extension/十周年UI/shoushaUI/skill/shousha/" + k + "_yang.png";
 						function ImageIsExist(url) {
 							let xmlHttp = new XMLHttpRequest();
 							xmlHttp.open("Get", url, false);
@@ -541,15 +541,15 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							var a = ImageIsExist(url);
 							if (a) {
 								item = ui.create.div(".skillMarkItem.zhuanhuanji", node, "");
-								item.setBackgroundImage("extension/十周年UI/shoushaUI/skill/images/" + k + "_yang.png");
+								item.setBackgroundImage("extension/十周年UI/shoushaUI/skill/shousha/" + k + "_yang.png");
 							} else {
 								item = ui.create.div(".skillMarkItem.zhuanhuanji", node, get.skillTranslation(k, player));
-								item.setBackgroundImage("extension/十周年UI/shoushaUI/skill/images/ditu_yang.png");
+								item.setBackgroundImage("extension/十周年UI/shoushaUI/skill/shousha/ditu_yang.png");
 								item.style.setProperty("--w", "42px");
 							}
 						} catch (err) {
 							item = ui.create.div(".skillMarkItem.zhuanhuanji", node, get.skillTranslation(k, player));
-							item.setBackgroundImage("extension/十周年UI/shoushaUI/skill/images/ditu_yang.png");
+							item.setBackgroundImage("extension/十周年UI/shoushaUI/skill/shousha/ditu_yang.png");
 							item.style.setProperty("--w", "42px");
 						}
 						//如果是转换技就调用转换技标记并设置背景图

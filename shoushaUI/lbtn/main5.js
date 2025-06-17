@@ -4,7 +4,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 			game.countPlayer(current => {
 				//需要加在这里，不然可能会不出现
 				//添加 确定每个玩家的名字
-				var namex = current === game.me ? lib.config.connect_nickname : ["缘之空", "小小恐龙", "自然萌", "海边的ebao", "小云云", "点点", "猫猫虫", "小爱莉", "冰佬", "鹿鹿", "黎佬", "浮牢师", "U佬", "蓝宝", "影宝", "柳下跖", "k9", "扶苏", "皇叔"].randomGet();
+				var namex = current === game.me ? lib.config.connect_nickname : ["缘之空", "小小恐龙", "自然萌", "海边的ebao", "小云云", "点点", "猫猫虫", "小爱莉", "冰佬", "鹿鹿", "黎佬", "浮牢师", "U佬", "蓝宝", "影宝", "柳下跖", "无语", "小曦", "墨渊", "k9", "扶苏", "皇叔"].randomGet();
 				if (!current.nickname) current.nickname = namex;
 			});
 		}, 1000);
@@ -22,7 +22,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 
 		var head = ui.create.node("img");
 		head.src = lib.assetURL + "extension/十周年UI/shoushaUI/lbtn/images/CD/new_buttonhs3.png";
-		head.style.cssText = "display: block;--w: 56px;--h: calc(var(--w) * 74/71);width: var(--w);height: var(--h);position: absolute;bottom: 13%;left: 53px;right: auto;background-color: transparent;z-index:1";
+		head.style.cssText = "display: block;--w: 53px;--h: calc(var(--w) * 74/71);width: var(--w);height: var(--h);position: absolute;bottom: 13%;left: 80px;right: auto;background-color: transparent;z-index:1";
 		head.onclick = function () {
 			head.style.transform = "scale(0.95)";
 		};
@@ -46,7 +46,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 		head.src = lib.assetURL + "extension/十周年UI/shoushaUI/lbtn/images/uibutton/zhenglihs.png";
 		//左手整理手牌按钮位置
 		if (lib.config["extension_十周年UI_rightLayout"] == "on") {
-			head.style.cssText = "display: block;--w: 100px;--h: calc(var(--w) * 81/347);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 31px);left: calc(100% - 350px);background-color: transparent;z-index:2";
+			head.style.cssText = "display: block;--w: 100px;--h: calc(var(--w) * 81/347);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 31px);left: calc(100% - 373px);background-color: transparent;z-index:2";
 		} else {
 			head.style.cssText = "display: block;--w: 88px;--h: calc(var(--w) * 81/247);width: var(--w);height: var(--h);position: absolute;top: calc(100% - 33px);right: calc(100% - 367.2px);background-color: transparent;z-index:2;";
 		}

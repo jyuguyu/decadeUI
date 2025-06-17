@@ -204,9 +204,27 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 	function huanfu() {
 		ui.huanfubutton = ui.create.div(".huanfubutton", ui.window);
 		ui.huanfubutton.onclick = function () {
-			if (!game.me) return;
+			if (!game.me || !game.me.name) {
+				if (typeof ui.showMessage === "function") {
+					ui.showMessage("请先选择武将");
+				} else {
+					alert("请先选择武将");
+				}
+				return;
+			}
 			game.qhly_open_small ? game.qhly_open_small(game.me.name, null, game.me) : ui.click.charactercard(game.me.name, game.me, lib.config.mode === "guozhan" ? "guozhan" : true);
 		};
+		ui.updateHuanfuButton = function () {
+			if (!game.me || !game.me.name) {
+				ui.huanfubutton.style.opacity = "0.5";
+				ui.huanfubutton.style.cursor = "not-allowed";
+			} else {
+				ui.huanfubutton.style.opacity = "1";
+				ui.huanfubutton.style.cursor = "pointer";
+			}
+		};
+		ui.updateHuanfuButton();
+		setInterval(ui.updateHuanfuButton, 1000);
 	}
 
 	function shenfenrenwu() {
@@ -276,6 +294,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 				fan: "击败主公",
 				nei: "击败所有角色，最后击败主公",
 				mingzhong: "保护主公，击败反贼内奸",
+				commoner: "苟住，有一方获胜你就胜利",
 				undefined: "击败所有敌方",
 			},
 		};
@@ -305,7 +324,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 			game.countPlayer(current => {
 				//需要加在这里，不然可能会不出现
 				//添加 确定每个玩家的名字
-				var namex = current === game.me ? lib.config.connect_nickname : ["缘之空", "小小恐龙", "自然萌", "海边的ebao", "小云云", "点点", "猫猫虫", "小爱莉", "冰佬", "鹿鹿", "黎佬", "浮牢师", "U佬", "蓝宝", "影宝", "柳下跖", "k9", "扶苏", "皇叔"].randomGet();
+				var namex = current === game.me ? lib.config.connect_nickname : ["缘之空", "小小恐龙", "自然萌", "海边的ebao", "小云云", "点点", "猫猫虫", "小爱莉", "冰佬", "鹿鹿", "黎佬", "浮牢师", "U佬", "蓝宝", "影宝", "柳下跖", "无语", "小曦", "墨渊", "k9", "扶苏", "皇叔"].randomGet();
 				if (!game.hasPlayer(current => {})) if (!current.nickname) current.nickname = namex;
 			});
 			//左上角整体（身份任务及牌局记录）
@@ -720,7 +739,8 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					if (allButtons.length > 0) allButtons[0].classList.add("typechangelight");
 					let dazi = ui.create.div(".dazi", "打字", bg);
 					let shuru = null;
-					dazi.addEventListener("click", function () {
+					dazi.addEventListener("click", function (event) {
+						event.stopPropagation(); // 阻止事件冒泡
 						if (!shuru) {
 							//输入框的样式
 							shuru = document.createElement("input");
@@ -734,11 +754,28 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							shuru.style.width = "60%";
 							shuru.style.height = "10%";
 							shuru.style.fontSize = "30px";
+							shuru.style.backgroundColor = "rgba(255, 255, 255, 0.9)";
+							shuru.style.border = "2px solid #C1AD92";
+							shuru.style.borderRadius = "5px";
+							shuru.style.padding = "5px";
+							shuru.style.outline = "none";
+							shuru.style.pointerEvents = "auto"; // 确保输入框可以接收鼠标事件
 							ui.window.appendChild(shuru);
 						}
 						shuru.style.display = "block";
 						shuru.focus();
 					});
+
+					// 修改点击事件处理
+					ui.window.addEventListener("click", function (event) {
+						if (shuru && shuru.style.display === "block") {
+							// 如果点击的不是输入框和打字按钮，则隐藏输入框
+							if (!shuru.contains(event.target) && event.target !== dazi) {
+								shuru.style.display = "none";
+							}
+						}
+					});
+
 					document.addEventListener("keydown", function (event) {
 						if (shuru && shuru.style.display === "block" && event.key === "Enter") {
 							let inputValue = shuru.value.trim();
@@ -796,7 +833,6 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 		var roundNumberNode = ui.create.div(".roundNumber", ui.cardRoundTimeNode);
 		ui.timeNode = ui.create.div(".time", ui.cardRoundTimeNode);
 
-		// Hide show_time3, show_time2 and show_cardpile_number
 		lib.config.show_time3 = false;
 		lib.config.show_time2 = false;
 		lib.config.show_cardpile_number = false;
@@ -852,22 +888,21 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 				if (game.updateRoundNum) game.updateRoundNum();
 			}, cardNumber);
 		};
-
 		setTimeout(function () {
 			// 隐藏本体左上角时间
-			document.querySelectorAll('.touchinfo.left, .time').forEach(function(node) {
+			document.querySelectorAll(".touchinfo.left, .time").forEach(function (node) {
 				if (!ui.cardRoundTimeNode || !ui.cardRoundTimeNode.contains(node)) {
 					node.style.display = "none";
 				}
 			});
 			// 隐藏本体右上角牌堆数
-			document.querySelectorAll('.touchinfo.right').forEach(function(node) {
+			document.querySelectorAll(".touchinfo.right").forEach(function (node) {
 				if (!ui.cardRoundTimeNode || !ui.cardRoundTimeNode.contains(node)) {
 					node.style.display = "none";
 				}
 			});
 			// 隐藏本体的 .cardPileNumber（只隐藏不是你自己UI里的）
-			document.querySelectorAll('.cardPileNumber').forEach(function(node) {
+			document.querySelectorAll(".cardPileNumber").forEach(function (node) {
 				if (!ui.cardRoundTimeNode || !ui.cardRoundTimeNode.contains(node)) {
 					node.style.display = "none";
 				}
