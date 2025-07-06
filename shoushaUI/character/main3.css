@@ -219,7 +219,8 @@
 	white-space: normal;
 	/* 允许多行显示 */
 	top: 65px;
-	left: 32.5px;
+	left: 4.5%;
+	right: auto;
 	width: 18px;
 	font-family: yuanli;
 	text-shadow: (to top, rgb(35, 83, 123), rgb(15, 35, 68));
@@ -737,8 +738,9 @@
 .wujiangming {
 	position: absolute;
 	font-size: 22px;
-	top: 80px;
-	left: 870px;
+	top: 20%;
+	left: 87.1%;
+	right: auto;
 	color: orange;
 	font-family: xingkai;
 	z-index: 70;

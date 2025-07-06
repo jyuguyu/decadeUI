@@ -308,7 +308,7 @@ body > .background {
 
 #arena[data-right-layout="on"] > .hand-wrap > .fakeme.avatar {
 	left: auto;
-	right: -300px;
+	right: -320px;
 }
 
 .hand-cards {
@@ -594,7 +594,8 @@ body > .background {
 }
 
 .touchinfo.left {
-	left: 2%;
+	left: 84%;
+	top: 15%;
 }
 
 .touchinfo.right {

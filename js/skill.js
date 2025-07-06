@@ -14,29 +14,23 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			firstDo: true,
 			content() {
 				game.removeGlobalSkill("mx_start");
-				if (lib.config.extension_十周年UI_newDecadeStyle != "othersOn" || lib.config.extension_十周年UI_newDecadeStyle != "off") {
-					game.playAudio("../extension", decadeUI.extensionName, "audio/game_start.mp3");
-					var animation = decadeUI.animation;
-					var bounds = animation.getSpineBounds("effect_youxikaishi");
-					if (bounds == null) return;
-					var sz = bounds.size;
-					var scale = Math.min(animation.canvas.width / sz.x, animation.canvas.height / sz.y) * 0.76;
-					animation.playSpine({
-						name: "effect_youxikaishi",
-						scale: scale,
-					});
-				} else {
-					game.playAudio("../extension", decadeUI.extensionName, "audio/game_start_shousha.mp3");
-					var animation = decadeUI.animation;
-					var bounds = animation.getSpineBounds("effect_youxikaishi_shousha");
-					if (bounds == null) return;
-					var sz = bounds.size;
-					var scale = Math.min(animation.canvas.width / sz.x, animation.canvas.height / sz.y) * 1.5;
-					animation.playSpine({
-						name: "effect_youxikaishi_shousha",
-						scale: scale,
-					});
-				}
+				const style = lib.config.extension_十周年UI_newDecadeStyle;
+				const isShousha = style === "othersOn" || style === "off";
+				const effectName = isShousha ? "effect_youxikaishi_shousha" : "effect_youxikaishi";
+				const audio = isShousha ? "audio/game_start_shousha.mp3" : "audio/game_start.mp3";
+				const scaleFactor = isShousha ? 1.5 : 0.76;
+
+				game.playAudio("../extension", decadeUI.extensionName, audio);
+				const animation = decadeUI.animation;
+				const bounds = animation.getSpineBounds(effectName);
+				if (!bounds) return;
+
+				const sz = bounds.size;
+				const scale = Math.min(animation.canvas.width / sz.x, animation.canvas.height / sz.y) * scaleFactor;
+				animation.playSpine({
+					name: effectName,
+					scale: scale,
+				});
 			},
 		},
 		//龙头
@@ -47,88 +41,57 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			silent: true,
 			forced: true,
 			filter(event, player) {
-				return lib.config.extension_十周年UI_longLevel == "sex" || lib.config.extension_十周年UI_longLevel == "seven";
+				return ["sex", "seven"].includes(lib.config.extension_十周年UI_longLevel);
 			},
 			content: function () {
 				game.removeGlobalSkill("mx_longLevel");
+				const longLevel = lib.config.extension_十周年UI_longLevel;
+				const createAndAppendDragon = (target, src, styles) => {
+					const img = document.createElement("img");
+					img.src = src;
+					Object.assign(img.style, {
+						pointerEvents: "none",
+						position: "absolute",
+						display: "block",
+						...styles,
+					});
+					target.appendChild(img);
+				};
+				const dragonData = {
+					yan: {
+						src: `${decadeUIPath}/assets/image/long1_yan.png`,
+						style: { top: "-88px", left: "-23px", height: "213%", width: "160%", zIndex: "98" },
+					},
+					yu: {
+						src: `${decadeUIPath}/assets/image/long1_yu.png`,
+						style: { top: "-40px", left: "-25px", height: "139%", width: "156%", zIndex: "85" },
+					},
+				};
 				game.players.forEach(target => {
 					let rarity;
-					if (lib.config.extension_十周年UI_longLevel == "seven") {
-						const rarityList = ["silver", "gold", "yu", "yan"];
-						switch (game.getRarity(player.name)) {
-							case "junk":
-								rarity = rarityList[0];
-								break;
-							case "common":
-								rarity = rarityList[1];
-								break;
-							case "rare":
-								rarity = rarityList[2];
-								break;
-							case "epic":
-								rarity = rarityList[3];
-								break;
-							case "legend":
-								rarity = rarityList[4];
-								break;
-							default:
-								break;
-						}
-					}
-					if (lib.config.extension_十周年UI_longLevel == "sex") {
+					if (longLevel === "seven") {
+						const rarityMap = {
+							junk: "silver",
+							common: "gold",
+							rare: "yu",
+							epic: "yan",
+						};
+						rarity = rarityMap[game.getRarity(target.name)];
+					} else if (longLevel === "sex") {
 						const rarityList = ["gold", "yu", "yan"];
 						rarity = rarityList[Math.floor(Math.random() * rarityList.length)];
 					}
-					let longtou;
-					let longwei;
-					if (rarity === "yan") {
-						const wholeYanDragon = document.createElement("img");
-						wholeYanDragon.src = decadeUIPath + "/assets/image/long1_yan.png";
-						wholeYanDragon.style.cssText = "pointer-events:none";
-						wholeYanDragon.style.position = "absolute";
-						wholeYanDragon.style.display = "block";
-						wholeYanDragon.style.top = "-88px";
-						wholeYanDragon.style.left = "-23px";
-						wholeYanDragon.style.height = "213%";
-						wholeYanDragon.style.width = "160%";
-						wholeYanDragon.style.zIndex = "98";
-						target.appendChild(wholeYanDragon);
-					} else if (rarity === "yu") {
-						const wholeYuDragon = document.createElement("img");
-						wholeYuDragon.src = decadeUIPath + "/assets/image/long1_yu.png";
-						wholeYuDragon.style.cssText = "pointer-events:none";
-						wholeYuDragon.style.position = "absolute";
-						wholeYuDragon.style.display = "block";
-						wholeYuDragon.style.top = "-40px";
-						wholeYuDragon.style.left = "-25px";
-						wholeYuDragon.style.height = "139%";
-						wholeYuDragon.style.width = "156%";
-						wholeYuDragon.style.zIndex = "85";
-						target.appendChild(wholeYuDragon);
+					if (dragonData[rarity]) {
+						const data = dragonData[rarity];
+						createAndAppendDragon(target, data.src, data.style);
 					} else {
-						longtou = document.createElement("img");
-						longtou.src = decadeUIPath + "/assets/image/long_" + rarity + "1.png";
-						longtou.style.cssText = "pointer-events:none";
-						longtou.style.position = "absolute";
-						longtou.style.display = "block";
-						longtou.style.top = "-36px";
-						longtou.style.right = "-26px";
-						longtou.style.height = "133px";
-						longtou.style.width = "80px";
-						longtou.style.zIndex = "80";
-						target.appendChild(longtou);
+						const src1 = `${decadeUIPath}/assets/image/long_${rarity}1.png`;
+						const styles1 = { top: "-36px", right: "-26px", height: "133px", width: "80px", zIndex: "80" };
+						createAndAppendDragon(target, src1, styles1);
 
-						longwei = document.createElement("img");
-						longwei.src = decadeUIPath + "/assets/image/long_" + rarity + "2.png";
-						longwei.style.cssText = "pointer-events:none";
-						longwei.style.position = "absolute";
-						longwei.style.display = "block";
-						longwei.style.bottom = "-10px";
-						longwei.style.right = "-13px";
-						longwei.style.height = "40px";
-						longwei.style.width = "92px";
-						longwei.style.zIndex = "99";
-						target.appendChild(longwei);
+						const src2 = `${decadeUIPath}/assets/image/long_${rarity}2.png`;
+						const styles2 = { bottom: "-10px", right: "-13px", height: "40px", width: "92px", zIndex: "99" };
+						createAndAppendDragon(target, src2, styles2);
 					}
 				});
 			},
@@ -360,7 +323,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					event.num++;
 				if (!player.isMinHandcard()) event.num++;
 				if (!player.getStat("damage")) event.num++;
-				("step 1");
+				"step 1";
 				if (event.num == 0) {
 					player.gain(event.cards, "draw");
 					event.finish();
@@ -444,7 +407,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				} else if (!event.isMine()) {
 					event.switchToAuto();
 				}
-				("step 2");
+				"step 2";
 				event.cards = event.cards2;
 				if (event.result && event.result.bool) {
 					var cards = event.cards1;
@@ -453,7 +416,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						ui.cardPile.insertBefore(cards[i], first);
 					}
 				}
-				("step 3");
+				"step 3";
 				game.updateRoundNumber();
 				if (event.cards.length) {
 					player.gain(event.cards, "draw");
@@ -465,7 +428,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						return -get.attitude(_status.event.player, target);
 					};
 				}
-				("step 4");
+				"step 4";
 				player.line(result.targets[0], "fire");
 				player.loseHp();
 				result.targets[0].loseHp();
@@ -672,7 +635,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				} else {
 					switchToAuto();
 				}
-				("step 1");
+				"step 1";
 				var result = event.result || result;
 				if (!result)
 					result = {
@@ -694,7 +657,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					player
 				);
 				game.delay(2.5);
-				("step 2");
+				"step 2";
 				game.broadcastAll("closeDialog", event.videoId);
 				if (result.bool) {
 					player.logSkill("pcaudio_" + event.cardname);
@@ -768,7 +731,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					event.switchToAuto();
 				}
 
-				("step 1");
+				"step 1";
 				var first = ui.cardPile.firstChild;
 				var cards = event.cards2;
 				for (var i = 0; i < cards.length; i++) {
@@ -990,7 +953,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						return 7 - get.value(card);
 					return -1;
 				};
-				("step 1");
+				"step 1";
 				if (result.bool) {
 					if (result.cards.length == cards.length) player.draw();
 					else player.draw(cards.length);
@@ -999,7 +962,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						if (get.position(event.cardsx[i]) != "d") event.cardsx.splice(i--, 1);
 					}
 				} else event.finish();
-				("step 2");
+				"step 2";
 				if (event.cardsx.length) {
 					var cards = event.cardsx;
 					var dialog = decadeUI.content.chooseGuanXing(player, cards, cards.length);
@@ -1142,7 +1105,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				} else if (!event.isMine()) {
 					event.switchToAuto();
 				}
-				("step 1");
+				"step 1";
 				player.popup(get.cnNumber(event.num1) + "上" + get.cnNumber(event.num2) + "下");
 				game.log(player, "将" + get.cnNumber(event.num1) + "张牌置于牌堆顶，" + get.cnNumber(event.num2) + "张牌置于牌堆底");
 				game.updateRoundNumber();
@@ -1178,7 +1141,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					})
 					.sortBySeat(_status.currentPhase);
 				if (!event.targets.length) event.goto(4);
-				("step 1");
+				"step 1";
 				event.target = event.targets.shift();
 				event.target.chooseButton([event.prompt, [["reguhuo_ally", "reguhuo_betray"], "vcard"]], true).set("ai", function (button) {
 					var player = _status.event.player;
@@ -1206,7 +1169,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					}
 					return Math.random();
 				});
-				("step 2");
+				"step 2";
 				if (result.links[0][2] == "reguhuo_betray") {
 					target.addExpose(0.2);
 					game.log(target, "#y质疑");
@@ -1216,13 +1179,13 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					game.log(target, "#g不质疑");
 					target.popup("不质疑", "wood");
 				}
-				("step 3");
+				"step 3";
 				game.delay();
 				if (!event.betrayer && targets.length) event.goto(1);
-				("step 4");
+				"step 4";
 				player.showCards(trigger.cards);
 				if (!event.betrayer) event.finish();
-				("step 5");
+				"step 5";
 				if (event.fake) {
 					event.betrayer.popup("质疑正确", "wood");
 					game.log(player, "声明的", trigger.card, "作废了");
@@ -1233,7 +1196,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 					event.betrayer.popup("质疑错误", "fire");
 					event.betrayer.addSkillLog("chanyuan");
 				}
-				("step 6");
+				"step 6";
 				game.delayx();
 			},
 		},
@@ -1275,14 +1238,14 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 						);
 					})
 					.setHiddenSkill("twtanfeng");
-				("step 1");
+				"step 1";
 				if (result.bool) {
 					var target = result.targets[0];
 					event.target = target;
 					player.logSkill("twtanfeng", target);
 					player.discardPlayerCard(target, "hej", true);
 				} else event.finish();
-				("step 2");
+				"step 2";
 				var next = target.chooseToUse();
 				next.set("openskilldialog", "###探锋：选择一张牌当作【杀】对" + get.translation(player) + "使用###或点击“取消”，受到其造成的1点火焰伤害，并令其跳过本回合的一个阶段（准备阶段和结束阶段除外）");
 				next.set("norestore", true);
@@ -1302,12 +1265,12 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				});
 				next.set("sourcex", player);
 				next.set("addCount", false);
-				("step 3");
+				"step 3";
 				if (!result.bool) {
 					player.line(target, "fire");
 					target.damage(1, "fire");
 				} else event.finish();
-				("step 4");
+				"step 4";
 				if (!target.isIn()) {
 					event.finish();
 					return;
@@ -1347,7 +1310,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 							return list2.randomGet();
 						})()
 					);
-				("step 5");
+				"step 5";
 				for (var i in event.map) {
 					if (event.map[i] == result.control) player.skip(i);
 				}

@@ -51,9 +51,10 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 			Object.assign(ui, {
 				updateSkillControl(player, clear) {
 					var eSkills = player.getSkills("e", true, false).slice(0);
-					var skills = app.get.playerSkills(player, true); /*国战隐匿技能*/
+					var skills = player.getSkills("invisible", null, false); /*国战隐匿技能*/
+					var gSkills;
 					if (ui.skills2 && ui.skills2.skills.length) {
-						var gSkills = ui.skills2.skills;
+						gSkills = ui.skills2.skills;
 					}
 
 					for (var i = 0; i < skills.length; i++) {
@@ -80,7 +81,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 
 					var juexingji = {};
 					var xiandingji = {};
-					app.get.playerSkills(player).forEach(function (skill) {
+					player.getSkills("invisible", null, false).forEach(function (skill) {
 						var info = get.info(skill);
 						if (!info) return;
 						if (get.is.zhuanhuanji(skill, player) || info.limited || (info.intro && info.intro.content === "limited")) {
@@ -190,7 +191,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 				if (game.me) {
 					if (get.mode() == "guozhan") {
 						// 国战模式下，获取所有原生技能
-						nativeSkills = app.get.playerSkills(game.me, false);
+						nativeSkills = game.me.getSkills("invisible", null, false);
 					} else {
 						let info1 = game.me.name && lib.character[game.me.name];
 						let info2 = game.me.name2 && lib.character[game.me.name2];
@@ -214,6 +215,8 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					var node = self.querySelector('[data-id="' + item.id + '"]');
 					if (node) return;
 					let skillName = get.translation(item.name);
+					let finalName = skillName.slice(0, 2);
+
 					if (lib.skill[item.id] && lib.skill[item.id].zhuanhuanji) {
 						let imgType = "yang";
 						let player = game.me;
@@ -222,16 +225,12 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 							imgType = "ying";
 						}
 						let imgPath = "extension/十周年UI/shoushaUI/skill/online/mark_" + imgType + "OL.png";
-						skillName = '<img src="' + imgPath + '" style="vertical-align:middle;height:22px;margin-right:2px;">' + skillName;
+						finalName = '<img src="' + imgPath + '" style="vertical-align:middle;height:22px;margin-right:2px;">' + skillName;
 					}
 
 					if (item.type === "enable") {
-						// 如果是装备技能，只显示前两个字符
-						if (eSkills && eSkills.includes(item.id)) {
-							skillName = skillName.slice(0, 2);
-						}
 						node = ui.create.div(lib.skill[item.id].limited ? ".xiandingji" : ".skillitem", self.node.enable);
-						node.innerHTML = skillName;
+						node.innerHTML = finalName;
 						node.dataset.id = item.id;
 						// 不是当前武将原生技能才加小黄点
 						if (lib.skill[item.id] && nativeSkills.indexOf(item.id) === -1 && node) {
@@ -250,7 +249,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 					if (!item.info) return;
 					if (!item.translation) return;
 					if (eSkills && eSkills.includes(item.id)) return;
-					node = ui.create.div(".skillitem", self.node[get.is.phoneLayout() ? "trigger" : "enable"], skillName);
+					node = ui.create.div(".skillitem", self.node[lib.config.phonelayout ? "trigger" : "enable"], finalName);
 					node.dataset.id = item.id;
 					// 不是当前武将原生技能才加小黄点（这里也要用nativeSkills判断！）
 					if (lib.skill[item.id] && nativeSkills.indexOf(item.id) === -1 && node) {
