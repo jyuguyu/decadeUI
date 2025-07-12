@@ -379,7 +379,7 @@ app.import(function (lib, game, ui, get, ai, _status, app) {
 				this.createRightPanel(dialog, rightPane, player, nametype);
 
 				container.classList.remove("hidden");
-				game.pause2();
+				if (!lib.config["extension_十周年UI_viewInformationPause"]) game.pause2();
 			}
 		}
 

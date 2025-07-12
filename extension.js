@@ -66,6 +66,30 @@ export default async function () {
 					);
 
 					this.initOverride();
+					if (window.get && typeof window.get.cardsetion === "function") {
+						const oldCardsetion = window.get.cardsetion;
+						window.get.cardsetion = function (...args) {
+							try {
+								return oldCardsetion.apply(this, args);
+							} catch (e) {
+								if (e && e.message && e.message.indexOf("indexOf") !== -1) {
+									return "";
+								}
+								throw e;
+							}
+						};
+					}
+					if (window.get && typeof window.get.getPlayerIdentity === "function") {
+						const oldGetPlayerIdentity = window.get.getPlayerIdentity;
+						window.get.getPlayerIdentity = function (player, identity, chinese, isMark) {
+							if (!identity) identity = player.identity;
+							if (typeof identity !== "string") identity = "";
+							if (player && typeof player.special_identity !== "undefined" && typeof player.special_identity !== "string") {
+								player.special_identity = "";
+							}
+							return oldGetPlayerIdentity.apply(this, arguments);
+						};
+					}
 					return this;
 				},
 				initOverride() {
@@ -744,7 +768,7 @@ export default async function () {
 									if (lib.skill[name] && lib.skill[name].intro && !lib.skill[name].intro.nocount && (this.storage[name] || lib.skill[name].intro.markcount)) {
 										var num = 0;
 										if (typeof lib.skill[name].intro.markcount == "function") {
-											num = lib.skill[name].intro.markcount(this.storage[name], this);
+											num = lib.skill[name].intro.markcount(this.storage[name], this, name);
 											/*-----------------分割线-----------------*/
 										} else if (lib.skill[name].intro.markcount == "expansion") {
 											num = this.countCards("x", card => card.hasGaintag(name));
@@ -781,11 +805,6 @@ export default async function () {
 								$dieAfter() {
 									if (!config.dynamicSkin_dieAfter) this.stopDynamic();
 									this.node.gainSkill.innerHTML = null;
-
-									if (!decadeUI.config.playerDieEffect) {
-										if (base.lib.element.player.$dieAfter) base.lib.element.player.$dieAfter.apply(this, arguments);
-										return;
-									}
 
 									if (!this.node.dieidentity) this.node.dieidentity = ui.create.div("died-identity", this);
 									this.node.dieidentity.classList.add("died-identity");
@@ -845,7 +864,6 @@ export default async function () {
 								},
 
 								$skill(name, type, color, avatar) {
-									if (!decadeUI.config.gameAnimationEffect || !decadeUI.animation.gl) return base.lib.element.player.$skill.apply(this, arguments);
 									var _this = this;
 									if (typeof type != "string") type = "legend";
 
@@ -1725,7 +1743,7 @@ export default async function () {
 										if (a.tx == undefined && b.tx == undefined) return 0;
 										if (a.tx == undefined) return duicfg.rightLayout ? -1 : 1;
 										if (b.tx == undefined) return duicfg.rightLayout ? 1 : -1;
-										return b.tx - a.tx;
+										return a.tx - b.tx;
 									});
 									for (var i = 0; i < cards.length; i++) {
 										(function (card, i) {
@@ -1777,21 +1795,12 @@ export default async function () {
 
 									if (card.fixed) return ui.arena.appendChild(card);
 
-									var before;
-									for (var i = 0; i < ui.thrown; i++) {
-										if (ui.thrown[i].parentNode == ui.arena) {
-											before = ui.thrown[i];
-											break;
-										}
-									}
-
 									var tagNode = card.querySelector(".used-info");
 									if (tagNode == null) tagNode = card.appendChild(dui.element.create("used-info"));
 
 									card.$usedtag = tagNode;
-									ui.thrown.unshift(card);
-									if (before) ui.arena.insertBefore(before, card);
-									else ui.arena.appendChild(card);
+									ui.thrown.push(card);
+									ui.arena.appendChild(card);
 
 									dui.tryAddPlayerCardUseTag(card, this, _status.event);
 									dui.queueNextFrameTick(dui.layoutDiscard, dui);
@@ -1816,7 +1825,7 @@ export default async function () {
 										while (player.node.showCards.hasChildNodes()) player.node.showCards.removeChild(player.node.showCards.firstChild);
 										return;
 									}
-									const cards = player.getCards("h", c => get.is.shownCard(c) || player.isUnderControl(true) || game.me?.hasSkillTag("viewHandcard", null, player, true));
+									const cards = player.getCards("h", c => get.is.shownCard(c) || (typeof game.me !== 'undefined' && player.isUnderControl(true)) || (game.me && game.me.hasSkillTag("viewHandcard", null, player, true)));
 									if (!cards.length) {
 										player.node.showCards.hide();
 										return;
@@ -3151,6 +3160,7 @@ export default async function () {
 					var cardCopyFunction = lib.element.card.copy;
 					var playerAddSkillFunction = lib.element.player.addSkill;
 					var playerRemoveSkillFunction = lib.element.player.removeSkill;
+					var playerAwakenSkillFunction = lib.element.player.awakenSkill;
 					var playerDieFlipFunction = lib.element.player.$dieflip;
 
 					ui.updatejm = function (player, nodes, start, inv) {
@@ -3869,29 +3879,25 @@ export default async function () {
 									}
 
 									this.innerText = value;
-									if (decadeUI.config.campIdentityImageMode) {
-										this.style.visibility = "hidden";
-										var image = new Image();
-										image.node = this;
-										image.onerror = function () {
-											this.node.style.visibility = "";
-										};
+									this.style.visibility = "hidden";
+									var image = new Image();
+									image.node = this;
+									image.onerror = function () {
+										this.node.style.visibility = "";
+									};
 
-										// -----------------分割线-----------------
-										// 不同样式身份标记
-										var style = lib.config.extension_十周年UI_newDecadeStyle;
-										var srcMap = {
-											onlineUI: "image/decorationo/identity2_",
-											babysha: "image/decorationh/identity3_",
-											on: "image/decoration/identity_",
-											othersOff: "image/decoration/identity_",
-										};
-										var srcPrefix = srcMap[style] || "image/decorations/identity2_";
-										image.src = decadeUIPath + srcPrefix + filename + ".png";
-										this.parentNode.style.backgroundImage = 'url("' + image.src + '")';
-									} else {
-										this.style.visibility = "";
-									}
+									// -----------------分割线-----------------
+									// 不同样式身份标记
+									var style = lib.config.extension_十周年UI_newDecadeStyle;
+									var srcMap = {
+										onlineUI: "image/decorationo/identity2_",
+										babysha: "image/decorationh/identity3_",
+										on: "image/decoration/identity_",
+										othersOff: "image/decoration/identity_",
+									};
+									var srcPrefix = srcMap[style] || "image/decorations/identity2_";
+									image.src = decadeUIPath + srcPrefix + filename + ".png";
+									this.parentNode.style.backgroundImage = 'url("' + image.src + '")';
 								},
 							},
 						});
@@ -4860,6 +4866,16 @@ export default async function () {
 						return skill;
 					};
 
+					lib.element.player.awakenSkill = function (skill, nounmark) {
+						const result = playerAwakenSkillFunction.apply(this, arguments);
+						ui.updateSkillControl(this);
+						const fname = _status.event.getParent()?.skill;
+						if (fname?.endsWith("_fail") && fname?.slice(0, -5) == skill) {
+							this.failSkill(skill);
+						}
+						return result;
+					};
+
 					lib.element.player.getState = function () {
 						var state = base.lib.element.player.getState.apply(this, arguments);
 						state.seat = this.seat;
@@ -4876,22 +4892,11 @@ export default async function () {
 								if (!group) return;
 								this._group = group;
 								this.node.campWrap.dataset.camp = get.character(this.name)?.groupBorder || group;
-								if (!decadeUI.config.campIdentityImageMode) {
-									if (!this._finalGroup) this.node.campWrap.node.campName.innerHTML = "";
-									else {
-										const name = get.translation(this._finalGroup),
-											str = get.plainText(name);
-										if (str.length <= 2) this.node.campWrap.node.campName.innerHTML = name;
-										else this.node.campWrap.node.campName.innerHTML = name.replaceAll(str, str[0]);
-									}
-									return;
-								}
-								// 手杀样式使用图片
-								if (decadeUI.config.newDecadeStyle == "off") {
-									var image = new Image();
-									var url = decadeUIPath + (decadeUI.config.newDecadeStyle == "off" ? "image/decorations/name2_" : "image/decoration/name_") + group + ".png";
-									this._finalGroup = group;
-									const create = () => {
+								if (lib.config.extension_十周年UI_forcestyle == "2") {
+									this._group = group;
+									this.node.campWrap.dataset.camp = get.character(this.name)?.groupBorder || group;
+
+									if (!decadeUI.config.campIdentityImageMode) {
 										if (!this._finalGroup) this.node.campWrap.node.campName.innerHTML = "";
 										else {
 											const name = get.translation(this._finalGroup),
@@ -4899,21 +4904,66 @@ export default async function () {
 											if (str.length <= 2) this.node.campWrap.node.campName.innerHTML = name;
 											else this.node.campWrap.node.campName.innerHTML = name.replaceAll(str, str[0]);
 										}
-									};
-									image.onerror = () => {
-										create();
-									};
-									this.node.campWrap.node.campName.style.backgroundImage = `url("${url}")`;
-									image.src = url;
+									} else {
+										this.node.campWrap.node.campName.innerHTML = "";
+										this.node.campWrap.node.campName.style.backgroundImage = "";
+										var image = new Image();
+										var url = decadeUIPath + (decadeUI.config.newDecadeStyle == "off" ? "image/decorations/name2_" : "image/decoration/name_") + group + ".png";
+										this._finalGroup = group;
+										const create = () => {
+											if (!this._finalGroup) this.node.campWrap.node.campName.innerHTML = "";
+											else {
+												const name = get.translation(this._finalGroup),
+													str = get.plainText(name);
+												if (str.length <= 2) this.node.campWrap.node.campName.innerHTML = name;
+												else this.node.campWrap.node.campName.innerHTML = name.replaceAll(str, str[0]);
+											}
+										};
+										image.onerror = () => {
+											create();
+										};
+										if (decadeUI.config.newDecadeStyle != "onlineUI") this.node.campWrap.node.campName.style.backgroundImage = `url("${url}")`;
+										else create();
+										image.src = url;
+									}
 								} else {
-									// 其他样式直接显示文字
-									this._finalGroup = group;
 									if (!this._finalGroup) this.node.campWrap.node.campName.innerHTML = "";
 									else {
 										const name = get.translation(this._finalGroup),
 											str = get.plainText(name);
-										if (str.length <= 2) this.node.campWrap.node.campName.innerHTML = name;
-										else this.node.campWrap.node.campName.innerHTML = name.replaceAll(str, str[0]);
+										console.log("campName node:", this.node.campWrap.node.campName, "finalGroup:", this._finalGroup, "name:", name, "str:", str);
+										if (str.length <= 1) this.node.campWrap.node.campName.innerHTML = name;
+										else this.node.campWrap.node.campName.innerHTML = str[0];
+									}
+									if (decadeUI.config.newDecadeStyle == "off") {
+										var image = new Image();
+										var url = decadeUIPath + (decadeUI.config.newDecadeStyle == "off" ? "image/decorations/name2_" : "image/decoration/name_") + group + ".png";
+										this._finalGroup = group;
+										const create = () => {
+											if (!this._finalGroup) this.node.campWrap.node.campName.innerHTML = "";
+											else {
+												const name = get.translation(this._finalGroup),
+													str = get.plainText(name);
+												console.log("campName node:", this.node.campWrap.node.campName, "finalGroup:", this._finalGroup, "name:", name, "str:", str);
+												if (str.length <= 1) this.node.campWrap.node.campName.innerHTML = name;
+												else this.node.campWrap.node.campName.innerHTML = str[0];
+											}
+										};
+										image.onerror = () => {
+											create();
+										};
+										this.node.campWrap.node.campName.style.backgroundImage = `url("${url}")`;
+										image.src = url;
+									} else {
+										this._finalGroup = group;
+										if (!this._finalGroup) this.node.campWrap.node.campName.innerHTML = "";
+										else {
+											const name = get.translation(this._finalGroup),
+												str = get.plainText(name);
+											console.log("campName node:", this.node.campWrap.node.campName, "finalGroup:", this._finalGroup, "name:", name, "str:", str);
+											if (str.length <= 1) this.node.campWrap.node.campName.innerHTML = name;
+											else this.node.campWrap.node.campName.innerHTML = str[0];
+										}
 									}
 								}
 							},
@@ -5101,10 +5151,6 @@ export default async function () {
 								player
 							);
 						}
-					};
-
-					lib.element.player.$dieflip = function () {
-						if (!decadeUI.config.playerDieEffect && playerDieFlipFunction) playerDieFlipFunction.apply(this, arguments);
 					};
 
 					lib.element.player.$compare = function (card1, target, card2) {
@@ -5734,8 +5780,8 @@ export default async function () {
 							// 手牌折叠方式
 							if (get.is && typeof get.is.phoneLayout === "function" && lib.config.phonelayout) {
 								xStart += 0; // 触屏模式靠左
-							} else {
-								xStart += (limitW - totalW) / 1.7; // 非触屏模式居中
+							} else if (lib.config.extension_十周年UI_newDecadeStyle == "on") {
+								xStart += (limitW - totalW) / 1.7;
 							}
 						}
 
@@ -6250,7 +6296,7 @@ export default async function () {
 							if (card.dataset.views != 1 && event.card.cards && event.card.cards.length == 1 && (card.number != cardnumber || card.suit != cardsuit)) {
 								dui.cardTempSuitNum(card, cardsuit, cardnumber);
 							}
-							if (duicfg.cardUseEffect && event.card && (!event.card.cards || !event.card.cards.length || event.card.cards.length == 1)) {
+							if (event.card && (!event.card.cards || !event.card.cards.length || event.card.cards.length == 1)) {
 								var name = event.card.name,
 									nature = event.card.nature;
 
@@ -6404,14 +6450,12 @@ export default async function () {
 								event.apcard = undefined;
 								tagNode.innerHTML = get.translation(event.judgestr) + tagText;
 							});
-							if (duicfg.cardUseEffect) {
-								decadeUI.animation.cap.playSpineTo(card, {
-									name: "effect_panding",
-									action: "play",
-									loop: true,
-								});
-								event.apcard = card;
-							}
+							decadeUI.animation.cap.playSpineTo(card, {
+								name: "effect_panding",
+								action: "play",
+								loop: true,
+							});
+							event.apcard = card;
 							break;
 						default:
 							tagText = get.cardsetion(player);
@@ -6498,7 +6542,7 @@ export default async function () {
 						switch (mode) {
 							case "identity":
 								if (!player.isAlive() || player.identityShown || player == game.me) {
-									identity = (player.special_identity ? player.special_identity : identity).replace(/identity_/, "");
+									identity = ((player.special_identity ? player.special_identity : identity) || "").replace(/identity_/, "");
 								}
 
 								break;
@@ -6559,7 +6603,7 @@ export default async function () {
 					} else {
 						switch (mode) {
 							case "identity":
-								if (identity.indexOf("cai") < 0) {
+								if ((identity || "").indexOf("cai") < 0) {
 									if (isMark) {
 										if (player.special_identity) identity = player.special_identity + "_bg";
 									} else {
@@ -7333,6 +7377,9 @@ export default async function () {
 			};
 
 			decadeUI.config = config;
+			if (decadeUI.config.campIdentityImageMode === undefined) {
+				decadeUI.config.campIdentityImageMode = true;
+			}
 			duicfg.update = function () {
 				var menu = lib.extensionMenu["extension_" + decadeUIName];
 				for (var key in menu) {
@@ -7524,8 +7571,9 @@ export default async function () {
 			};
 			//修改技能按钮
 			//定义两个空集合阳按钮和阴按钮（别问为啥阴不是yin而是ying，问就是拿yang复制比较简单）
+			/*孩子你这么写直接全场共用了
 			lib.element.player.yangedSkills = [];
-			lib.element.player.yingedSkills = [];
+			lib.element.player.yingedSkills = [];*/
 			//定义阴函数，将技能加入阴集合，并删除阳集合里的该技能。
 			lib.element.player.yangSkill = function (skill) {
 				var player = this;
@@ -7538,7 +7586,13 @@ export default async function () {
 				);
 			};
 			lib.element.player.$yangSkill = function (skill) {
+				if (!this.yangedSkills) {
+					this.yangedSkills = [];
+				}
 				this.yangedSkills.add(skill);
+				if (!this.yingedSkills) {
+					this.yingedSkills = [];
+				}
 				this.yingedSkills.remove(skill);
 			};
 			//阳函数同理
@@ -7553,7 +7607,13 @@ export default async function () {
 				);
 			};
 			lib.element.player.$yingSkill = function (skill) {
+				if (!this.yingedSkills) {
+					this.yingedSkills = [];
+				}
 				this.yingedSkills.add(skill);
+				if (!this.yangedSkills) {
+					this.yangedSkills = [];
+				}
 				this.yangedSkills.remove(skill);
 			};
 			//添加failskill函数
@@ -7575,7 +7635,8 @@ export default async function () {
 			//添加失效函数
 			//构建一个失效技能的空集合
 			//失效函数是为了给技能按钮上锁的，在技能失效时，补上shixiao函数，技能就会被加入失效集合里，十周年UI那里就会检测到技能失效，从而添加上锁图片。
-			lib.element.player.shixiaoedSkills = [];
+			/*拷打喵！
+			lib.element.player.shixiaoedSkills = [];*/
 			(lib.element.player.shixiaoSkill = function (skill) {
 				var player = this;
 				game.broadcastAll(
@@ -7603,6 +7664,7 @@ export default async function () {
 					);
 				}),
 				(lib.element.player.$unshixiaoSkill = function (skill) {
+					if (!this.shixiaoedSkills) this.shixiaoedSkills = [];
 					this.shixiaoedSkills.remove(skill);
 				});
 			/*选项条分离*/
@@ -7870,7 +7932,7 @@ export default async function () {
 						player: ["phaseZhunbeiBegin", "phaseBegin", "phaseJudgeBegin", "phaseDrawBegin", "useCardAfter", "phaseDiscardBegin", "useSkillBefore", "loseAfter"],
 					},
 					filter(event, player) {
-						if (document.querySelector("#jindutiaoAI") && lib.config.extension_十周年UI_jindutiaoaiUpdata == false) return false;
+						if (document.querySelector("#jindutiaoAI") == false) return false;
 						return player != game.me && _status.currentPhase == player;
 					},
 					forced: true,
@@ -7916,7 +7978,7 @@ export default async function () {
 					forced: true,
 					charlotte: true,
 					filter(event, player) {
-						if (document.querySelector("#jindutiaoAI") && lib.config.extension_十周年UI_jindutiaoaiUpdata == false) return false;
+						if (document.querySelector("#jindutiaoAI") == false) return false;
 						return _status.currentPhase != player && player != game.me;
 					},
 					content() {
@@ -8630,7 +8692,7 @@ export default async function () {
 					},
 					silent: true,
 					filter(event, player) {
-						if (document.querySelector("#jindutiaopl") && lib.config.extension_十周年UI_jindutiaoUpdata == false) return false;
+						if (document.querySelector("#jindutiaopl") == false) return false;
 						return player == game.me && _status.currentPhase == player;
 					},
 					forced: true,
@@ -8675,7 +8737,7 @@ export default async function () {
 					forced: true,
 					charlotte: true,
 					filter(event, player) {
-						if (document.querySelector("#jindutiaopl") && lib.config.extension_十周年UI_jindutiaoUpdata == false) return false;
+						if (document.querySelector("#jindutiaopl") == false) return false;
 						if (event.name == "gameStart" && lib.config["extension_无名补丁_enable"]) return false;
 						return _status.currentPhase != player && player == game.me;
 					},
@@ -10444,7 +10506,7 @@ export default async function () {
 			newDecadeStyle: {
 				name: "切换样式",
 				intro: "切换武将边框样式和界面布局，初始为十周年样式，根据个人喜好自行切换，选择不同的设置后游戏会自动重启以生效新的设置",
-				init: "off",
+				init: "on",
 				item: {
 					on: "十周年",
 					off: "新手杀",
@@ -10497,7 +10559,7 @@ export default async function () {
 			},
 			cardPrettify: {
 				name: "卡牌美化",
-				init: "webp",
+				init: "png",
 				item: {
 					off: "关闭",
 					jpg: "OL卡牌",
@@ -10643,41 +10705,9 @@ export default async function () {
 					if (window.decadeUI) ui.window.dataset.cardAlternateNameVisible = lib.config["extension_十周年UI_cardAlternateNameVisible"] ? "on" : "off";
 				},
 			},
-			campIdentityImageMode: {
-				name: "身份美化",
-				init: true,
-			},
-			playerKillEffect: {
-				name: "击杀特效",
-				init: true,
-				onclick(value) {
-					game.saveConfig("extension_十周年UI_playerKillEffect", value);
-					if (window.decadeUI) decadeUI.config.playerKillEffect = value;
-				},
-			},
-			gameAnimationEffect: {
-				name: "动画特效",
-				init: true,
-			},
-			playerDieEffect: {
-				name: "阵亡特效",
-				init: true,
-				onclick(value) {
-					game.saveConfig("extension_十周年UI_playerDieEffect", value);
-					if (window.decadeUI) decadeUI.config.playerDieEffect = value;
-				},
-			},
-			cardUseEffect: {
-				name: "卡牌特效",
-				init: true,
-				onclick(value) {
-					game.saveConfig("extension_十周年UI_cardUseEffect", value);
-					if (window.decadeUI) decadeUI.config.cardUseEffect = value;
-				},
-			},
 			showTemp: {
 				name: "卡牌显示",
-				init: false,
+				init: true,
 				intro: "开启此选项后，视为卡牌显示将会替换为十周年UI内置替换显示",
 				onclick(bool) {
 					game.saveConfig("extension_十周年UI_showTemp", bool);
@@ -10735,6 +10765,17 @@ export default async function () {
 				init: false,
 				intro: "开启后，非魏蜀吴群晋势力的角色将会重新选择势力",
 			},
+			forcestyle: {
+				name: "势力样式",
+				init: "1",
+				item: {
+					1: "文字样式",
+					2: "图片样式",
+				},
+				update() {
+					if (window.decadeUI) ui.arena.dataset.forcestyle = lib.config["extension_十周年UI_forcestyle"];
+				},
+			},
 			shouqikamh: {
 				name: "手气卡美化",
 				init: false,
@@ -10764,6 +10805,11 @@ export default async function () {
 						}
 					}
 				},
+			},
+			viewInformationPause: {
+				name: "查看武将资料页不暂停",
+				intro: "打开此选项后，单机模式下查看本扩展设计的武将资料页时游戏不会暂停",
+				init: false,
 			},
 			outcropSkin: {
 				name: "露头样式",
@@ -10911,12 +10957,12 @@ export default async function () {
 			},
 			/*-----进度条-------*/
 			jindutiao: {
-				init: false,
+				init: true,
 				intro: "自己回合内显示进度条带素材",
 				name: "进度条",
 			},
 			JDTS: {
-				init: false,
+				init: true,
 				intro: "自己回合内显示对应阶段图片提示",
 				name: "阶段提示",
 			},
@@ -10925,19 +10971,9 @@ export default async function () {
 				init: false,
 				intro: "开启进度条的情况下，开启此选项后，当玩家的进度条时间走完时，将自动托管。",
 			},
-			jindutiaoUpdata: {
-				name: "玩家进度条刷新",
-				init: false,
-				intro: "开启进度条的情况下，开启此选项后，玩家进度条将会进行刷新",
-			},
-			jindutiaoaiUpdata: {
-				name: "人机进度条刷新",
-				init: false,
-				intro: "开启进度条的情况下，开启此选项后，ai的进度条将会进行刷新",
-			},
 			JDTSYangshi: {
 				name: "阶段提示",
-				init: "1",
+				init: "2",
 				intro: "切换阶段提示样式，可根据个人喜好切换",
 				item: {
 					1: "手杀阶段提示",
@@ -10948,7 +10984,7 @@ export default async function () {
 			},
 			jindutiaoYangshi: {
 				name: "进度条样式",
-				init: "1",
+				init: "3",
 				intro: "切换进度条样式，可根据个人喜好切换手杀进度条或十周年进度条，切换后重启生效",
 				item: {
 					1: "手杀进度条",
@@ -10974,7 +11010,7 @@ export default async function () {
 			},
 			jindutiaoSet: {
 				name: "进度条高度",
-				init: "20",
+				init: "22",
 				intro: "<li>设置玩家进度条的高度百分比。",
 				item: {
 					10: "10%",
@@ -11120,12 +11156,12 @@ export default async function () {
 			pack.intro = (pack => {
 				let log = [
 					`十周年UI 当前版本号${pack.version}`,
-					"适配本体：v1.10.17.3",
-					"让自己变得更加快乐🥳那件礼物🎁",
-					"那一天的八哥，修复起来",
-					"那一天的界面，调整起来",
-					"那一天的函数，跟进起来",
-					"连同着迷🥺这个炎炎🔥夏日🥵万般滋味👄那个你",
+					"适配本体：v1.10.17.4 待定",
+					"bugfix",
+					"函数跟进 待定",
+					"UI界面调整",
+					"特效类功能设置为强开启，移除开关",
+					"",
 				];
 				return `<a href="javascript:void(0)" onclick="navigator.clipboard.writeText('https://github.com/diandian157/decadeUI').then(() => alert('已成功复制，粘贴到浏览器打开，部分进不去需要翻墙'))">点击复制十周年UIGithub仓库地址</a><br><p style="color:rgb(210,210,000); font-size:12px; line-height:14px; text-shadow: 0 0 2px black;">${log.join("<br>•")}</p>`;
 			})(pack);

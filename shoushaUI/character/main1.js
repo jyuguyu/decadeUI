@@ -382,7 +382,7 @@ app.import((lib, game, ui, get, ai, _status, app) => {
 						});
 					}
 					container.classList.remove("hidden");
-					game.pause2();
+					if (!lib.config["extension_十周年UI_viewInformationPause"]) game.pause2();
 				};
 				plugin.characterDialog = container;
 				container.show(this);

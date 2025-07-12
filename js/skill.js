@@ -6,9 +6,6 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 			trigger: {
 				global: "gameDrawAfter",
 			},
-			filter(event, player) {
-				return lib.config.extension_十周年UI_gameAnimationEffect;
-			},
 			direct: true,
 			priority: Infinity + 114514 + 1919810,
 			firstDo: true,
@@ -75,6 +72,7 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 							common: "gold",
 							rare: "yu",
 							epic: "yan",
+							legend: "yan",
 						};
 						rarity = rarityMap[game.getRarity(target.name)];
 					} else if (longLevel === "sex") {
@@ -127,7 +125,6 @@ decadeModule.import(function (lib, game, ui, get, ai, _status) {
 				game.broadcastAll(
 					function (source, player) {
 						if (!window.decadeUI) return;
-						if (!decadeUI.config.playerKillEffect) return;
 						decadeUI.effect.kill(source, player);
 					},
 					trigger.source,
